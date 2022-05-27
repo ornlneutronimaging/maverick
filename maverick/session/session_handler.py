@@ -33,117 +33,6 @@ class SessionHandler:
 
     session = None
 
-    # session_dict = {'config version': None,
-    #                 'log buffer size': 500,
-    #                 DataType.sample: {'list files': None,
-    #                                   'current folder': None,
-    #                                   'time spectra filename': None,
-    #                                   'list files selected': None,
-    #                                   'list rois': None,
-    #                                   'image view state': None,
-    #                                   'image view histogram': None,
-    #                                   },
-    #                 DataType.ob: {'list files': None,
-    #                               'current folder': None,
-    #                               'list files selected': None,
-    #                               },
-    #                 DataType.normalization: {'roi': None,
-    #                                          'image view state': None,
-    #                                          'image view histogram': None,
-    #                                          },
-    #                 DataType.normalized: {'list files': None,
-    #                                       'current folder': None,
-    #                                       'time spectra filename': None,
-    #                                       'list files selected': None,
-    #                                       'list rois': None,
-    #                                       'image view state': None,
-    #                                       'image view histogram': None,
-    #                                       },
-    #                 "instrument": {'distance source detector': None,
-    #                                'beam index': 0,
-    #                                'detector value': None,
-    #                                },
-    #                 "material": {'selected element': {'name': None,
-    #                                                   'index': 0},
-    #                              'lattice': None,
-    #                              'crystal structure': {'name': 'fcc',
-    #                                                    'index': 0,
-    #                                                    },
-    #                              },
-    #                 "reduction": {'activate': True,
-    #                               'dimension': '2d',
-    #                               'size': {'flag': 'default',
-    #                                        'y': 20,
-    #                                        'x': 20,
-    #                                        'l': 3,
-    #                                        },
-    #                               'type': 'box',
-    #                               'processes order': 'option1',
-    #                               },
-    #                 "bin": {'roi': None,
-    #                         'binning line view': {'pos': None,
-    #                                               'adj': None,
-    #                                               'line color': None,
-    #                                               },
-    #                         'image view state': None,
-    #                         'image view histogram': None,
-    #                         'ui accessed': False,
-    #                         },
-    #                 DataType.fitting: {"lambda range index": None,
-    #                                    "x_axis": None,
-    #                                    "transparency": 50,
-    #                                    'image view state': None,
-    #                                    'image view histogram': None,
-    #                                    'ui accessed': False,
-    #                                    'ui': {'splitter_2': None,
-    #                                           'splitter': None,
-    #                                           'splitter_3': None,
-    #                                           },
-    #                                    'march dollase': {"table dictionary": None,
-    #                                                      "plot active row flag": True,
-    #                                                      },
-    #                                    'kropff': {'table dictionary': None,
-    #                                               'high tof': {'a0': '1',
-    #                                                            'b0': '1',
-    #                                                            'graph': 'a0',
-    #                                                            },
-    #                                               'low tof': {'ahkl': '1',
-    #                                                           'bhkl': '1',
-    #                                                           'graph': 'ahkl',
-    #                                                           },
-    #                                               'bragg peak': {'lambda_hkl': '5e-8',
-    #                                                              'tau': '1',
-    #                                                              'sigma': '1e-7',
-    #                                                              'table selection': 'single',
-    #                                                              'graph': 'lambda_hkl',
-    #                                                              },
-    #                                               'automatic bragg peak threshold finder': True,
-    #                                               'kropff bragg peak good fit conditions':
-    #                                                   {'l_hkl_error': {'state': True,
-    #                                                                    'value': 0.01},
-    #                                                    't_error': {'state': True,
-    #                                                                'value': 0.01},
-    #                                                    'sigma_error': {'state': True,
-    #                                                                    'value': 0.01},
-    #                                                    },
-    #                                               'kropff lambda settings': {'state': 'fix',
-    #                                                                          'fix'  : 5e-8,
-    #                                                                          'range': [1e-8, 1e-7, 1e-8],
-    #                                                                          },
-    #                                               'bragg peak row rejections conditions': {'l_hkl': {'less_than': {'state': True,
-    #                                                                                                                'value': 0,
-    #                                                                                                                },
-    #                                                                                                  'more_than': {'state': True,
-    #                                                                                                                'value': 10,
-    #                                                                                                                },
-    #                                                                                                  },
-    #                                                                                        },
-    #                                               },
-    #                                    },
-    #                 }
-    #
-    # default_session_dict = copy.deepcopy(session_dict)
-
     def __init__(self, parent=None):
         self.logger = logging.getLogger("maverick")
         self.logger.info("-> Saving current session before leaving the application")
@@ -289,28 +178,28 @@ class SessionHandler:
                                 status=StatusMessageStatus.ready,
                                 duration_s=10)
             logging.info(f"Saving configuration into {config_file_name}")
-    #
-    # def load_from_file(self, config_file_name=None):
+
+    def load_from_file(self, config_file_name=None):
     #     self.parent.loading_from_config = True
     #
-    #     if config_file_name is None:
-    #         config_file_name = QFileDialog.getOpenFileName(self.parent,
-    #                                                        directory=self.parent.default_path[DataType.sample],
-    #                                                        caption="Select session file ...",
-    #                                                        filter="session (*.json)",
-    #                                                        initialFilter="session")
-    #         QApplication.processEvents()
-    #         config_file_name = config_file_name[0]
-    #
-    #     if config_file_name:
-    #         config_file_name = config_file_name
-    #         self.config_file_name = config_file_name
-    #         show_status_message(parent=self.parent,
-    #                             message=f"Loading {config_file_name} ...",
-    #                             status=StatusMessageStatus.ready)
-    #
-    #         with open(config_file_name, "r") as read_file:
-    #             session_to_save = json.load(read_file)
+        if config_file_name is None:
+            config_file_name = QFileDialog.getOpenFileName(self.parent,
+                                                           directory=self.parent.session[SessionKeys.top_folder],
+                                                           caption="Select session file ...",
+                                                           filter="session (*.json)",
+                                                           initialFilter="session")
+            QApplication.processEvents()
+            config_file_name = config_file_name[0]
+
+        if config_file_name:
+            config_file_name = config_file_name
+            self.config_file_name = config_file_name
+            show_status_message(parent=self.parent,
+                                message=f"Loading {config_file_name} ...",
+                                status=StatusMessageStatus.ready)
+
+            with open(config_file_name, "r") as read_file:
+                session_to_save = json.load(read_file)
     #             if session_to_save.get("config version", None) is None:
     #                 logging.info(f"Session file is out of date!")
     #                 logging.info(f"-> expected version: {self.parent.config['config version']}")
@@ -325,18 +214,25 @@ class SessionHandler:
     #                 logging.info(f"-> session version: {session_to_save['config version']}")
     #                 self.load_successful = False
     #
-    #             if not self.load_successful:
-    #                 show_status_message(parent=self.parent,
-    #                                     message=f"{config_file_name} not loaded! (check log for more information)",
-    #                                     status=StatusMessageStatus.ready,
-    #                                     duration_s=10)
-    #
-    #     else:
-    #         self.load_successful = False
-    #         show_status_message(parent=self.parent,
-    #                             message=f"{config_file_name} not loaded! (check log for more information)",
-    #                             status=StatusMessageStatus.ready,
-    #                             duration_s=10)
+                if not self.load_successful:
+                    show_status_message(parent=self.parent,
+                                        message=f"{config_file_name} not loaded! (check log for more information)",
+                                        status=StatusMessageStatus.ready,
+                                        duration_s=10)
+
+                else:
+                    logging.info(f"Loading {config_file_name} ... Done!")
+                    show_status_message(parent=self.parent,
+                                        message=f"Loaded {config_file_name} ... Done!",
+                                        status=StatusMessageStatus.ready,
+                                        duration_s=10)
+
+        else:
+            self.load_successful = False
+            show_status_message(parent=self.parent,
+                                message=f"{config_file_name} not loaded! (check log for more information)",
+                                status=StatusMessageStatus.ready,
+                                duration_s=10)
     #
     # def get_tabs_to_load(self):
     #     session_dict = self.parent.session_dict
