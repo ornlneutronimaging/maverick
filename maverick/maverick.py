@@ -8,6 +8,7 @@ warnings.filterwarnings("ignore")
 
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
+from .log.log_launcher import LogLauncher, LogHandler
 
 from . import load_ui
 
@@ -15,7 +16,9 @@ from . import load_ui
 class MainWindow(QMainWindow):
 
     session = {'top_folder': None,     # the base folder to start looking at images folder to combine
-              }
+               'log_buffer_size': 500}
+
+    log_id = None
 
     def __init__(self, parent=None):
         """
@@ -56,6 +59,17 @@ class MainWindow(QMainWindow):
             current_folder = os.path.expanduser('~')
 
         self.session['top_folder'] = current_folder
+
+    # Menu
+    def session_load_clicked(self):
+        pass
+
+    def session_save_clicked(self):
+        pass
+
+    def help_log_clicked(self):
+        LogLauncher(parent=self)
+
 
 def main(args):
     app = QApplication(args)
