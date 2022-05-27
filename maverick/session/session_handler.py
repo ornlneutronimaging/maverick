@@ -3,7 +3,7 @@ import json
 import logging
 import copy
 
-# from ..utilities.status_message_config import StatusMessageStatus, show_status_message
+from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 from ..utilities.get import Get
 from . import SessionKeys
 
@@ -284,11 +284,11 @@ class SessionHandler:
             with open(output_file_name, 'w') as json_file:
                 json.dump(session, json_file)
 
-    #         show_status_message(parent=self.parent,
-    #                             message=f"Session saved in {config_file_name}",
-    #                             status=StatusMessageStatus.ready,
-    #                             duration_s=10)
-    #         logging.info(f"Saving configuration into {config_file_name}")
+            show_status_message(parent=self.parent,
+                                message=f"Session saved in {config_file_name}",
+                                status=StatusMessageStatus.ready,
+                                duration_s=10)
+            logging.info(f"Saving configuration into {config_file_name}")
     #
     # def load_from_file(self, config_file_name=None):
     #     self.parent.loading_from_config = True

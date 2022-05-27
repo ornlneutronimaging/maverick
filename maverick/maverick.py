@@ -12,6 +12,8 @@ from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
 from .session import session
 from .session.session_handler import SessionHandler
+from .initialization import Initialization
+from .utilities.check import Check
 
 from . import load_ui
 
@@ -31,7 +33,12 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent)
 
         self.ui = load_ui('mainWindow.ui', baseinstance=self)
+        self.initialization()
         self.setup()
+
+    def initialization(self):
+        o_init = Initialization(parent=self)
+        o_init.all()
 
     def setup(self):
         """
@@ -72,6 +79,8 @@ class MainWindow(QMainWindow):
         o_event = EventHandler(parent=self)
         o_event.automatically_load_previous_session()
 
+
+
     # Menu
     def session_load_clicked(self):
         pass
@@ -88,8 +97,8 @@ class MainWindow(QMainWindow):
         o_session.save_from_ui()
         o_session.automatic_save()
 
-        o_event = EventHandler(parent=self)
-        o_event.check_log_file_size()
+        o_event = Check(parent=self)
+        o_event.log_file_size()
 
         logging.info(" #### Leaving maverick ####")
         self.close()

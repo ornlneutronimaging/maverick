@@ -4,6 +4,7 @@ import os
 from .. import load_ui
 from .session_handler import SessionHandler
 from ..utilities.get import Get
+from ..utilities.check import Check
 # from .load_previous_session_launcher_multiple_choice import LoadPreviousSessionLauncherMultipleChoice
 
 
@@ -35,12 +36,13 @@ class LoadPreviousSessionLauncher(QDialog):
         #                                                                 list_tabs_to_load=list_tabs_to_load)
         #     load_session_ui.show()
         # self.parent.check_log_file_size()
+        o_check = Check(parent=self.parent)
+        o_check.log_file_size()
 
     def no_clicked(self):
-        pass
-        # self.parent.session_dict = SessionHandler.session_dict
-        # self.close()
-        # self.parent.check_log_file_size()
+        self.close()
+        o_check = Check(parent=self.parent)
+        o_check.log_file_size()
 
     def reject(self):
         self.no_clicked()
