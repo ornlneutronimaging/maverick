@@ -12,8 +12,10 @@ from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
 from .session import session
 from .session.session_handler import SessionHandler
+from .session import SessionKeys
 from .initialization import Initialization
 from .utilities.check import Check
+
 
 from . import load_ui
 
@@ -61,8 +63,7 @@ class MainWindow(QMainWindow):
                 current_folder = os.path.expanduser('~')
         else:
             current_folder = os.path.expanduser('~')
-
-        self.session['top_folder'] = current_folder
+        self.session[SessionKeys.top_folder] = current_folder
 
         o_get = Get(parent=self)
         log_file_name = o_get.log_file_name()
@@ -79,14 +80,16 @@ class MainWindow(QMainWindow):
         o_event = EventHandler(parent=self)
         o_event.automatically_load_previous_session()
 
-
-
     # Menu
     def session_load_clicked(self):
-        pass
+        o_session = SessionHandler(parent=self)
+        o_session.load_from_file()
+        o_session.load_to_ui()
 
     def session_save_clicked(self):
-        pass
+        o_session = SessionHandler(parent=self)
+        o_session.save_from_ui()
+        o_session.save_to_file()
 
     def help_log_clicked(self):
         LogLauncher(parent=self)

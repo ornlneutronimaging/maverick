@@ -330,7 +330,7 @@
     <string>Load ...</string>
    </property>
    <property name="shortcut">
-    <string>Ctrl+L</string>
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionSave">
