@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import QProgressBar
 
 from .utilities.table_handler import TableHandler
+from . import MICRO, LAMBDA, ANGSTROMS
 
 
 class Initialization:
@@ -12,6 +13,7 @@ class Initialization:
         self.statusbar()
         self.splitter()
         self.table()
+        self.labels()
 
     def statusbar(self):
         self.parent.eventProgress = QProgressBar(self.parent.ui.statusbar)
@@ -26,8 +28,12 @@ class Initialization:
         self.parent.ui.bin_horizontal_splitter.setSizes([50, 800])
 
     def table(self):
-
         # bin manual table
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         column_sizes = [50, 60, 60]
         o_table.set_column_sizes(column_sizes=column_sizes)
+
+    def labels(self):
+        self.parent.ui.combine_detector_offset_units.setText(MICRO + "s")
+        self.parent.ui.bin_tof_radioButton.setText("TOF (" + MICRO + "s)")
+        self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
