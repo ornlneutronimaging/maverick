@@ -31,19 +31,13 @@ class MainWindow(QMainWindow):
 
         self.ui = load_ui('mainWindow.ui', baseinstance=self)
         self.setup()
-
-        o_get = Get(parent=self)
-        log_file_name = o_get.log_file_name()
-        version = o_get.version()
-        self.log_file_name = log_file_name
-        logging.basicConfig(filename=log_file_name,
-                            filemode='a',
-                            format='[%(levelname)s] - %(asctime)s - %(message)s',
-                            level=logging.INFO)
-        logging.info("*** Starting a new session ***")
-        logging.info(f" Version: {version}")
+        # self.automatic_load_of_previous_session()
 
     def setup(self):
+        """
+        This is taking care of initializing the logging and retrieving the config file
+        :return:
+        """
         o_config = ConfigHandler(parent=self)
         o_config.load()
 
@@ -59,6 +53,18 @@ class MainWindow(QMainWindow):
             current_folder = os.path.expanduser('~')
 
         self.session['top_folder'] = current_folder
+
+        o_get = Get(parent=self)
+        log_file_name = o_get.log_file_name()
+        version = o_get.version()
+        self.log_file_name = log_file_name
+        logging.basicConfig(filename=log_file_name,
+                            filemode='a',
+                            format='[%(levelname)s] - %(asctime)s - %(message)s',
+                            level=logging.INFO)
+        logger = logging.getLogger("maverick")
+        logger.info("*** Starting a new session ***")
+        logger.info(f" Version: {version}")
 
     # Menu
     def session_load_clicked(self):

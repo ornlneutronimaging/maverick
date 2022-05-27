@@ -46,7 +46,7 @@ class Log(QMainWindow):
         self.log_file_name = o_get.log_file_name()
 
         self.check_log_size()
-        self.loading_logging_file()
+        self.loading_logger_file()
 
         # jump to end of file
         self.ui.log_text.moveCursor(QtGui.QTextCursor.End)
@@ -54,7 +54,7 @@ class Log(QMainWindow):
     def closeEvent(self, c):
         self.parent.log_id = None
 
-    def loading_logging_file(self):
+    def loading_logger_file(self):
         try:
             log_text = read_ascii(self.log_file_name)
             self.ui.log_text.setPlainText(log_text)
@@ -65,8 +65,9 @@ class Log(QMainWindow):
     def clear_clicked(self):
         if os.path.exists(self.log_file_name):
             write_ascii(text="", filename=self.log_file_name)
-            logging.info("log file has been cleared by user")
-        self.loading_logging_file()
+            logger = logging.getLogger("maverick")
+            logger.info("log file has been cleared by user")
+        self.loading_logger_file()
 
     def check_log_size(self):
         o_handler = LogHandler(parent=self.parent,
@@ -99,7 +100,7 @@ class LogSettings(QDialog):
     def accept(self):
         self.grand_parent.session['log_buffer_size'] = self.ui.buffer_size_spinBox.value()
         self.parent.check_log_size()
-        self.parent.loading_logging_file()
+        self.parent.loading_logger_file()
         self.close()
 
 
@@ -121,4 +122,5 @@ class LogHandler:
             new_log_text = log_text_split_by_cr[-log_buffer_size:]
             new_log_text = "\n".join(new_log_text)
             write_ascii(text=new_log_text, filename=self.log_file_name)
-            logging.info("log file has been truncated to fit buffer size limit")
+            logger = logging.getLogger("maverick")
+            logger.info("log file has been truncated to fit buffer size limit")

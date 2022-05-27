@@ -132,7 +132,7 @@
    <sender>refresh_pushButton</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
-   <slot>loading_logging_file()</slot>
+   <slot>loading_logger_file()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>137</x>
@@ -179,7 +179,7 @@
  </connections>
  <slots>
   <slot>save_as_clicked()</slot>
-  <slot>loading_logging_file()</slot>
+  <slot>loading_logger_file()</slot>
   <slot>clear_clicked()</slot>
   <slot>launch_settings()</slot>
  </slots>
