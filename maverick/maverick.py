@@ -9,17 +9,17 @@ warnings.filterwarnings("ignore")
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
 from .log.log_launcher import LogLauncher
-
+from .event_hander import EventHandler
+from .session import session
+from .session.session_handler import SessionHandler
 
 from . import load_ui
 
 
 class MainWindow(QMainWindow):
 
-    session = {'top_folder': None,     # the base folder to start looking at images folder to combine
-               'log_buffer_size': 500}
-
-    log_id = None
+    session = session   # dictionary that will keep record of the entire UI and used to load and save the session
+    log_id = None  # ui id of the log QDialog
 
     def __init__(self, parent=None):
         """
@@ -35,8 +35,11 @@ class MainWindow(QMainWindow):
 
     def setup(self):
         """
-        This is taking care of initializing the logging and retrieving the config file
-        :return:
+        This is taking care of
+            - initializing the session dict
+            - setting up the logging
+            - retrieving the config file
+            - loading or not the previous session
         """
         o_config = ConfigHandler(parent=self)
         o_config.load()
@@ -66,8 +69,8 @@ class MainWindow(QMainWindow):
         logger.info("*** Starting a new session ***")
         logger.info(f" Version: {version}")
 
-        # o_session = SessionHandler(parent=self)
-        # o_session.automatically_load_previous_session()
+        o_event = EventHandler(parent=self)
+        o_event.automatically_load_previous_session()
 
     # Menu
     def session_load_clicked(self):
@@ -78,6 +81,18 @@ class MainWindow(QMainWindow):
 
     def help_log_clicked(self):
         LogLauncher(parent=self)
+
+    # widgets events
+    def closeEvent(self, event):
+        o_session = SessionHandler(parent=self)
+        o_session.save_from_ui()
+        o_session.automatic_save()
+
+        o_event = EventHandler(parent=self)
+        o_event.check_log_file_size()
+
+        logging.info(" #### Leaving maverick ####")
+        self.close()
 
 
 def main(args):
