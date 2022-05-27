@@ -8,7 +8,8 @@ warnings.filterwarnings("ignore")
 
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
-from .log.log_launcher import LogLauncher, LogHandler
+from .log.log_launcher import LogLauncher
+
 
 from . import load_ui
 
@@ -31,7 +32,6 @@ class MainWindow(QMainWindow):
 
         self.ui = load_ui('mainWindow.ui', baseinstance=self)
         self.setup()
-        # self.automatic_load_of_previous_session()
 
     def setup(self):
         """
@@ -65,6 +65,9 @@ class MainWindow(QMainWindow):
         logger = logging.getLogger("maverick")
         logger.info("*** Starting a new session ***")
         logger.info(f" Version: {version}")
+
+        # o_session = SessionHandler(parent=self)
+        # o_session.automatically_load_previous_session()
 
     # Menu
     def session_load_clicked(self):
