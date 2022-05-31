@@ -1,4 +1,5 @@
-from qtpy.QtWidgets import QProgressBar, QVBoxLayout, QWidget
+from qtpy.QtWidgets import QProgressBar, QVBoxLayout, QHBoxLayout, QRadioButton
+from qtpy.QtWidgets import QSpacerItem, QSizePolicy, QWidget
 from qtpy.QtGui import QIcon
 from pyqtgraph.dockarea import DockArea, Dock
 import pyqtgraph as pg
@@ -14,12 +15,12 @@ class Initialization:
         self.parent = parent
 
     def all(self):
+        self.pyqtgraph()
         self.statusbar()
         self.splitter()
         self.table()
         self.labels()
         self.tab()
-        self.pyqtgraph()
 
     def statusbar(self):
         self.parent.eventProgress = QProgressBar(self.parent.ui.statusbar)
@@ -64,10 +65,7 @@ class Initialization:
         area.addDock(d1, 'top')
         area.addDock(d2, 'bottom')
 
-        combine_widget = pg.GraphicsLayoutWidget()
-        pg.setConfigOptions(antialias=True)  # this improve display
-
-        # preview
+        # preview - top widget
         image_view = pg.ImageView(view=pg.PlotItem())
         image_view.ui.roiBtn.hide()
         image_view.ui.menuBtn.hide()
@@ -75,8 +73,35 @@ class Initialization:
         image_view.scene.sigMouseMoved.connect(self.parent.mouse_moved_in_combine_image_preview)
         d1.addWidget(image_view)
 
-        vertical_layout = QVBoxLayout()
+        # plot and x-axis radio buttons - bottom widgets
+        profile = pg.PlotWidget(title="")
+        profile.plot()
+        self.parent.combine_profile_view = profile
+        bottom_layout = QVBoxLayout()
+        bottom_layout.addWidget(profile)
+        # xaxis radio buttons
+        spacer_left = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        file_index_radio_button = QRadioButton("File Index")
+        file_index_radio_button.setChecked(True)
+        self.parent.combine_file_index_radio_button = file_index_radio_button
+        tof_radio_button = QRadioButton("TOF (" + MICRO + "s)")
+        self.parent.tof_radio_button = tof_radio_button
+        lambda_radio_button = QRadioButton(LAMBDA + " (" + ANGSTROMS + ")")
+        self.parent.lambda_radio_button = lambda_radio_button
+        spacer_right = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+        axis_layout = QHBoxLayout()
+        axis_layout.addItem(spacer_left)
+        axis_layout.addWidget(file_index_radio_button)
+        axis_layout.addWidget(tof_radio_button)
+        axis_layout.addWidget(lambda_radio_button)
+        axis_layout.addItem(spacer_right)
+        bottom_widget = QWidget()
+        bottom_widget.setLayout(axis_layout)
+        bottom_layout.addWidget(bottom_widget)
+        widget = QWidget()
+        widget.setLayout(bottom_layout)
+        d2.addWidget(widget)
 
-        # combine_widget.setLayout(vertical_layout)
+        vertical_layout = QVBoxLayout()
         vertical_layout.addWidget(area)
         self.parent.ui.combine_widget.setLayout(vertical_layout)
