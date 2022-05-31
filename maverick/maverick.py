@@ -15,6 +15,7 @@ from .session.session_handler import SessionHandler
 from .session import SessionKeys
 from .initialization import Initialization
 from .utilities.check import Check
+from .combine.event_handler import EventHandler as CombineEventHandler
 
 
 from . import load_ui
@@ -105,7 +106,7 @@ class MainWindow(QMainWindow):
 
     # widgets events
     def select_top_folder_button_clicked(self):
-        o_event = EventHandler(parent=self)
+        o_event = CombineEventHandler(parent=self)
         o_event.select_top_folder()
 
     def closeEvent(self, event):

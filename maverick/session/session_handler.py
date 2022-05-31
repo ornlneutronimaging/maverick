@@ -4,6 +4,8 @@ import logging
 import copy
 
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
+from ..combine.event_handler import EventHandler as CombineEventHandler
+
 from ..utilities.get import Get
 from . import SessionKeys
 
@@ -90,6 +92,8 @@ class SessionHandler:
 
         # combine
         self.parent.ui.top_folder_label.setText(session[SessionKeys.top_folder])
+        o_combine_event = CombineEventHandler(parent=self.parent)
+        o_combine_event.populate_list_of_folders_to_combine()
 
     #     try:
     #
@@ -207,21 +211,17 @@ class SessionHandler:
                 session = json.load(read_file)
                 o_get = Get(parent=self.parent)
                 maverick_current_version = o_get.version()
-                if session.get(SessionKeys.version, None) is None:
-                    logging.info(f"Session file is out of date!")
-                    # logging.info(f"-> expected version: {self.parent.config['config version']}")
-                    # logging.info(f"-> session version: Unknown!")
-                    self.load_successful = False
-                elif session[SessionKeys.version] == maverick_current_version:
+                if session[SessionKeys.version] == maverick_current_version:
                     self.parent.session = session
                     self.load_to_ui()
                     logging.info(f"Loaded from {config_file_name}")
+                    self.load_successful = True
                 else:
                     logging.info(f"Session file is out of date!")
                     logging.info(f"-> expected version: {maverick_current_version}")
                     logging.info(f"-> session version: {session[SessionKeys.version]}")
                     self.load_successful = False
-    #
+
                 if not self.load_successful:
                     show_status_message(parent=self.parent,
                                         message=f"{config_file_name} not loaded! (check log for more information)",
