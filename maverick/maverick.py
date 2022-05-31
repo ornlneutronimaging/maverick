@@ -28,9 +28,11 @@ class MainWindow(QMainWindow):
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot
     combine_profile_view = None  # combine profile plot view id - bottom right plot
+    bin_profile_view = None  # bin profile
     combine_file_index_radio_button = None  # in combine view
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
+
 
     def __init__(self, parent=None):
         """

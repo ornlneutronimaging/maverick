@@ -15,7 +15,8 @@ class Initialization:
         self.parent = parent
 
     def all(self):
-        self.pyqtgraph()
+        self.pyqtgraph_combine()
+        self.pyqtgraph_bin()
         self.statusbar()
         self.splitter()
         self.table()
@@ -56,7 +57,15 @@ class Initialization:
         self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
         self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))
 
-    def pyqtgraph(self):
+    def pyqtgraph_bin(self):
+        bin_view = pg.PlotWidget(title="")
+        bin_view.plot()
+        self.parent.bin_profile_view = bin_view
+        layout = QVBoxLayout()
+        layout.addWidget(bin_view)
+        self.parent.ui.bin_widget.setLayout(layout)
+
+    def pyqtgraph_combine(self):
         area = DockArea()
         self.parent.ui.area = area
         d1 = Dock("Image Preview", size=(200, 300))
