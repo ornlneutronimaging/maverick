@@ -16,11 +16,14 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_8">
     <item>
-     <widget class="QTabWidget" name="tabWidget_2">
+     <widget class="QTabWidget" name="combine_tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
-      <widget class="QWidget" name="tab_3">
+      <property name="elideMode">
+       <enum>Qt::ElideMiddle</enum>
+      </property>
+      <widget class="QWidget" name="tab_combine">
        <attribute name="title">
         <string>Combine</string>
        </attribute>
@@ -125,7 +128,7 @@
         </item>
        </layout>
       </widget>
-      <widget class="QWidget" name="tab_4">
+      <widget class="QWidget" name="tab_bin">
        <attribute name="title">
         <string>Bin</string>
        </attribute>

@@ -1,7 +1,9 @@
 from qtpy.QtWidgets import QProgressBar
+from qtpy.QtGui import QIcon
 
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS
+from . import combine_image, bin_image
 
 
 class Initialization:
@@ -14,6 +16,7 @@ class Initialization:
         self.splitter()
         self.table()
         self.labels()
+        self.tab()
 
     def statusbar(self):
         self.parent.eventProgress = QProgressBar(self.parent.ui.statusbar)
@@ -37,3 +40,8 @@ class Initialization:
         self.parent.ui.combine_detector_offset_units.setText(MICRO + "s")
         self.parent.ui.bin_tof_radioButton.setText("TOF (" + MICRO + "s)")
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
+
+    def tab(self):
+        self.parent.ui.combine_tabWidget.setTabIcon(0, QIcon(combine_image))
+        self.parent.ui.combine_tabWidget.setTabIcon(1, QIcon(bin_image))
+        

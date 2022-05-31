@@ -9,7 +9,8 @@ del get_versions
 root = os.path.dirname(os.path.realpath(__file__))
 refresh_image = os.path.join(root, "icons/refresh.png")
 settings_image = os.path.join(root, "icons/plotSettings.png")
-
+combine_image = os.path.join(root, "icons/combine.png")
+bin_image = os.path.join(root, "icons/bin.png")
 
 ANGSTROMS = u"\u212B"
 LAMBDA = u"\u03BB"
