@@ -18,6 +18,7 @@ ANGSTROMS = u"\u212B"
 LAMBDA = u"\u03BB"
 MICRO = u"\u00B5"
 SUB_0 = u"\u2080"
+DELTA = u"\u0394"
 
 
 def load_ui(ui_filename, baseinstance):

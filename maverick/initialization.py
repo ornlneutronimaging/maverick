@@ -2,7 +2,7 @@ from qtpy.QtWidgets import QProgressBar
 from qtpy.QtGui import QIcon
 
 from .utilities.table_handler import TableHandler
-from . import MICRO, LAMBDA, ANGSTROMS
+from . import MICRO, LAMBDA, ANGSTROMS, DELTA
 from . import combine_image, bin_image, auto_image, manual_image
 
 
@@ -37,9 +37,14 @@ class Initialization:
         o_table.set_column_sizes(column_sizes=column_sizes)
 
     def labels(self):
+        # combine tab
         self.parent.ui.combine_detector_offset_units.setText(MICRO + "s")
         self.parent.ui.bin_tof_radioButton.setText("TOF (" + MICRO + "s)")
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
+        # bin tab
+        self.parent.ui.auto_delta_t_units_label.setText("File index")
+        self.parent.ui.bin_auto_delta_t_over_t_radioButton.setText(DELTA + "t/t")
+        self.parent.ui.bin_auto_delta_t_radioButton.setText(DELTA + "t")
 
     def tab(self):
         self.parent.ui.combine_bin_tabWidget.setTabIcon(0, QIcon(combine_image))

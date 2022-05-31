@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>1</number>
+       <number>0</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -70,7 +70,7 @@
                <item row="0" column="0">
                 <widget class="QLabel" name="label">
                  <property name="text">
-                  <string>dSD</string>
+                  <string>distance source-detector</string>
                  </property>
                 </widget>
                </item>
@@ -149,22 +149,8 @@
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="0">
-                <widget class="QLabel" name="auto_delta_t_t_label">
-                 <property name="text">
-                  <string>delta_t/t</string>
-                 </property>
-                </widget>
-               </item>
                <item row="0" column="1">
                 <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="auto_delta_t_label">
-                 <property name="text">
-                  <string>delta_t</string>
-                 </property>
-                </widget>
                </item>
                <item row="1" column="1">
                 <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
@@ -173,6 +159,23 @@
                 <widget class="QLabel" name="auto_delta_t_units_label">
                  <property name="text">
                   <string>A</string>
+                 </property>
+                </widget>
+               </item>
+               <item row="0" column="0">
+                <widget class="QRadioButton" name="bin_auto_delta_t_over_t_radioButton">
+                 <property name="text">
+                  <string/>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
+                 </property>
+                </widget>
+               </item>
+               <item row="1" column="0">
+                <widget class="QRadioButton" name="bin_auto_delta_t_radioButton">
+                 <property name="text">
+                  <string/>
                  </property>
                 </widget>
                </item>
@@ -261,6 +264,9 @@
                 <widget class="QRadioButton" name="radioButton">
                  <property name="text">
                   <string>File index</string>
+                 </property>
+                 <property name="checked">
+                  <bool>true</bool>
                  </property>
                 </widget>
                </item>
