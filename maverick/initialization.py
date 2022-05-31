@@ -3,7 +3,7 @@ from qtpy.QtGui import QIcon
 
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS
-from . import combine_image, bin_image
+from . import combine_image, bin_image, auto_image, manual_image
 
 
 class Initialization:
@@ -42,6 +42,7 @@ class Initialization:
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
 
     def tab(self):
-        self.parent.ui.combine_tabWidget.setTabIcon(0, QIcon(combine_image))
-        self.parent.ui.combine_tabWidget.setTabIcon(1, QIcon(bin_image))
-        
+        self.parent.ui.combine_bin_tabWidget.setTabIcon(0, QIcon(combine_image))
+        self.parent.ui.combine_bin_tabWidget.setTabIcon(1, QIcon(bin_image))
+        self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
+        self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))

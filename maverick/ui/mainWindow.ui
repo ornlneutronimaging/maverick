@@ -16,9 +16,9 @@
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_8">
     <item>
-     <widget class="QTabWidget" name="combine_tabWidget">
+     <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -138,9 +138,9 @@
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
-          <widget class="QTabWidget" name="tabWidget">
+          <widget class="QTabWidget" name="bin_tabWidget">
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -150,7 +150,7 @@
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
                <item row="0" column="0">
-                <widget class="QLabel" name="label_7">
+                <widget class="QLabel" name="auto_delta_t_t_label">
                  <property name="text">
                   <string>delta_t/t</string>
                  </property>
@@ -160,7 +160,7 @@
                 <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
                </item>
                <item row="1" column="0">
-                <widget class="QLabel" name="label_8">
+                <widget class="QLabel" name="auto_delta_t_label">
                  <property name="text">
                   <string>delta_t</string>
                  </property>
@@ -170,7 +170,7 @@
                 <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
                </item>
                <item row="1" column="2">
-                <widget class="QLabel" name="label_9">
+                <widget class="QLabel" name="auto_delta_t_units_label">
                  <property name="text">
                   <string>A</string>
                  </property>

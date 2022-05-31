@@ -11,6 +11,8 @@ refresh_image = os.path.join(root, "icons/refresh.png")
 settings_image = os.path.join(root, "icons/plotSettings.png")
 combine_image = os.path.join(root, "icons/combine.png")
 bin_image = os.path.join(root, "icons/bin.png")
+auto_image = os.path.join(root, "icons/auto.png")
+manual_image = os.path.join(root, "icons/manual.png")
 
 ANGSTROMS = u"\u212B"
 LAMBDA = u"\u03BB"
