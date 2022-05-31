@@ -80,13 +80,17 @@ class SessionHandler:
     #
     #     self.parent.session_dict = self.session_dict
 
-    def load_to_ui(self, tabs_to_load=None):
-        pass
-    #     if not self.load_successful:
-    #         return
-    #
-    #     logging.info(f"Automatic session tabs to load: {tabs_to_load}")
-    #
+    def load_to_ui(self):
+        if not self.load_successful:
+            return
+
+        logging.info(f"Automatic loading of session")
+
+        session = self.parent.session
+
+        # combine
+        self.parent.ui.top_folder_label.setText(session[SessionKeys.top_folder])
+
     #     try:
     #
     #         o_general = General(parent=self.parent)
@@ -210,6 +214,7 @@ class SessionHandler:
                     self.load_successful = False
                 elif session[SessionKeys.version] == maverick_current_version:
                     self.parent.session = session
+                    self.load_to_ui()
                     logging.info(f"Loaded from {config_file_name}")
                 else:
                     logging.info(f"Session file is out of date!")

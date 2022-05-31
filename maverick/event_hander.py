@@ -37,6 +37,13 @@ class EventHandler:
         # get list of folders in top folder
         self.parent.session[SessionKeys.top_folder] = os.path.abspath(_folder)
         list_folders = FileHandler.get_list_of_folders(_folder)
-        print(list_folders)
+        self.parent.session[SessionKeys.list_working_folders] = list_folders
+        self.parent.ui.top_folder_label.setText(_folder)
 
         # display list of folders in widget + in second column use or not radiobutton
+        self.populate_list_of_folders_to_combine()
+
+    def populate_list_of_folders_to_combine(self):
+        list_of_folders = self.parent.session[SessionKeys.list_working_folders]
+        for _folder in list_of_folders:
+            pass
