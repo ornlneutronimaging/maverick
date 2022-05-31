@@ -25,6 +25,9 @@ class MainWindow(QMainWindow):
     session = session   # dictionary that will keep record of the entire UI and used to load and save the session
     log_id = None  # ui id of the log QDialog
 
+    # pyqtgraph view
+    combine_image_view = None  # combine image view id
+
     def __init__(self, parent=None):
         """
         Initialization
@@ -106,6 +109,9 @@ class MainWindow(QMainWindow):
         logging.info(" #### Leaving maverick ####")
         self.close()
 
+    def mouse_moved_in_combine_image_preview(self):
+        """Mouse moved in the combine pyqtgraph image preview (top right)"""
+        pass
 
 def main(args):
     app = QApplication(args)

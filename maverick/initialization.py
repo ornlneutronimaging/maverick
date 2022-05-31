@@ -1,5 +1,7 @@
-from qtpy.QtWidgets import QProgressBar
+from qtpy.QtWidgets import QProgressBar, QVBoxLayout, QWidget
 from qtpy.QtGui import QIcon
+from pyqtgraph.dockarea import DockArea, Dock
+import pyqtgraph as pg
 
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS, DELTA
@@ -17,6 +19,7 @@ class Initialization:
         self.table()
         self.labels()
         self.tab()
+        self.pyqtgraph()
 
     def statusbar(self):
         self.parent.eventProgress = QProgressBar(self.parent.ui.statusbar)
@@ -51,3 +54,29 @@ class Initialization:
         self.parent.ui.combine_bin_tabWidget.setTabIcon(1, QIcon(bin_image))
         self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
         self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))
+
+    def pyqtgraph(self):
+        area = DockArea()
+        self.parent.ui.area = area
+        d1 = Dock("Image Preview", size=(200, 300))
+        d2 = Dock("ROI profile", size=(200, 100))
+
+        area.addDock(d1, 'top')
+        area.addDock(d2, 'bottom')
+
+        combine_widget = pg.GraphicsLayoutWidget()
+        pg.setConfigOptions(antialias=True)  # this improve display
+
+        # preview
+        image_view = pg.ImageView(view=pg.PlotItem())
+        image_view.ui.roiBtn.hide()
+        image_view.ui.menuBtn.hide()
+        self.parent.combine_image_view = image_view
+        image_view.scene.sigMouseMoved.connect(self.parent.mouse_moved_in_combine_image_preview)
+        d1.addWidget(image_view)
+
+        vertical_layout = QVBoxLayout()
+
+        # combine_widget.setLayout(vertical_layout)
+        vertical_layout.addWidget(area)
+        self.parent.ui.combine_widget.setLayout(vertical_layout)
