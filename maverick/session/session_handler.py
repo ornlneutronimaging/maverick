@@ -22,6 +22,8 @@ from . import SessionKeys
 # from .general import General
 
 # from .. import DataType
+from . import SessionKeys
+from ..utilities.get import Get
 
 
 class SessionHandler:
@@ -37,7 +39,6 @@ class SessionHandler:
         self.logger = logging.getLogger("maverick")
         self.logger.info("-> Saving current session before leaving the application")
         self.parent = parent
-
 
     def save_from_ui(self):
         pass
@@ -199,20 +200,22 @@ class SessionHandler:
                                 status=StatusMessageStatus.ready)
 
             with open(config_file_name, "r") as read_file:
-                session_to_save = json.load(read_file)
-    #             if session_to_save.get("config version", None) is None:
-    #                 logging.info(f"Session file is out of date!")
-    #                 logging.info(f"-> expected version: {self.parent.config['config version']}")
-    #                 logging.info(f"-> session version: Unknown!")
-    #                 self.load_successful = False
-    #             elif session_to_save["config version"] == self.parent.config["config version"]:
-    #                 self.parent.session_dict = session_to_save
-    #                 logging.info(f"Loaded from {config_file_name}")
-    #             else:
-    #                 logging.info(f"Session file is out of date!")
-    #                 logging.info(f"-> expected version: {self.parent.config['config version']}")
-    #                 logging.info(f"-> session version: {session_to_save['config version']}")
-    #                 self.load_successful = False
+                session = json.load(read_file)
+                o_get = Get(parent=self.parent)
+                maverick_current_version = o_get.version()
+                if session.get(SessionKeys.version, None) is None:
+                    logging.info(f"Session file is out of date!")
+                    # logging.info(f"-> expected version: {self.parent.config['config version']}")
+                    # logging.info(f"-> session version: Unknown!")
+                    self.load_successful = False
+                elif session[SessionKeys.version] == maverick_current_version:
+                    self.parent.session = session
+                    logging.info(f"Loaded from {config_file_name}")
+                else:
+                    logging.info(f"Session file is out of date!")
+                    logging.info(f"-> expected version: {maverick_current_version}")
+                    logging.info(f"-> session version: {session[SessionKeys.version]}")
+                    self.load_successful = False
     #
                 if not self.load_successful:
                     show_status_message(parent=self.parent,

@@ -104,6 +104,10 @@ class MainWindow(QMainWindow):
         LogLauncher(parent=self)
 
     # widgets events
+    def select_top_folder_button_clicked(self):
+        o_event = EventHandler(parent=self)
+        o_event.select_top_folder()
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()

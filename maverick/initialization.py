@@ -36,6 +36,11 @@ class Initialization:
         self.parent.ui.bin_horizontal_splitter.setSizes([50, 800])
 
     def table(self):
+        # combine table
+        o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
+        column_sizes = [50, 500]
+        o_table.set_column_sizes(column_sizes=column_sizes)
+
         # bin manual table
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         column_sizes = [50, 60, 60]

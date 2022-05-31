@@ -3,9 +3,19 @@ from astropy.io import fits
 import numpy as np
 import os
 import shutil
+import glob
 
 
 class FileHandler(object):
+
+    @classmethod
+    def get_list_of_folders(cls, top_folder):
+        full_list = glob.glob(top_folder + "/*")
+        list_folders = []
+        for _entry in full_list:
+            if os.path.isdir(_entry):
+                list_folders.append(_entry)
+        return list_folders
 
     @classmethod
     def get_parent_folder(cls, full_folder):
