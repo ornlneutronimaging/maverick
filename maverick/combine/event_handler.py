@@ -5,6 +5,8 @@ import numpy as np
 
 from ..utilities.file_handler import FileHandler
 from ..utilities.table_handler import TableHandler
+from ..utilities.time_spectra import GetTimeSpectraFilename, TimeSpectraHandler
+from ..utilities import TimeSpectraKeys
 from ..session import SessionKeys
 from ..load.load_files import LoadFiles
 
@@ -60,7 +62,10 @@ class EventHandler:
         self.parent.session[SessionKeys.list_working_folders_status] = [False for _index in np.arange(len(list_folders))]
 
         # reset time spectra
-        self.parent.time_spectra_file_name = None
+        self.parent.time_spectra = {TimeSpectraKeys.file_name: None,
+                                    TimeSpectraKeys.tof_array: None,
+                                    TimeSpectraKeys.lambda_array: None,
+                                    TimeSpectraKeys.file_index_array: None}
 
     def populate_list_of_folders_to_combine(self):
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
@@ -127,7 +132,7 @@ class EventHandler:
                     loading_worked = self.load_that_folder(folder_name=_folder_name)
 
                 # load time spectra if not already there
-                if self.parent.time_spectra_file_name is None:
+                if self.parent.time_spectra['file_name'] is None:
                     self.load_time_spectra_file(folder=_folder_name)
 
     def load_time_spectra_file(self, folder=None):
@@ -136,7 +141,23 @@ class EventHandler:
         :param folder: location of the time spectra file
         :return:
         """
-        pass
+        o_time_spectra = GetTimeSpectraFilename(parent=self.parent,
+                                                folder=folder)
+        full_path_to_time_spectra = o_time_spectra.retrieve_file_name()
+
+        o_time_handler = TimeSpectraHandler(parent=self.parent,
+                                            time_spectra_file_name=full_path_to_time_spectra)
+        o_time_handler.load()
+        o_time_handler.calculate_lambda_scale()
+
+        tof_array = o_time_handler.tof_array
+        lambda_array = o_time_handler.lambda_array
+        file_index_array = np.arange(len(tof_array))
+
+        self.parent.time_spectra[TimeSpectraKeys.file_name] = full_path_to_time_spectra
+        self.parent.time_spectra[TimeSpectraKeys.tof_array] = tof_array
+        self.parent.time_spectra[TimeSpectraKeys.lambda_array] = lambda_array
+        self.parent.time_spectra[TimeSpectraKeys.file_index_array] = file_index_array
 
     def load_that_folder(self, folder_name=None):
         """

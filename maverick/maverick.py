@@ -9,6 +9,7 @@ warnings.filterwarnings("ignore")
 
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
+from .utilities import TimeSpectraKeys
 from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
 from .session import session
@@ -40,8 +41,11 @@ class MainWindow(QMainWindow):
     # combine_data = [image1, image2, image3...]
     combine_data = None
 
-    # time spectra file
-    time_spectra_file_name = None
+    # time spectra file and arrays
+    time_spectra = {TimeSpectraKeys.file_name: None,
+                    TimeSpectraKeys.tof_array: None,
+                    TimeSpectraKeys.lambda_array: None,
+                    TimeSpectraKeys.file_index_array: None}
 
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot

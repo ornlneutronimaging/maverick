@@ -145,7 +145,7 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="doubleSpinBox"/>
+                <widget class="QDoubleSpinBox" name="distance_source_detector_doubleSpinBox"/>
                </item>
                <item row="0" column="2">
                 <widget class="QLabel" name="label_2">
@@ -162,7 +162,7 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QSpinBox" name="spinBox"/>
+                <widget class="QSpinBox" name="detector_offset_spinBox"/>
                </item>
                <item row="1" column="2">
                 <widget class="QLabel" name="combine_detector_offset_units">
