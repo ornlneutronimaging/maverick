@@ -134,10 +134,10 @@ class EventHandler:
 
         # check or load the selected rows
         loading_worked = True
-        for _folder_name, _folder_status in zip(list_of_folders_to_use, list_of_folders_to_use_status):
-            if _folder_status:
-                if self.parent.raw_data_folders[_folder_name]['data'] is None:
-                    loading_worked = self.load_that_folder(folder_name=_folder_name)
+
+        for _folder_name in list_of_folders_to_use:
+            if self.parent.raw_data_folders[_folder_name]['data'] is None:
+                loading_worked = self.load_that_folder(folder_name=_folder_name)
 
                 # load time spectra if not already there
                 if self.parent.time_spectra['file_name'] is None:

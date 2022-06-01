@@ -52,6 +52,7 @@ class SessionHandler:
         else:
             raise NotImplementedError("Combine method not implemented!")
 
+
         o_combine_event.combine_folders()
 
     def automatic_save(self):
