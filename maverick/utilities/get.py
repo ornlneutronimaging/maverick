@@ -4,6 +4,7 @@ from pathlib import Path
 import configparser
 
 from . import CombineAlgorithm
+from ..session import SessionKeys
 
 
 class Get:
@@ -38,6 +39,18 @@ class Get:
             return CombineAlgorithm.median
         else:
             raise NotImplementedError("Combine algorithm not implemented!")
+
+    def list_array_to_combine(self):
+        session = self.parent.session
+        list_working_folders_status = session[SessionKeys.list_working_folders_status]
+        raw_data_folders = self.parent.raw_data_folders
+        list_working_folders = session[SessionKeys.list_working_folders]
+
+        list_array = []
+        for _status, _folder_name in zip(list_working_folders_status, list_working_folders):
+            if _status:
+                list_array.append(raw_data_folders[_folder_name]['data'])
+        return list_array
 
     @staticmethod
     def full_home_file_name(base_file_name):

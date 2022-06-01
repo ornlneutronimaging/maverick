@@ -134,6 +134,7 @@ class MainWindow(QMainWindow):
     def radio_buttons_of_folder_changed(self):
         o_event = CombineEventHandler(parent=self)
         o_event.update_list_of_folders_to_use()
+        o_event.combine_folders()
 
     def time_spectra_preview_clicked(self):
         TimeSpectraLauncher(parent=self)
