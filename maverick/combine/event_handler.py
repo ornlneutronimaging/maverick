@@ -6,6 +6,7 @@ import numpy as np
 from ..utilities.file_handler import FileHandler
 from ..utilities.table_handler import TableHandler
 from ..session import SessionKeys
+from ..load.load_files import LoadFiles
 
 
 class EventHandler:
@@ -57,6 +58,9 @@ class EventHandler:
 
         # initialize list of selected folders
         self.parent.session[SessionKeys.list_working_folders_status] = [False for _index in np.arange(len(list_folders))]
+
+        # reset time spectra
+        self.parent.time_spectra_file_name = None
 
     def populate_list_of_folders_to_combine(self):
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
@@ -122,6 +126,18 @@ class EventHandler:
                 if self.parent.raw_data_folders[_folder_name]['data'] is None:
                     loading_worked = self.load_that_folder(folder_name=_folder_name)
 
+                # load time spectra if not already there
+                if self.parent.time_spectra_file_name is None:
+                    self.load_time_spectra_file(folder=_folder_name)
+
+    def load_time_spectra_file(self, folder=None):
+        """
+        load the time spectra file
+        :param folder: location of the time spectra file
+        :return:
+        """
+        pass
+
     def load_that_folder(self, folder_name=None):
         """
         this routine load all the images of the selected folder
@@ -133,5 +149,9 @@ class EventHandler:
             return False
 
         # load the data
+        o_load = LoadFiles(parent=self.parent,
+                           folder=folder_name)
+        data = o_load.retrieve_data()
+        self.parent.raw_data_folders[folder_name]['data'] = data
 
         return True

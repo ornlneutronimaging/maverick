@@ -40,6 +40,9 @@ class MainWindow(QMainWindow):
     # combine_data = [image1, image2, image3...]
     combine_data = None
 
+    # time spectra file
+    time_spectra_file_name = None
+
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot
     combine_profile_view = None  # combine profile plot view id - bottom right plot
