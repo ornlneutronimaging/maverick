@@ -129,7 +129,7 @@
                 </widget>
                </item>
                <item>
-                <widget class="QTabWidget" name="tabWidget">
+                <widget class="QTabWidget" name="combine_bottom_tabWidget">
                  <property name="sizePolicy">
                   <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
                    <horstretch>0</horstretch>
@@ -137,7 +137,7 @@
                   </sizepolicy>
                  </property>
                  <property name="currentIndex">
-                  <number>1</number>
+                  <number>2</number>
                  </property>
                  <widget class="QWidget" name="tab_3">
                   <attribute name="title">
@@ -244,6 +244,65 @@
                       <string>Preview</string>
                      </property>
                     </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="tab_5">
+                  <attribute name="title">
+                   <string/>
+                  </attribute>
+                  <layout class="QVBoxLayout" name="verticalLayout_10">
+                   <item>
+                    <widget class="QGroupBox" name="groupBox_2">
+                     <property name="title">
+                      <string>How to combine the folders</string>
+                     </property>
+                     <layout class="QHBoxLayout" name="horizontalLayout_5">
+                      <item>
+                       <widget class="QRadioButton" name="combine_mean_radioButton">
+                        <property name="text">
+                         <string>mean</string>
+                        </property>
+                        <property name="checked">
+                         <bool>true</bool>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <widget class="QRadioButton" name="combine_median_radioButton">
+                        <property name="text">
+                         <string>median</string>
+                        </property>
+                       </widget>
+                      </item>
+                      <item>
+                       <spacer name="horizontalSpacer_5">
+                        <property name="orientation">
+                         <enum>Qt::Horizontal</enum>
+                        </property>
+                        <property name="sizeHint" stdset="0">
+                         <size>
+                          <width>40</width>
+                          <height>20</height>
+                         </size>
+                        </property>
+                       </spacer>
+                      </item>
+                     </layout>
+                    </widget>
+                   </item>
+                   <item>
+                    <spacer name="verticalSpacer_2">
+                     <property name="orientation">
+                      <enum>Qt::Vertical</enum>
+                     </property>
+                     <property name="sizeHint" stdset="0">
+                      <size>
+                       <width>20</width>
+                       <height>40</height>
+                      </size>
+                     </property>
+                    </spacer>
                    </item>
                   </layout>
                  </widget>
@@ -589,12 +648,44 @@
    <slot>time_spectra_preview_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1013</x>
-     <y>842</y>
+     <x>113</x>
+     <y>879</y>
     </hint>
     <hint type="destinationlabel">
      <x>1089</x>
      <y>951</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>combine_mean_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>combine_algorithm_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>125</x>
+     <y>805</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>814</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>combine_median_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>combine_algorithm_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>188</x>
+     <y>808</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>9</x>
+     <y>775</y>
     </hint>
    </hints>
   </connection>
@@ -605,5 +696,6 @@
   <slot>help_log_clicked()</slot>
   <slot>select_top_folder_button_clicked()</slot>
   <slot>time_spectra_preview_clicked()</slot>
+  <slot>combine_algorithm_changed()</slot>
  </slots>
 </ui>

@@ -8,6 +8,7 @@ class SessionKeys:
     version = "version"
     distance_source_detector = 'distance_source_detector'
     detector_offset = 'detector_offset'
+    combine_algorithm = 'combine_algorithm'
 
 
 session = {SessionKeys.top_folder: None,  # the base folder to start looking at images folder to combine
@@ -17,4 +18,5 @@ session = {SessionKeys.top_folder: None,  # the base folder to start looking at 
            SessionKeys.version: "0.0.1",   # version of that config
            SessionKeys.distance_source_detector: 19.855,
            SessionKeys.detector_offset: 9600,
+           SessionKeys.combine_algorithm: 'mean',
            }

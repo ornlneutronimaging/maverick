@@ -138,6 +138,10 @@ class MainWindow(QMainWindow):
     def time_spectra_preview_clicked(self):
         TimeSpectraLauncher(parent=self)
 
+    def combine_algorithm_changed(self):
+        o_event = CombineEventHandler(parent=self)
+        o_event.combine_algorithm_changed()
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()

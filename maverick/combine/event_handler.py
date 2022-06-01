@@ -7,6 +7,8 @@ from ..utilities.file_handler import FileHandler
 from ..utilities.table_handler import TableHandler
 from ..utilities.time_spectra import GetTimeSpectraFilename, TimeSpectraHandler
 from ..utilities import TimeSpectraKeys
+from ..utilities.get import Get
+from ..utilities import CombineAlgorithm
 from ..session import SessionKeys
 from ..load.load_files import LoadFiles
 
@@ -187,3 +189,11 @@ class EventHandler:
         self.parent.raw_data_folders[folder_name]['data'] = data
 
         return True
+
+    def combine_algorithm_changed(self):
+        o_get = Get(parent=self.parent)
+        combine_algorithm = o_get.combine_algorithm()
+        self.parent.session[SessionKeys.combine_algorithm] = combine_algorithm
+        self.logger.info(f"Algorithm to combine: {combine_algorithm}")
+
+        

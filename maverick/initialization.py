@@ -6,7 +6,7 @@ import pyqtgraph as pg
 
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS, DELTA
-from . import combine_image, bin_image, auto_image, manual_image
+from . import combine_image, bin_image, auto_image, manual_image, settings_image
 
 
 class Initialization:
@@ -61,6 +61,7 @@ class Initialization:
         self.parent.ui.combine_bin_tabWidget.setTabIcon(1, QIcon(bin_image))
         self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
         self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))
+        self.parent.ui.combine_bottom_tabWidget.setTabIcon(2, QIcon(settings_image))
 
     def pyqtgraph_bin(self):
         bin_view = pg.PlotWidget(title="")

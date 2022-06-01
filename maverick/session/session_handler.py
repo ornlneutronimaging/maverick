@@ -6,26 +6,9 @@ import copy
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 from ..combine.event_handler import EventHandler as CombineEventHandler
 
-from ..utilities.get import Get
-from . import SessionKeys
-
-# from .save_load_data_tab import SaveLoadDataTab
-# from .save_normalization_tab import SaveNormalizationTab
-# from .save_normalized_tab import SaveNormalizedTab
-# from .save_bin_tab import SaveBinTab
-# from .save_fitting_tab import SaveFittingTab
-#
-# from .session_utilities import SessionUtilities
-# from .load_load_data_tab import LoadLoadDataTab
-# from .load_normalization_tab import LoadNormalization
-# from .load_normalized_tab import LoadNormalized
-# from .load_bin_tab import LoadBin
-# from .load_fitting_tab import LoadFitting
-# from .general import General
-
-# from .. import DataType
 from . import SessionKeys
 from ..utilities.get import Get
+from ..utilities import CombineAlgorithm
 
 
 class SessionHandler:
@@ -43,126 +26,32 @@ class SessionHandler:
         self.parent = parent
 
     def save_from_ui(self):
-
-
-
         pass
-    #     self.session_dict['config version'] = self.parent.config["config version"]
-    #     self.session_dict['log buffer size'] = self.parent.session_dict['log buffer size']
-    #
-    #     # Load data tab
-    #     o_save_load_data_tab = SaveLoadDataTab(parent=self.parent,
-    #                                            session_dict=self.session_dict)
-    #     o_save_load_data_tab.sample()
-    #     o_save_load_data_tab.ob()
-    #     o_save_load_data_tab.instrument()
-    #     o_save_load_data_tab.material()
-    #     self.session_dict = o_save_load_data_tab.session_dict
-    #
-    #     # save normalization
-    #     o_save_normalization = SaveNormalizationTab(parent=self.parent,
-    #                                                 session_dict=self.session_dict)
-    #     o_save_normalization.normalization()
-    #     self.session_dict = o_save_normalization.session_dict
-    #
-    #     # save normalized
-    #     o_save_normalized = SaveNormalizedTab(parent=self.parent,
-    #                                           session_dict=self.session_dict)
-    #     o_save_normalized.normalized()
-    #     self.session_dict = o_save_normalized.session_dict
-    #
-    #     # save bin
-    #     o_save_bin = SaveBinTab(parent=self.parent,
-    #                             session_dict=self.session_dict)
-    #     o_save_bin.bin()
-    #     self.session_dict = o_save_bin.session_dict
-    #
-    #     # save fitting
-    #     o_save_fitting = SaveFittingTab(parent=self.parent,
-    #                                     session_dict=self.session_dict)
-    #     o_save_fitting.fitting()
-    #     self.session_dict = o_save_fitting.session_dict
-    #
-    #     self.parent.session_dict = self.session_dict
 
     def load_to_ui(self):
         if not self.load_successful:
             return
 
         self.logger.info(f"Automatic loading of session")
-        session = self.parent.session
+        session = copy.deepcopy(self.parent.session)
         self.logger.info(f"session -> {session}")
 
         # combine
         self.parent.ui.top_folder_label.setText(session[SessionKeys.top_folder])
         o_combine_event = CombineEventHandler(parent=self.parent)
         o_combine_event.reset_data()
+        self.parent.session = session
         o_combine_event.populate_list_of_folders_to_combine()
         o_combine_event.update_list_of_folders_to_use()
 
-    #     try:
-    #
-    #         o_general = General(parent=self.parent)
-    #         o_general.settings()
-    #
-    #         if DataType.sample in tabs_to_load:
-    #             # load data tab
-    #             o_load = LoadLoadDataTab(parent=self.parent)
-    #             o_load.sample()
-    #             o_load.ob()
-    #             o_load.instrument()
-    #             o_load.material()
-    #
-    #             # load normalization tab
-    #             o_norm = LoadNormalization(parent=self.parent)
-    #             o_norm.roi()
-    #             o_norm.check_widgets()
-    #             o_norm.image_settings()
-    #
-    #         o_load = LoadLoadDataTab(parent=self.parent)
-    #         o_load.instrument()
-    #         o_load.material()
-    #
-    #         if DataType.normalized in tabs_to_load:
-    #             # load normalized tab
-    #             o_normalized = LoadNormalized(parent=self.parent)
-    #             o_normalized.all()
-    #
-    #         if DataType.bin in tabs_to_load:
-    #             # load bin tab
-    #             o_bin = LoadBin(parent=self.parent)
-    #             o_bin.all()
-    #
-    #         if DataType.fitting in tabs_to_load:
-    #             # load fitting
-    #             o_fit = LoadFitting(parent=self.parent)
-    #             o_fit.table_dictionary()
-    #
-    #         o_util = SessionUtilities(parent=self.parent)
-    #         if tabs_to_load:
-    #             o_util.jump_to_tab_of_data_type(tabs_to_load[-1])
-    #
-    #         show_status_message(parent=self.parent,
-    #                             message=f"Loaded {self.config_file_name}",
-    #                             status=StatusMessageStatus.ready,
-    #                             duration_s=10)
-    #
-    #     except FileNotFoundError:
-    #         show_status_message(parent=self.parent,
-    #                             message=f"One of the data file could not be located. Aborted loading session!",
-    #                             status=StatusMessageStatus.error,
-    #                             duration_s=10)
-    #         logging.info("Loading session aborted! FileNotFoundError raised!")
-    #         self.parent.session_dict = SessionHandler.session_dict
-    #
-    #     except ValueError:
-    #         show_status_message(parent=self.parent,
-    #                             message=f"One of the data file raised an error. Aborted loading session!",
-    #                             status=StatusMessageStatus.error,
-    #                             duration_s=10)
-    #         logging.info("Loading session aborted! ValueError raised!")
-    #         self.parent.session_dict = SessionHandler.session_dict
-    #
+        combine_algorithm = session.get(SessionKeys.combine_algorithm, CombineAlgorithm.mean)
+        if combine_algorithm == CombineAlgorithm.mean:
+            self.parent.ui.combine_mean_radioButton.setChecked(True)
+        elif combine_algorithm == CombineAlgorithm.median:
+            self.parent.ui.combine_median_radioButton.setChecked(True)
+        else:
+            raise NotImplementedError("Combine method not implemented!")
+
     def automatic_save(self):
         self.logger.info(self.parent.session)
         o_get = Get(parent=self.parent)
@@ -194,8 +83,6 @@ class SessionHandler:
             self.logger.info(f"Saving configuration into {config_file_name}")
 
     def load_from_file(self, config_file_name=None):
-    #     self.parent.loading_from_config = True
-    #
         if config_file_name is None:
             config_file_name = QFileDialog.getOpenFileName(self.parent,
                                                            directory=self.parent.session[SessionKeys.top_folder],
@@ -246,17 +133,3 @@ class SessionHandler:
                                 message=f"{config_file_name} not loaded! (check log for more information)",
                                 status=StatusMessageStatus.ready,
                                 duration_s=10)
-    #
-    # def get_tabs_to_load(self):
-    #     session_dict = self.parent.session_dict
-    #     list_tabs_to_load = []
-    #     if session_dict[DataType.sample]['list files']:
-    #         list_tabs_to_load.append(DataType.sample)
-    #     if session_dict[DataType.normalized]['list files']:
-    #         list_tabs_to_load.append(DataType.normalized)
-    #     if session_dict[DataType.bin]['ui accessed']:
-    #         list_tabs_to_load.append(DataType.bin)
-    #     if session_dict[DataType.fitting]['ui accessed']:
-    #         list_tabs_to_load.append(DataType.fitting)
-    #
-    #     return list_tabs_to_load
