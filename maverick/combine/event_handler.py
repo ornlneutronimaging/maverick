@@ -159,6 +159,8 @@ class EventHandler:
         self.parent.time_spectra[TimeSpectraKeys.lambda_array] = lambda_array
         self.parent.time_spectra[TimeSpectraKeys.file_index_array] = file_index_array
 
+        self.parent.ui.time_spectra_name_label.setText(os.path.basename(full_path_to_time_spectra))
+
     def load_that_folder(self, folder_name=None):
         """
         this routine load all the images of the selected folder

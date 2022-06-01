@@ -43,6 +43,9 @@ class SessionHandler:
         self.parent = parent
 
     def save_from_ui(self):
+
+
+
         pass
     #     self.session_dict['config version'] = self.parent.config["config version"]
     #     self.session_dict['log buffer size'] = self.parent.session_dict['log buffer size']

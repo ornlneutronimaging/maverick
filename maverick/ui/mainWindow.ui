@@ -128,84 +128,122 @@
                  </property>
                 </widget>
                </item>
-              </layout>
-             </widget>
-            </item>
-            <item>
-             <widget class="QGroupBox" name="groupBox_2">
-              <property name="title">
-               <string>Instrument settings</string>
-              </property>
-              <layout class="QGridLayout" name="gridLayout">
-               <item row="0" column="0">
-                <widget class="QLabel" name="label">
-                 <property name="text">
-                  <string>distance source-detector</string>
+               <item>
+                <widget class="QTabWidget" name="tabWidget">
+                 <property name="sizePolicy">
+                  <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+                   <horstretch>0</horstretch>
+                   <verstretch>0</verstretch>
+                  </sizepolicy>
                  </property>
-                </widget>
-               </item>
-               <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="distance_source_detector_doubleSpinBox">
-                 <property name="decimals">
-                  <number>3</number>
+                 <property name="currentIndex">
+                  <number>1</number>
                  </property>
-                 <property name="minimum">
-                  <double>5.000000000000000</double>
-                 </property>
-                 <property name="maximum">
-                  <double>30.000000000000000</double>
-                 </property>
-                 <property name="value">
-                  <double>19.855000000000000</double>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="2">
-                <widget class="QLabel" name="label_2">
-                 <property name="text">
-                  <string>m</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QLabel" name="label_3">
-                 <property name="text">
-                  <string>detector offset</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="1">
-                <widget class="QSpinBox" name="detector_offset_spinBox">
-                 <property name="maximum">
-                  <number>20000</number>
-                 </property>
-                 <property name="value">
-                  <number>9600</number>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QLabel" name="combine_detector_offset_units">
-                 <property name="text">
-                  <string>micros</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="0">
-                <widget class="QLabel" name="label_5">
-                 <property name="text">
-                  <string>sample position</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="2" column="1">
-                <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
-               </item>
-               <item row="2" column="2">
-                <widget class="QLabel" name="label_6">
-                 <property name="text">
-                  <string>mm</string>
-                 </property>
+                 <widget class="QWidget" name="tab_3">
+                  <attribute name="title">
+                   <string>Instrument Settings</string>
+                  </attribute>
+                  <layout class="QGridLayout" name="gridLayout_3">
+                   <item row="0" column="0">
+                    <widget class="QLabel" name="label">
+                     <property name="text">
+                      <string>distance source-detector</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="1">
+                    <widget class="QDoubleSpinBox" name="distance_source_detector_doubleSpinBox">
+                     <property name="decimals">
+                      <number>3</number>
+                     </property>
+                     <property name="minimum">
+                      <double>5.000000000000000</double>
+                     </property>
+                     <property name="maximum">
+                      <double>30.000000000000000</double>
+                     </property>
+                     <property name="value">
+                      <double>19.855000000000000</double>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="0" column="2">
+                    <widget class="QLabel" name="label_2">
+                     <property name="text">
+                      <string>m</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="0">
+                    <widget class="QLabel" name="label_3">
+                     <property name="text">
+                      <string>detector offset</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="1">
+                    <widget class="QSpinBox" name="detector_offset_spinBox">
+                     <property name="maximum">
+                      <number>20000</number>
+                     </property>
+                     <property name="value">
+                      <number>9600</number>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="1" column="2">
+                    <widget class="QLabel" name="combine_detector_offset_units">
+                     <property name="text">
+                      <string>micros</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="0">
+                    <widget class="QLabel" name="label_5">
+                     <property name="text">
+                      <string>sample position</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item row="2" column="1">
+                    <widget class="QDoubleSpinBox" name="doubleSpinBox_2"/>
+                   </item>
+                   <item row="2" column="2">
+                    <widget class="QLabel" name="label_6">
+                     <property name="text">
+                      <string>mm</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
+                 <widget class="QWidget" name="tab_4">
+                  <attribute name="title">
+                   <string>Time Spectra</string>
+                  </attribute>
+                  <layout class="QVBoxLayout" name="verticalLayout_9">
+                   <item>
+                    <widget class="QLabel" name="time_spectra_name_label">
+                     <property name="sizePolicy">
+                      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+                       <horstretch>0</horstretch>
+                       <verstretch>0</verstretch>
+                      </sizepolicy>
+                     </property>
+                     <property name="text">
+                      <string>N/A</string>
+                     </property>
+                    </widget>
+                   </item>
+                   <item>
+                    <widget class="QPushButton" name="time_spectra_preview_pushButton">
+                     <property name="text">
+                      <string>Preview</string>
+                     </property>
+                    </widget>
+                   </item>
+                  </layout>
+                 </widget>
                 </widget>
                </item>
               </layout>
@@ -532,12 +570,28 @@
    <slot>select_top_folder_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>608</x>
-     <y>114</y>
+     <x>237</x>
+     <y>118</y>
     </hint>
     <hint type="destinationlabel">
      <x>1086</x>
      <y>29</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>time_spectra_preview_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>time_spectra_preview_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1013</x>
+     <y>842</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1089</x>
+     <y>951</y>
     </hint>
    </hints>
   </connection>
@@ -547,5 +601,6 @@
   <slot>session_save_clicked()</slot>
   <slot>help_log_clicked()</slot>
   <slot>select_top_folder_button_clicked()</slot>
+  <slot>time_spectra_preview_clicked()</slot>
  </slots>
 </ui>

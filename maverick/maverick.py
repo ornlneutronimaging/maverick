@@ -133,6 +133,9 @@ class MainWindow(QMainWindow):
         o_event = CombineEventHandler(parent=self)
         o_event.update_list_of_folders_to_use()
 
+    def time_spectra_preview_clicked(self):
+        pass
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()
