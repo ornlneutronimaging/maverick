@@ -67,6 +67,12 @@ class EventHandler:
                                     TimeSpectraKeys.lambda_array: None,
                                     TimeSpectraKeys.file_index_array: None}
 
+        self._reset_time_spectra_tab()
+
+    def _reset_time_spectra_tab(self):
+        self.parent.ui.time_spectra_name_label.setText("N/A")
+        self.parent.ui.time_spectra_preview_pushButton.setEnabled(False)
+
     def populate_list_of_folders_to_combine(self):
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
         list_of_folders_status = self.parent.session.get(SessionKeys.list_working_folders_status, None)
@@ -158,8 +164,11 @@ class EventHandler:
         self.parent.time_spectra[TimeSpectraKeys.tof_array] = tof_array
         self.parent.time_spectra[TimeSpectraKeys.lambda_array] = lambda_array
         self.parent.time_spectra[TimeSpectraKeys.file_index_array] = file_index_array
+        self.parent.time_spectra[TimeSpectraKeys.counts_array] = o_time_handler.counts_array
 
+        # update time spectra tab
         self.parent.ui.time_spectra_name_label.setText(os.path.basename(full_path_to_time_spectra))
+        self.parent.ui.time_spectra_preview_pushButton.setEnabled(True)
 
     def load_that_folder(self, folder_name=None):
         """

@@ -10,6 +10,7 @@ warnings.filterwarnings("ignore")
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
 from .utilities import TimeSpectraKeys
+from .utilities.time_spectra import TimeSpectraLauncher
 from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
 from .session import session
@@ -25,6 +26,7 @@ from . import load_ui
 class MainWindow(QMainWindow):
     session = session  # dictionary that will keep record of the entire UI and used to load and save the session
     log_id = None  # ui id of the log QDialog
+    version = None   # current version of application
 
     # raw_data_folders = {'full_path_to_folder1': {'data': [image1, image2, image3...],
     #                                              'list_files': [file1, file2, file3,...],
@@ -61,12 +63,11 @@ class MainWindow(QMainWindow):
         Parameters
         ----------
         """
-        # Base class
         super(MainWindow, self).__init__(parent)
-
         self.ui = load_ui('mainWindow.ui', baseinstance=self)
         self.initialization()
         self.setup()
+        self.setWindowTitle(f"maverick - v{self.version}")
 
     def initialization(self):
         o_init = Initialization(parent=self)
@@ -98,6 +99,7 @@ class MainWindow(QMainWindow):
         o_get = Get(parent=self)
         log_file_name = o_get.log_file_name()
         version = o_get.version()
+        self.version = version
         self.log_file_name = log_file_name
         logging.basicConfig(filename=log_file_name,
                             filemode='a',
@@ -134,7 +136,7 @@ class MainWindow(QMainWindow):
         o_event.update_list_of_folders_to_use()
 
     def time_spectra_preview_clicked(self):
-        pass
+        TimeSpectraLauncher(parent=self)
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

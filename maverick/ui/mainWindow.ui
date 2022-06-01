@@ -237,6 +237,9 @@
                    </item>
                    <item>
                     <widget class="QPushButton" name="time_spectra_preview_pushButton">
+                     <property name="enabled">
+                      <bool>false</bool>
+                     </property>
                      <property name="text">
                       <string>Preview</string>
                      </property>
