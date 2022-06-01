@@ -145,7 +145,20 @@
                 </widget>
                </item>
                <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="distance_source_detector_doubleSpinBox"/>
+                <widget class="QDoubleSpinBox" name="distance_source_detector_doubleSpinBox">
+                 <property name="decimals">
+                  <number>3</number>
+                 </property>
+                 <property name="minimum">
+                  <double>5.000000000000000</double>
+                 </property>
+                 <property name="maximum">
+                  <double>30.000000000000000</double>
+                 </property>
+                 <property name="value">
+                  <double>19.855000000000000</double>
+                 </property>
+                </widget>
                </item>
                <item row="0" column="2">
                 <widget class="QLabel" name="label_2">
@@ -162,7 +175,14 @@
                 </widget>
                </item>
                <item row="1" column="1">
-                <widget class="QSpinBox" name="detector_offset_spinBox"/>
+                <widget class="QSpinBox" name="detector_offset_spinBox">
+                 <property name="maximum">
+                  <number>20000</number>
+                 </property>
+                 <property name="value">
+                  <number>9600</number>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="2">
                 <widget class="QLabel" name="combine_detector_offset_units">
