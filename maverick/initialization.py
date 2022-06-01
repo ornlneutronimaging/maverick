@@ -38,7 +38,7 @@ class Initialization:
     def table(self):
         # combine table
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
-        column_sizes = [50, 500]
+        column_sizes = [50, 50, 500]
         o_table.set_column_sizes(column_sizes=column_sizes)
 
         # bin manual table

@@ -22,23 +22,52 @@ class EventHandler:
             self.logger.info("User Canceled the selection of top folder dialog!")
             return
 
+        self.logger.info(f"Users selected a new top folder: {_folder}")
+
         # get list of folders in top folder
         self.parent.session[SessionKeys.top_folder] = os.path.abspath(_folder)
         list_folders = FileHandler.get_list_of_folders(_folder)
         self.parent.session[SessionKeys.list_working_folders] = list_folders
+
+        # initialize parameters when using new working folder
+        self.reset_data()
+
+        # display the full path of the top folder selected
         self.parent.ui.top_folder_label.setText(_folder)
 
-        # display list of folders in widget + in second column use or not radiobutton
+        # display list of folders in widget and column showing working folders used
         self.populate_list_of_folders_to_combine()
+
+    def reset_data(self):
+        """
+        This re-initialize all the parameters when working with a new top folder
+        """
+
+        # reset master dictionary that contains the raw data
+        list_folders = self.parent.session[SessionKeys.list_working_folders]
+        _data_dict = {}
+        for _folder in list_folders:
+            list_files = FileHandler.get_list_of_files(_folder)
+            nbr_files = len(list_files)
+            _data_dict[_folder] = {'data': None,
+                                   'list_files': list_files,
+                                   'nbr_files': nbr_files,
+                                   }
+        self.parent.raw_data_folders = _data_dict
+
+        # initialize list of selected folders
+        self.parent.session[SessionKeys.list_working_folders_status] = [False for _index in np.arange(len(list_folders))]
 
     def populate_list_of_folders_to_combine(self):
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
         list_of_folders_status = self.parent.session.get(SessionKeys.list_working_folders_status, None)
+        raw_data_folders = self.parent.raw_data_folders
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
         o_table.remove_all_rows()
         for _row_index, _folder in enumerate(list_of_folders):
             o_table.insert_empty_row(row=_row_index)
 
+            # use or not that row
             check_box = QCheckBox()
             if list_of_folders_status is None:
                 status = False
@@ -50,8 +79,17 @@ class EventHandler:
                                   widget=check_box,
                                   centered=True)
             check_box.clicked.connect(self.parent.radio_buttons_of_folder_changed)
+
+            # number of images in that folder
+            nbr_files = raw_data_folders[_folder]['nbr_files']
             o_table.insert_item(row=_row_index,
                                 column=1,
+                                value=nbr_files,
+                                editable=False)
+
+            # full path of the folder
+            o_table.insert_item(row=_row_index,
+                                column=2,
                                 value=_folder,
                                 editable=False)
 
@@ -66,7 +104,7 @@ class EventHandler:
             radio_button = _horizontal_widget.layout().itemAt(1).widget()
             if radio_button.isChecked():
                 list_of_folders_to_use.append(o_table.get_item_str_from_cell(row=_row_index,
-                                                                             column=1))
+                                                                             column=2))
                 status = True
             else:
                 status = False
@@ -77,3 +115,23 @@ class EventHandler:
         self.logger.info("Updating list of folders to use:")
         self.logger.info(f"{list_of_folders_to_use}")
 
+        # check or load the selected rows
+        loading_worked = True
+        for _folder_name, _folder_status in zip(list_of_folders_to_use, list_of_folders_to_use_status):
+            if _folder_status:
+                if self.parent.raw_data_folders[_folder_name]['data'] is None:
+                    loading_worked = self.load_that_folder(folder_name=_folder_name)
+
+    def load_that_folder(self, folder_name=None):
+        """
+        this routine load all the images of the selected folder
+        :param folder_name: full path of the folder containing the images to load
+        :return: True if the loading worked, False otherwise
+        """
+        if not os.path.exists(folder_name):
+            self.logger.info(f"Unable to load data from folder {folder_name}")
+            return False
+
+        # load the data
+
+        return True

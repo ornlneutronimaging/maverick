@@ -86,14 +86,16 @@ class SessionHandler:
         if not self.load_successful:
             return
 
-        logging.info(f"Automatic loading of session")
-
+        self.logger.info(f"Automatic loading of session")
         session = self.parent.session
+        self.logger.info(f"session -> {session}")
 
         # combine
         self.parent.ui.top_folder_label.setText(session[SessionKeys.top_folder])
         o_combine_event = CombineEventHandler(parent=self.parent)
+        o_combine_event.reset_data()
         o_combine_event.populate_list_of_folders_to_combine()
+        o_combine_event.update_list_of_folders_to_use()
 
     #     try:
     #
@@ -186,7 +188,7 @@ class SessionHandler:
                                 message=f"Session saved in {config_file_name}",
                                 status=StatusMessageStatus.ready,
                                 duration_s=10)
-            logging.info(f"Saving configuration into {config_file_name}")
+            self.logger.info(f"Saving configuration into {config_file_name}")
 
     def load_from_file(self, config_file_name=None):
     #     self.parent.loading_from_config = True
@@ -214,12 +216,12 @@ class SessionHandler:
                 if session[SessionKeys.version] == maverick_current_version:
                     self.parent.session = session
                     self.load_to_ui()
-                    logging.info(f"Loaded from {config_file_name}")
+                    self.logger.info(f"Loaded from {config_file_name}")
                     self.load_successful = True
                 else:
-                    logging.info(f"Session file is out of date!")
-                    logging.info(f"-> expected version: {maverick_current_version}")
-                    logging.info(f"-> session version: {session[SessionKeys.version]}")
+                    self.logger.info(f"Session file is out of date!")
+                    self.logger.info(f"-> expected version: {maverick_current_version}")
+                    self.logger.info(f"-> session version: {session[SessionKeys.version]}")
                     self.load_successful = False
 
                 if not self.load_successful:

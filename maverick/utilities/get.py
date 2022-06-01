@@ -29,7 +29,6 @@ class Get:
         version = config['metadata']['version']
         return version
 
-
     @staticmethod
     def full_home_file_name(base_file_name):
         home_folder = expanduser("~")

@@ -4,6 +4,7 @@ import sys
 import os
 import logging
 import warnings
+
 warnings.filterwarnings("ignore")
 
 from .utilities.get import Get
@@ -17,14 +18,27 @@ from .initialization import Initialization
 from .utilities.check import Check
 from .combine.event_handler import EventHandler as CombineEventHandler
 
-
 from . import load_ui
 
 
 class MainWindow(QMainWindow):
-
-    session = session   # dictionary that will keep record of the entire UI and used to load and save the session
+    session = session  # dictionary that will keep record of the entire UI and used to load and save the session
     log_id = None  # ui id of the log QDialog
+
+    # raw_data_folders = {'full_path_to_folder1': {'data': [image1, image2, image3...],
+    #                                              'list_files': [file1, file2, file3,...],
+    #                                              'nbr_files': 0,
+    #                                              },
+    #                     'full_path_to_folder2': {'data': [image1, image2, image3...],
+    #                                              'list_files': [file1, file2, file3,...],
+    #                                              'nbr_files': 0,
+    #                                              },
+    #                     ....
+    #                    }
+    raw_data_folders = None  # dictionary of data for each of the folders
+
+    # combine_data = [image1, image2, image3...]
+    combine_data = None
 
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot
@@ -33,7 +47,6 @@ class MainWindow(QMainWindow):
     combine_file_index_radio_button = None  # in combine view
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
-
 
     def __init__(self, parent=None):
         """
@@ -127,6 +140,7 @@ class MainWindow(QMainWindow):
     def mouse_moved_in_combine_image_preview(self):
         """Mouse moved in the combine pyqtgraph image preview (top right)"""
         pass
+
 
 def main(args):
     app = QApplication(args)
