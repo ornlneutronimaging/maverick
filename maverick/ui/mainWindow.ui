@@ -689,6 +689,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>combine_refresh_top_folder_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>refresh_table_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1006</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1078</x>
+     <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -697,5 +713,6 @@
   <slot>select_top_folder_button_clicked()</slot>
   <slot>time_spectra_preview_clicked()</slot>
   <slot>combine_algorithm_changed()</slot>
+  <slot>refresh_table_clicked()</slot>
  </slots>
 </ui>

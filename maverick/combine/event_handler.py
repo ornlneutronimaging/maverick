@@ -43,6 +43,25 @@ class EventHandler:
         # display list of folders in widget and column showing working folders used
         self.populate_list_of_folders_to_combine()
 
+    def refresh_table_clicked(self):
+        self.logger.info("User clicked the refresh table!")
+        top_folder = self.parent.session[SessionKeys.top_folder]
+        list_folders = FileHandler.get_list_of_folders(top_folder)
+        # checking if there is any new folder
+        current_list_of_folders = self.parent.session[SessionKeys.list_working_folders]
+        for _folder in list_folders:
+            if not (_folder in current_list_of_folders):
+                self.parent.session[SessionKeys.list_working_folders].append(_folder)
+                self.parent.session[SessionKeys.list_working_folders_status].append(False)
+
+                list_files = FileHandler.get_list_of_files(_folder)
+                nbr_files = len(list_files)
+                data = {'data': None,
+                        'list_files': list_files,
+                        'nbr_files': nbr_files}
+                self.parent.raw_data_folders[_folder] = data
+                self.insert_row_entry(_folder)
+
     def reset_data(self):
         """
         This re-initialize all the parameters when working with a new top folder
@@ -77,38 +96,44 @@ class EventHandler:
 
     def populate_list_of_folders_to_combine(self):
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
-        list_of_folders_status = self.parent.session.get(SessionKeys.list_working_folders_status, None)
-        raw_data_folders = self.parent.raw_data_folders
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
         o_table.remove_all_rows()
-        for _row_index, _folder in enumerate(list_of_folders):
-            o_table.insert_empty_row(row=_row_index)
+        for _folder in list_of_folders:
+            self.insert_row_entry(folder=_folder)
 
-            # use or not that row
-            check_box = QCheckBox()
-            if list_of_folders_status is None:
-                status = False
-            else:
-                status = list_of_folders_status[_row_index]
-            check_box.setChecked(status)
-            o_table.insert_widget(row=_row_index,
-                                  column=0,
-                                  widget=check_box,
-                                  centered=True)
-            check_box.clicked.connect(self.parent.radio_buttons_of_folder_changed)
+    def insert_row_entry(self, folder=None):
+        list_of_folders_status = self.parent.session.get(SessionKeys.list_working_folders_status, None)
+        raw_data_folders = self.parent.raw_data_folders
 
-            # number of images in that folder
-            nbr_files = raw_data_folders[_folder]['nbr_files']
-            o_table.insert_item(row=_row_index,
-                                column=1,
-                                value=nbr_files,
-                                editable=False)
+        o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
+        row = o_table.row_count()
+        o_table.insert_empty_row(row=row)
 
-            # full path of the folder
-            o_table.insert_item(row=_row_index,
-                                column=2,
-                                value=_folder,
-                                editable=False)
+        # use or not that row
+        check_box = QCheckBox()
+        if list_of_folders_status is None:
+            status = False
+        else:
+            status = list_of_folders_status[row]
+        check_box.setChecked(status)
+        o_table.insert_widget(row=row,
+                              column=0,
+                              widget=check_box,
+                              centered=True)
+        check_box.clicked.connect(self.parent.radio_buttons_of_folder_changed)
+
+        # number of images in that folder
+        nbr_files = raw_data_folders[folder]['nbr_files']
+        o_table.insert_item(row=row,
+                            column=1,
+                            value=nbr_files,
+                            editable=False)
+
+        # full path of the folder
+        o_table.insert_item(row=row,
+                            column=2,
+                            value=folder,
+                            editable=False)
 
     def update_list_of_folders_to_use(self):
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
