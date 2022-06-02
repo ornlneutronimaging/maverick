@@ -5,6 +5,7 @@ from ..utilities import BinMode
 from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys
 from .. import LAMBDA, MICRO, ANGSTROMS
+from .bin import Bin
 
 
 class EventHandler:
@@ -63,3 +64,31 @@ class EventHandler:
             self.parent.session[SessionKeys.bin_mode] = BinMode.manual
         else:
             raise NotImplementedError("Bin mode not implemented!")
+
+    def bin_auto_log_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
+        if source_radio_button == TimeSpectraKeys.file_index_array:
+            file_index_value = self.parent.ui.auto_log_file_index_doubleSpinBox.value()
+
+        elif source_radio_button == TimeSpectraKeys.tof_array:
+            tof_value = self.parent.ui.auto_log_tof_doubleSpinBox.value()
+
+        elif source_radio_button == TimeSpectraKeys.lambda_array:
+            lambda_value = self.parent.ui.auto_log_lambda_doubleSpinBox.value()
+
+        else:
+            raise NotImplementedError("bin auto log algorithm not implemented!")
+
+    def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
+        o_bin = Bin(parent=self.parent)
+        if source_radio_button == TimeSpectraKeys.file_index_array:
+            file_index_value = self.parent.ui.auto_linear_file_index_doubleSpinBox.value()
+            o_bin.create_linear_file_index_bin_array(file_index_value)
+
+        elif source_radio_button == TimeSpectraKeys.tof_array:
+            tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
+
+        elif source_radio_button == TimeSpectraKeys.lambda_array:
+            lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
+
+        else:
+            raise NotImplementedError("bin auto linear algorithm not implemented!")

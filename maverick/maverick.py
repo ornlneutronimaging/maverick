@@ -189,6 +189,30 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         o_event.bin_auto_manual_tab_changed(new_tab_index)
 
+    def bin_auto_log_file_index_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.file_index_array)
+
+    def bin_auto_log_tof_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.tof_array)
+
+    def bin_auto_log_lambda_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.lambda_array)
+
+    def bin_auto_linear_file_index_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.file_index_array)
+
+    def bin_auto_linear_tof_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
+
+    def bin_auto_linear_lambda_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()

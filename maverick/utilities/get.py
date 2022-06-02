@@ -3,6 +3,7 @@ from os.path import expanduser
 from pathlib import Path
 import configparser
 import copy
+import numpy as np
 
 from . import CombineAlgorithm, TimeSpectraKeys
 from ..session import SessionKeys
@@ -75,6 +76,12 @@ class Get:
                 list_array.append(copy.deepcopy(raw_data_folders[_folder_name]['data']))
 
         return list_array
+
+    def list_of_folders_to_use(self):
+        session = self.parent.session
+        list_working_folders_status = session[SessionKeys.list_working_folders_status]
+        list_working_folders = np.array(session[SessionKeys.list_working_folders])
+        return list_working_folders[list_working_folders_status]
 
     @staticmethod
     def full_home_file_name(base_file_name):
