@@ -19,6 +19,7 @@ class Combine:
         list_array_to_combine = o_get.list_array_to_combine()
         if list_array_to_combine == []:
             self.parent.combine_image_view.clear()
+            self.parent.combine_image_view.removeItem(self.parent.combine_roi_item_id)
         else:
             # combine using algorithm defined
             if combine_algorithm == CombineAlgorithm.mean:
@@ -30,16 +31,18 @@ class Combine:
 
             integrated_arrays = np.mean(combine_arrays, axis=0)
             integrated_arrays = np.transpose(integrated_arrays)
+            self.parent.live_combine_image = integrated_arrays
             # display integrated
             self.parent.combine_image_view.setImage(integrated_arrays)
 
-        # initialize ROI if first time, otherwise use same region
-        [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
-        if self.parent.combine_roi_item_id:
-            self.parent.combine_image_view.removeItem(self.parent.combine_roi_item_id)
+            # initialize ROI if first time, otherwise use same region
+            [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
+            if self.parent.combine_roi_item_id:
+                self.parent.combine_image_view.removeItem(self.parent.combine_roi_item_id)
 
-        roi_item = pg.ROI([x0, y0],
-                          [width, height])
-        roi_item.addScaleHandle([1, 1], [0, 0])
-        self.parent.combine_image_view.addItem(roi_item)
-        roi_item.sigRegionChanged.connect(self.parent.combine_roi_changed)
+            roi_item = pg.ROI([x0, y0],
+                              [width, height])
+            roi_item.addScaleHandle([1, 1], [0, 0])
+            self.parent.combine_image_view.addItem(roi_item)
+            roi_item.sigRegionChanged.connect(self.parent.combine_roi_changed)
+            self.parent.combine_roi_item_id = roi_item

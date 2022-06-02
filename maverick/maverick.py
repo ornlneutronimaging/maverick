@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
     combine_file_index_radio_button = None  # in combine view
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
+    live_combine_image = None  # live combine image used by ROI
 
     def __init__(self, parent=None):
         """
@@ -150,7 +151,8 @@ class MainWindow(QMainWindow):
         o_event.combine_algorithm_changed()
 
     def combine_roi_changed(self):
-        print("combine roi changed")
+        o_event = CombineEventHandler(parent=self)
+        o_event.combine_roi_changed()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

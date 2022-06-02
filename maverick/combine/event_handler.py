@@ -227,6 +227,23 @@ class EventHandler:
         o_combine = Combine(parent=self.parent)
         o_combine.run()
 
+    def combine_roi_changed(self):
+        live_combine_image = self.parent.live_combine_image
+        image_view = self.parent.combine_image_view
+        roi_item = self.parent.combine_roi_item_id
+
+        region = roi_item.getArraySlice(live_combine_image,
+                                        image_view.imageItem)
+        x0 = region[0][0].start
+        x1 = region[0][0].stop - 1
+        y0 = region[0][1].start
+        y1 = region[0][1].stop - 1
+
+        width = x1 - x0
+        height = y1 - y0
+
+        self.parent.session[SessionKeys.combine_roi] = [x0, y0, width, height]
+
     def display_profile(self):
         pass
 
