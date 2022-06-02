@@ -20,6 +20,11 @@ class EventHandler:
         self.parent = parent
         self.logger = logging.getLogger('maverick')
 
+        self.parent.session[SessionKeys.detector_offset] = self.parent.ui.detector_offset_spinBox.value()
+        self.parent.session[SessionKeys.distance_source_detector] = \
+            self.parent.ui.distance_source_detector_doubleSpinBox.value()
+        self.parent.session[SessionKeys.sample_position] = self.parent.ui.combine_sample_position_doubleSpinBox.value()
+
     def select_top_folder(self):
         _folder = str(str(QFileDialog.getExistingDirectory(caption="Select Top Working Folder",
                                                            directory=self.parent.session[SessionKeys.top_folder],

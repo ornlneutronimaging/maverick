@@ -39,6 +39,9 @@ class SessionHandler:
 
         # combine
         self.parent.ui.top_folder_label.setText(session[SessionKeys.top_folder])
+        self.parent.ui.distance_source_detector_doubleSpinBox.setValue(session[SessionKeys.distance_source_detector])
+        self.parent.ui.detector_offset_spinBox.setValue(session[SessionKeys.detector_offset])
+        self.parent.ui.combine_sample_position_doubleSpinBox.setValue(session[SessionKeys.sample_position])
         o_combine_event = CombineEventHandler(parent=self.parent)
         o_combine_event.reset_data()
         self.parent.session = session
