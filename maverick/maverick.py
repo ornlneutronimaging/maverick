@@ -181,6 +181,14 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         o_event.refresh_tab()
 
+    def bin_auto_radioButton_clicked(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_radioButton_clicked()
+
+    def bin_auto_manual_tab_changed(self, new_tab_index):
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_auto_manual_tab_changed(new_tab_index)
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()

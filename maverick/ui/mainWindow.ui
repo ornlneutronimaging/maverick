@@ -340,13 +340,20 @@
              <item>
               <layout class="QGridLayout" name="gridLayout_2">
                <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="doubleSpinBox_3"/>
+                <widget class="QDoubleSpinBox" name="bin_auto_delta_t_over_t_doubleSpinBox"/>
                </item>
                <item row="1" column="1">
-                <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+                <widget class="QDoubleSpinBox" name="bin_auto_delta_t_doubleSpinBox">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
+                </widget>
                </item>
                <item row="1" column="2">
                 <widget class="QLabel" name="auto_delta_t_units_label">
+                 <property name="enabled">
+                  <bool>false</bool>
+                 </property>
                  <property name="text">
                   <string>A</string>
                  </property>
@@ -801,6 +808,54 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bin_auto_delta_t_over_t_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_radioButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>85</x>
+     <y>120</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>124</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_auto_delta_t_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_radioButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>66</x>
+     <y>154</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>178</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_manual_tab_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>342</x>
+     <y>77</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>289</x>
+     <y>25</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -813,5 +868,7 @@
   <slot>combine_instrument_settings_changed()</slot>
   <slot>bin_xaxis_changed()</slot>
   <slot>combine_bin_tab_changed()</slot>
+  <slot>bin_auto_radioButton_clicked()</slot>
+  <slot>bin_auto_manual_tab_changed()</slot>
  </slots>
 </ui>

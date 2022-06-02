@@ -1,3 +1,6 @@
+from ..utilities import BinMode, CombineAlgorithm
+
+
 class SessionKeys:
     """list of all sessions keys, to easily retrieve them"""
 
@@ -11,6 +14,7 @@ class SessionKeys:
     combine_algorithm = 'combine_algorithm'
     combine_roi = 'combine_roi'
     sample_position = 'sample_position'
+    bin_mode = 'bin_mode'
 
 
 session = {SessionKeys.top_folder: None,  # the base folder to start looking at images folder to combine
@@ -20,7 +24,8 @@ session = {SessionKeys.top_folder: None,  # the base folder to start looking at 
            SessionKeys.version: "0.0.1",   # version of that config
            SessionKeys.distance_source_detector: 19.855,
            SessionKeys.detector_offset: 9600,
-           SessionKeys.combine_algorithm: 'mean',
+           SessionKeys.combine_algorithm: CombineAlgorithm.mean,
            SessionKeys.combine_roi: [50, 50, 200, 200],  # [x0,y0,width,height],
            SessionKeys.sample_position: 0,    # in the combine tab
+           SessionKeys.bin_mode: BinMode.auto   # 'auto' or 'manual'
            }

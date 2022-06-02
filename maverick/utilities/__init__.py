@@ -12,3 +12,10 @@ class CombineAlgorithm:
 
     mean = 'mean'
     median = 'median'
+
+
+class BinMode:
+    """list of mode to bin the data"""
+
+    auto = 'auto'
+    manual = 'manual'

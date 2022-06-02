@@ -9,7 +9,7 @@ from ..combine.event_handler import EventHandler as CombineEventHandler
 from . import SessionKeys
 from . import session as default_session
 from ..utilities.get import Get
-from ..utilities import CombineAlgorithm
+from ..utilities import CombineAlgorithm, BinMode
 
 
 class SessionHandler:
@@ -58,6 +58,14 @@ class SessionHandler:
 
         if not (SessionKeys.combine_roi in session.keys()):
             self.parent.session[SessionKeys.combine_roi] = default_session[SessionKeys.combine_roi]
+
+        bin_mode = session.get(SessionKeys.bin_mode, BinMode.auto)
+        if bin_mode == BinMode.auto:
+            self.parent.bin_tabWidget.setCurrentIndex(0)
+        elif bin_mode == BinMode.manual:
+            self.parent.bin_tabWidget.setCurrentIndex(1)
+        else:
+            raise NotImplementedError("Auto bin mode not implemented!")
 
         o_combine_event.combine_folders()
         o_combine_event.display_profile()
