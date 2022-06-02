@@ -7,13 +7,12 @@ import copy
 from ..utilities.file_handler import FileHandler
 from ..utilities.table_handler import TableHandler
 from ..utilities.time_spectra import GetTimeSpectraFilename, TimeSpectraHandler
-from ..utilities import TimeSpectraKeys
 from ..utilities.get import Get
+from ..utilities import CombineAlgorithm, TimeSpectraKeys
 from ..session import SessionKeys
 from ..load.load_files import LoadFiles
 from .combine import Combine
-from ..utilities import CombineAlgorithm, TimeSpectraKeys
-
+from .. import LAMBDA, MICRO, ANGSTROMS
 
 class EventHandler:
 
@@ -268,11 +267,15 @@ class EventHandler:
         self.parent.combine_profile_view.clear()
         x_axis = copy.deepcopy(self.parent.time_spectra[time_spectra_x_axis_name])
 
-        if time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+        if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
+            x_axis_label = "file index"
+        elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
             x_axis *= 1e6    # to display axis in micros
+            x_axis_label = "tof (" + MICRO + "s)"
         elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
             x_axis *= 1e10    # to display axis in Angstroms
+            x_axis_label = LAMBDA + "(" + ANGSTROMS + ")"
 
         self.parent.combine_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
         self.parent.combine_profile_view.setLabel("left", f"{combine_algorithm} counts")
-        self.parent.combine_profile_view.setLabel("bottom", time_spectra_x_axis_name)
+        self.parent.combine_profile_view.setLabel("bottom", x_axis_label)
