@@ -181,7 +181,7 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         o_event.refresh_tab()
 
-    def bin_auto_radioButton_clicked(self):
+    def bin_auto_log_linear_radioButton_changed(self):
         o_event = BinEventHandler(parent=self)
         o_event.bin_auto_radioButton_clicked()
 

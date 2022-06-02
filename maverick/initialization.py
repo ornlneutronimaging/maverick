@@ -33,7 +33,7 @@ class Initialization:
 
     def splitter(self):
         self.parent.ui.combine_horizontal_splitter.setSizes([200, 500])
-        self.parent.ui.bin_horizontal_splitter.setSizes([50, 800])
+        self.parent.ui.bin_horizontal_splitter.setSizes([30, 800])
 
     def table(self):
         # combine table
@@ -52,9 +52,10 @@ class Initialization:
         self.parent.ui.bin_tof_radioButton.setText("TOF (" + MICRO + "s)")
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
         # bin tab
-        self.parent.ui.auto_delta_t_units_label.setText("File index")
-        self.parent.ui.bin_auto_delta_t_over_t_radioButton.setText(DELTA + "t/t")
-        self.parent.ui.bin_auto_delta_t_radioButton.setText(DELTA + "t")
+        self.parent.ui.bin_auto_log_lambda_label.setText(LAMBDA)
+        self.parent.ui.bin_auto_linear_lambda_label.setText(LAMBDA)
+        self.parent.ui.bin_auto_linear_tof_units_label.setText(MICRO + 's')
+        self.parent.ui.bin_auto_linear_lambda_units_label.setText(ANGSTROMS)
 
     def tab(self):
         self.parent.ui.combine_bin_tabWidget.setTabIcon(0, QIcon(combine_image))

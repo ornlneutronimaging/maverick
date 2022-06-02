@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -329,6 +329,12 @@
            <enum>Qt::Horizontal</enum>
           </property>
           <widget class="QTabWidget" name="bin_tabWidget">
+           <property name="maximumSize">
+            <size>
+             <width>300</width>
+             <height>16777215</height>
+            </size>
+           </property>
            <property name="currentIndex">
             <number>0</number>
            </property>
@@ -338,45 +344,217 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_3">
              <item>
-              <layout class="QGridLayout" name="gridLayout_2">
-               <item row="0" column="1">
-                <widget class="QDoubleSpinBox" name="bin_auto_delta_t_over_t_doubleSpinBox"/>
-               </item>
-               <item row="1" column="1">
-                <widget class="QDoubleSpinBox" name="bin_auto_delta_t_doubleSpinBox">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="2">
-                <widget class="QLabel" name="auto_delta_t_units_label">
-                 <property name="enabled">
-                  <bool>false</bool>
-                 </property>
-                 <property name="text">
-                  <string>A</string>
-                 </property>
-                </widget>
-               </item>
-               <item row="0" column="0">
-                <widget class="QRadioButton" name="bin_auto_delta_t_over_t_radioButton">
-                 <property name="text">
-                  <string/>
-                 </property>
-                 <property name="checked">
-                  <bool>true</bool>
-                 </property>
-                </widget>
-               </item>
-               <item row="1" column="0">
-                <widget class="QRadioButton" name="bin_auto_delta_t_radioButton">
-                 <property name="text">
-                  <string/>
-                 </property>
-                </widget>
-               </item>
-              </layout>
+              <widget class="QRadioButton" name="auto_log_radioButton">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>log</string>
+               </property>
+               <property name="checked">
+                <bool>true</bool>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="bin_auto_log_frame">
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout">
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_8">
+                  <property name="text">
+                   <string>tof</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_2">
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_3">
+                  <property name="maximumSize">
+                   <size>
+                    <width>200</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_7">
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>file index</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox">
+                  <property name="minimumSize">
+                   <size>
+                    <width>100</width>
+                    <height>0</height>
+                   </size>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>1677215</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="bin_auto_log_lambda_label">
+                  <property name="text">
+                   <string>lambda</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="2">
+                 <spacer name="horizontalSpacer_6">
+                  <property name="orientation">
+                   <enum>Qt::Horizontal</enum>
+                  </property>
+                  <property name="sizeHint" stdset="0">
+                   <size>
+                    <width>40</width>
+                    <height>20</height>
+                   </size>
+                  </property>
+                 </spacer>
+                </item>
+               </layout>
+              </widget>
+             </item>
+             <item>
+              <widget class="Line" name="line">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QRadioButton" name="auto_linear_radioButton">
+               <property name="minimumSize">
+                <size>
+                 <width>100</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="maximumSize">
+                <size>
+                 <width>100</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="text">
+                <string>linear</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QFrame" name="bin_auto_linear_frame">
+               <property name="enabled">
+                <bool>false</bool>
+               </property>
+               <property name="sizePolicy">
+                <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
+                 <horstretch>0</horstretch>
+                 <verstretch>0</verstretch>
+                </sizepolicy>
+               </property>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
+               </property>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
+               </property>
+               <layout class="QGridLayout" name="gridLayout_4">
+                <item row="0" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_4"/>
+                </item>
+                <item row="0" column="0">
+                 <widget class="QLabel" name="label_10">
+                  <property name="maximumSize">
+                   <size>
+                    <width>60</width>
+                    <height>16777215</height>
+                   </size>
+                  </property>
+                  <property name="text">
+                   <string>file index</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_6"/>
+                </item>
+                <item row="2" column="0">
+                 <widget class="QLabel" name="bin_auto_linear_lambda_label">
+                  <property name="text">
+                   <string>lambda</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="0">
+                 <widget class="QLabel" name="label_11">
+                  <property name="text">
+                   <string>tof</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="1" column="1">
+                 <widget class="QDoubleSpinBox" name="doubleSpinBox_5"/>
+                </item>
+                <item row="1" column="2">
+                 <widget class="QLabel" name="bin_auto_linear_tof_units_label">
+                  <property name="text">
+                   <string>micros</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="2" column="2">
+                 <widget class="QLabel" name="bin_auto_linear_lambda_units_label">
+                  <property name="text">
+                   <string>A</string>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
+              </widget>
              </item>
              <item>
               <spacer name="verticalSpacer">
@@ -752,7 +930,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>928</x>
-     <y>489</y>
+     <y>756</y>
     </hint>
     <hint type="destinationlabel">
      <x>1002</x>
@@ -768,7 +946,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1043</x>
-     <y>487</y>
+     <y>754</y>
     </hint>
     <hint type="destinationlabel">
      <x>1143</x>
@@ -784,7 +962,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1146</x>
-     <y>484</y>
+     <y>751</y>
     </hint>
     <hint type="destinationlabel">
      <x>1307</x>
@@ -809,38 +987,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>bin_auto_delta_t_over_t_radioButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>bin_auto_radioButton_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>85</x>
-     <y>120</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>124</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>bin_auto_delta_t_radioButton</sender>
-   <signal>clicked()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>bin_auto_radioButton_clicked()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>66</x>
-     <y>154</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>7</x>
-     <y>178</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>bin_tabWidget</sender>
    <signal>currentChanged(int)</signal>
    <receiver>MainWindow</receiver>
@@ -853,6 +999,38 @@
     <hint type="destinationlabel">
      <x>289</x>
      <y>25</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>auto_log_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_log_linear_radioButton_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>67</x>
+     <y>117</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>108</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>auto_linear_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_log_linear_radioButton_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>289</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>8</x>
+     <y>307</y>
     </hint>
    </hints>
   </connection>
@@ -869,6 +1047,6 @@
   <slot>bin_xaxis_changed()</slot>
   <slot>combine_bin_tab_changed()</slot>
   <slot>bin_auto_radioButton_clicked()</slot>
-  <slot>bin_auto_manual_tab_changed()</slot>
+  <slot>bin_auto_log_linear_radioButton_changed()</slot>
  </slots>
 </ui>

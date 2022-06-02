@@ -19,3 +19,9 @@ class BinMode:
 
     auto = 'auto'
     manual = 'manual'
+
+
+class BinAutoMode:
+
+    log = 'log'
+    linear = 'linear'

@@ -52,10 +52,9 @@ class EventHandler:
         self.parent.ui.auto_delta_t_units_label.setText(x_axis_label)
 
     def bin_auto_radioButton_clicked(self):
-        state_auto = self.parent.ui.bin_auto_delta_t_over_t_radioButton.isChecked()
-        self.parent.ui.bin_auto_delta_t_over_t_doubleSpinBox.setEnabled(state_auto)
-        self.parent.ui.bin_auto_delta_t_doubleSpinBox.setEnabled(not state_auto)
-        self.parent.ui.auto_delta_t_units_label.setEnabled(not state_auto)
+        state_auto = self.parent.ui.auto_log_radioButton.isChecked()
+        self.parent.ui.bin_auto_log_frame.setEnabled(state_auto)
+        self.parent.ui.bin_auto_linear_frame.setEnabled(not state_auto)
 
     def bin_auto_manual_tab_changed(self, new_tab_index=0):
         if new_tab_index == 0:
