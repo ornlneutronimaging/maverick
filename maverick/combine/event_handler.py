@@ -2,6 +2,7 @@ import os
 from qtpy.QtWidgets import QFileDialog, QCheckBox
 import logging
 import numpy as np
+import copy
 
 from ..utilities.file_handler import FileHandler
 from ..utilities.table_handler import TableHandler
@@ -265,7 +266,13 @@ class EventHandler:
             raise NotImplementedError("Combine algorithm not implemented!")
 
         self.parent.combine_profile_view.clear()
-        x_axis = self.parent.time_spectra[time_spectra_x_axis_name]
+        x_axis = copy.deepcopy(self.parent.time_spectra[time_spectra_x_axis_name])
+
+        if time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+            x_axis *= 1e6    # to display axis in micros
+        elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
+            x_axis *= 1e10    # to display axis in Angstroms
+
         self.parent.combine_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
         self.parent.combine_profile_view.setLabel("left", f"{combine_algorithm} counts")
         self.parent.combine_profile_view.setLabel("bottom", time_spectra_x_axis_name)
