@@ -53,6 +53,7 @@ class MainWindow(QMainWindow):
     combine_image_view = None  # combine image view id - top right plot
     combine_profile_view = None  # combine profile plot view id - bottom right plot
     bin_profile_view = None  # bin profile
+    combine_roi_item_id = None  # pyqtgraph item id of the roi (combine tab)
     combine_file_index_radio_button = None  # in combine view
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
@@ -139,6 +140,7 @@ class MainWindow(QMainWindow):
         o_event = CombineEventHandler(parent=self)
         o_event.update_list_of_folders_to_use()
         o_event.combine_folders()
+        o_event.display_profile()
 
     def time_spectra_preview_clicked(self):
         TimeSpectraLauncher(parent=self)
@@ -146,6 +148,9 @@ class MainWindow(QMainWindow):
     def combine_algorithm_changed(self):
         o_event = CombineEventHandler(parent=self)
         o_event.combine_algorithm_changed()
+
+    def combine_roi_changed(self):
+        print("combine roi changed")
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

@@ -7,6 +7,7 @@ from ..utilities.status_message_config import StatusMessageStatus, show_status_m
 from ..combine.event_handler import EventHandler as CombineEventHandler
 
 from . import SessionKeys
+from . import session as default_session
 from ..utilities.get import Get
 from ..utilities import CombineAlgorithm
 
@@ -52,6 +53,8 @@ class SessionHandler:
         else:
             raise NotImplementedError("Combine method not implemented!")
 
+        if not (SessionKeys.combine_roi in session.keys()):
+            self.parent.session[SessionKeys.combine_roi] = default_session[SessionKeys.combine_roi]
 
         o_combine_event.combine_folders()
 

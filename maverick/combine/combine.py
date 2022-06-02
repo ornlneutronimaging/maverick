@@ -1,4 +1,5 @@
 import numpy as np
+import pyqtgraph as pg
 
 from ..utilities import CombineAlgorithm
 from ..session import SessionKeys
@@ -28,9 +29,17 @@ class Combine:
                 raise NotImplementedError("Algorithm not implemented!")
 
             integrated_arrays = np.mean(combine_arrays, axis=0)
+            integrated_arrays = np.transpose(integrated_arrays)
             # display integrated
             self.parent.combine_image_view.setImage(integrated_arrays)
 
         # initialize ROI if first time, otherwise use same region
+        [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
+        if self.parent.combine_roi_item_id:
+            self.parent.combine_image_view.removeItem(self.parent.combine_roi_item_id)
 
-        # display profile
+        roi_item = pg.ROI([x0, y0],
+                          [width, height])
+        roi_item.addScaleHandle([1, 1], [0, 0])
+        self.parent.combine_image_view.addItem(roi_item)
+        roi_item.sigRegionChanged.connect(self.parent.combine_roi_changed)

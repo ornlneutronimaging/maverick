@@ -221,7 +221,12 @@ class EventHandler:
         self.parent.session[SessionKeys.combine_algorithm] = combine_algorithm
         self.logger.info(f"Algorithm to combine changed to: {combine_algorithm}")
         self.combine_folders()
+        self.display_profile()
 
     def combine_folders(self):
         o_combine = Combine(parent=self.parent)
         o_combine.run()
+
+    def display_profile(self):
+        pass
+

@@ -9,6 +9,7 @@ class SessionKeys:
     distance_source_detector = 'distance_source_detector'
     detector_offset = 'detector_offset'
     combine_algorithm = 'combine_algorithm'
+    combine_roi = 'combine_roi'
 
 
 session = {SessionKeys.top_folder: None,  # the base folder to start looking at images folder to combine
@@ -19,4 +20,5 @@ session = {SessionKeys.top_folder: None,  # the base folder to start looking at 
            SessionKeys.distance_source_detector: 19.855,
            SessionKeys.detector_offset: 9600,
            SessionKeys.combine_algorithm: 'mean',
+           SessionKeys.combine_roi: [50, 50, 200, 200],  # [x0,y0,width,height]
            }
