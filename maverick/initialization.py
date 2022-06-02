@@ -99,10 +99,13 @@ class Initialization:
         file_index_radio_button = QRadioButton("File Index")
         file_index_radio_button.setChecked(True)
         self.parent.combine_file_index_radio_button = file_index_radio_button
+        self.parent.combine_file_index_radio_button.clicked.connect(self.parent.combine_xaxis_changed)
         tof_radio_button = QRadioButton("TOF (" + MICRO + "s)")
         self.parent.tof_radio_button = tof_radio_button
+        self.parent.tof_radio_button.clicked.connect(self.parent.combine_xaxis_changed)
         lambda_radio_button = QRadioButton(LAMBDA + " (" + ANGSTROMS + ")")
         self.parent.lambda_radio_button = lambda_radio_button
+        self.parent.lambda_radio_button.clicked.connect(self.parent.combine_xaxis_changed)
         spacer_right = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
         axis_layout = QHBoxLayout()
         axis_layout.addItem(spacer_left)

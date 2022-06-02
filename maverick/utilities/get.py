@@ -4,7 +4,7 @@ from pathlib import Path
 import configparser
 import copy
 
-from . import CombineAlgorithm
+from . import CombineAlgorithm, TimeSpectraKeys
 from ..session import SessionKeys
 
 
@@ -40,6 +40,16 @@ class Get:
             return CombineAlgorithm.median
         else:
             raise NotImplementedError("Combine algorithm not implemented!")
+
+    def combine_x_axis_selected(self):
+        if self.parent.combine_file_index_radio_button.isChecked():
+            return TimeSpectraKeys.file_index_array
+        elif self.parent.tof_radio_button.isChecked():
+            return TimeSpectraKeys.tof_array
+        elif self.parent.lambda_radio_button.isChecked():
+            return TimeSpectraKeys.lambda_array
+        else:
+            raise NotImplementedError("xaxis not implemented!")
 
     def list_array_to_combine(self):
         session = self.parent.session

@@ -57,6 +57,7 @@ class SessionHandler:
             self.parent.session[SessionKeys.combine_roi] = default_session[SessionKeys.combine_roi]
 
         o_combine_event.combine_folders()
+        o_combine_event.display_profile()
 
     def automatic_save(self):
         self.logger.info(self.parent.session)

@@ -11,6 +11,7 @@ from ..utilities.get import Get
 from ..session import SessionKeys
 from ..load.load_files import LoadFiles
 from .combine import Combine
+from ..utilities import CombineAlgorithm, TimeSpectraKeys
 
 
 class EventHandler:
@@ -245,5 +246,22 @@ class EventHandler:
         self.parent.session[SessionKeys.combine_roi] = [x0, y0, width, height]
 
     def display_profile(self):
-        pass
+        combine_data = self.parent.combine_data
+        [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
 
+        o_get = Get(parent=self.parent)
+        combine_algorithm = o_get.combine_algorithm()
+        time_spectra_x_axis_name = o_get.combine_x_axis_selected()
+
+        if combine_algorithm == CombineAlgorithm.mean:
+            profile_signal = [np.mean(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
+        elif combine_algorithm == CombineAlgorithm.median:
+            profile_signal = [np.median(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
+        else:
+            raise NotImplementedError("Combine algorithm not implemented!")
+
+        self.parent.combine_profile_view.clear()
+        x_axis = self.parent.time_spectra[time_spectra_x_axis_name]
+        self.parent.combine_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
+        self.parent.combine_profile_view.setLabel("left", f"{combine_algorithm} counts")
+        self.parent.combine_profile_view.setLabel("bottom", time_spectra_x_axis_name)

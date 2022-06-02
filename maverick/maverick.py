@@ -49,6 +49,7 @@ class MainWindow(QMainWindow):
                     TimeSpectraKeys.lambda_array: None,
                     TimeSpectraKeys.file_index_array: None}
 
+
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot
     combine_profile_view = None  # combine profile plot view id - bottom right plot
@@ -149,10 +150,16 @@ class MainWindow(QMainWindow):
     def combine_algorithm_changed(self):
         o_event = CombineEventHandler(parent=self)
         o_event.combine_algorithm_changed()
+        o_event.display_profile()
+
+    def combine_xaxis_changed(self):
+        o_event = CombineEventHandler(parent=self)
+        o_event.display_profile()
 
     def combine_roi_changed(self):
         o_event = CombineEventHandler(parent=self)
         o_event.combine_roi_changed()
+        o_event.display_profile()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

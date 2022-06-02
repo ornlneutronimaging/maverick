@@ -20,6 +20,7 @@ class Combine:
         if list_array_to_combine == []:
             self.parent.combine_image_view.clear()
             self.parent.combine_image_view.removeItem(self.parent.combine_roi_item_id)
+            self.parent.combine_data = None
         else:
             # combine using algorithm defined
             if combine_algorithm == CombineAlgorithm.mean:
@@ -29,6 +30,7 @@ class Combine:
             else:
                 raise NotImplementedError("Algorithm not implemented!")
 
+            self.parent.combine_data = combine_arrays
             integrated_arrays = np.mean(combine_arrays, axis=0)
             integrated_arrays = np.transpose(integrated_arrays)
             self.parent.live_combine_image = integrated_arrays
