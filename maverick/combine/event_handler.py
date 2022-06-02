@@ -14,6 +14,7 @@ from ..load.load_files import LoadFiles
 from .combine import Combine
 from .. import LAMBDA, MICRO, ANGSTROMS
 
+
 class EventHandler:
 
     def __init__(self, parent=None):
@@ -269,6 +270,7 @@ class EventHandler:
         else:
             raise NotImplementedError("Combine algorithm not implemented!")
 
+        self.parent.profile_signal = profile_signal
         self.parent.combine_profile_view.clear()
         x_axis = copy.deepcopy(self.parent.time_spectra[time_spectra_x_axis_name])
 

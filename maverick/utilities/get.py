@@ -49,7 +49,17 @@ class Get:
         elif self.parent.lambda_radio_button.isChecked():
             return TimeSpectraKeys.lambda_array
         else:
-            raise NotImplementedError("xaxis not implemented!")
+            raise NotImplementedError("xaxis not implemented in the combine tab!")
+
+    def bin_x_axis_selected(self):
+        if self.parent.ui.bin_file_index_radioButton.isChecked():
+            return TimeSpectraKeys.file_index_array
+        elif self.parent.ui.bin_tof_radioButton.isChecked():
+            return TimeSpectraKeys.tof_array
+        elif self.parent.ui.bin_lambda_radioButton.isChecked():
+            return TimeSpectraKeys.lambda_array
+        else:
+            raise NotImplementedError("xaxis not implemented in bin tab!")
 
     def list_array_to_combine(self):
         session = self.parent.session

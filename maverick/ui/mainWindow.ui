@@ -451,7 +451,7 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QRadioButton" name="radioButton">
+                <widget class="QRadioButton" name="bin_file_index_radioButton">
                  <property name="text">
                   <string>File index</string>
                  </property>
@@ -737,6 +737,70 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bin_file_index_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_xaxis_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>928</x>
+     <y>489</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1002</x>
+     <y>1</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_tof_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_xaxis_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1043</x>
+     <y>487</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1143</x>
+     <y>-3</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_lambda_radioButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_xaxis_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1146</x>
+     <y>484</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1307</x>
+     <y>-4</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>combine_bin_tabWidget</sender>
+   <signal>currentChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>combine_bin_tab_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>740</x>
+     <y>40</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>729</x>
+     <y>24</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -747,5 +811,7 @@
   <slot>combine_algorithm_changed()</slot>
   <slot>refresh_table_clicked()</slot>
   <slot>combine_instrument_settings_changed()</slot>
+  <slot>bin_xaxis_changed()</slot>
+  <slot>combine_bin_tab_changed()</slot>
  </slots>
 </ui>

@@ -19,6 +19,7 @@ from .session import SessionKeys
 from .initialization import Initialization
 from .utilities.check import Check
 from .combine.event_handler import EventHandler as CombineEventHandler
+from .bin.event_hander import EventHandler as BinEventHandler
 
 from . import load_ui
 
@@ -49,6 +50,9 @@ class MainWindow(QMainWindow):
                     TimeSpectraKeys.lambda_array: None,
                     TimeSpectraKeys.file_index_array: None}
 
+    # profile signal (displayed on the top right of combine and bin tab)
+    # 1D array
+    profile_signal = None
 
     # pyqtgraph view
     combine_image_view = None  # combine image view id - top right plot
@@ -130,6 +134,11 @@ class MainWindow(QMainWindow):
         LogLauncher(parent=self)
 
     # widgets events
+    def combine_bin_tab_changed(self, new_tab_index):
+        if new_tab_index == 1:  # bin
+            o_event = BinEventHandler(parent=self)
+            o_event.refresh_tab()
+
     def select_top_folder_button_clicked(self):
         o_event = CombineEventHandler(parent=self)
         o_event.select_top_folder()
@@ -166,6 +175,11 @@ class MainWindow(QMainWindow):
         o_event = CombineEventHandler(parent=self)
         o_event.combine_roi_changed()
         o_event.display_profile()
+
+    # BIN
+    def bin_xaxis_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.refresh_tab()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
