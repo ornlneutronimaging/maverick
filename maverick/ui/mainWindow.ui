@@ -137,7 +137,7 @@
                   </sizepolicy>
                  </property>
                  <property name="currentIndex">
-                  <number>2</number>
+                  <number>0</number>
                  </property>
                  <widget class="QWidget" name="tab_3">
                   <attribute name="title">
@@ -696,12 +696,44 @@
    <slot>refresh_table_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1006</x>
-     <y>117</y>
+     <x>1154</x>
+     <y>132</y>
     </hint>
     <hint type="destinationlabel">
      <x>1078</x>
      <y>-10</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>distance_source_detector_doubleSpinBox</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>combine_instrument_settings_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>571</x>
+     <y>801</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1219</x>
+     <y>961</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>detector_offset_spinBox</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>combine_instrument_settings_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>695</x>
+     <y>840</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>866</x>
+     <y>956</y>
     </hint>
    </hints>
   </connection>
@@ -714,5 +746,6 @@
   <slot>time_spectra_preview_clicked()</slot>
   <slot>combine_algorithm_changed()</slot>
   <slot>refresh_table_clicked()</slot>
+  <slot>combine_instrument_settings_changed()</slot>
  </slots>
 </ui>

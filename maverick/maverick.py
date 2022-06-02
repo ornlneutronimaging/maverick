@@ -152,6 +152,12 @@ class MainWindow(QMainWindow):
         o_event.combine_algorithm_changed()
         o_event.display_profile()
 
+    def combine_instrument_settings_changed(self):
+        o_event = CombineEventHandler(parent=self)
+        o_event.update_list_of_folders_to_use(force_recalculation_of_time_spectra=True)
+        o_event.combine_folders()
+        o_event.display_profile()
+
     def combine_xaxis_changed(self):
         o_event = CombineEventHandler(parent=self)
         o_event.display_profile()

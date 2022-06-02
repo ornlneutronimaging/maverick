@@ -136,7 +136,7 @@ class EventHandler:
                             value=folder,
                             editable=False)
 
-    def update_list_of_folders_to_use(self):
+    def update_list_of_folders_to_use(self, force_recalculation_of_time_spectra=False):
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
         nbr_row = o_table.row_count()
         list_of_folders_to_use = []
@@ -162,6 +162,10 @@ class EventHandler:
         loading_worked = True
 
         for _folder_name in list_of_folders_to_use:
+
+            if force_recalculation_of_time_spectra:
+                self.load_time_spectra_file(folder=_folder_name)
+
             if self.parent.raw_data_folders[_folder_name]['data'] is None:
                 loading_worked = self.load_that_folder(folder_name=_folder_name)
 
