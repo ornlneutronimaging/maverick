@@ -91,7 +91,7 @@ class EventHandler:
 
         elif source_radio_button == TimeSpectraKeys.tof_array:
             tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
-            o_bin.create_linear_tof_bin_array(tof_value / 1e6)   # to switch to seconds
+            o_bin.create_linear_tof_bin_array(tof_value * 1e-6)   # to switch to seconds
             o_bin.create_linear_axis(source_array=source_radio_button)
 
             delta_file_index = o_bin.get_linear_delta_file_index()

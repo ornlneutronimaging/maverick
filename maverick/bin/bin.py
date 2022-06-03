@@ -42,7 +42,7 @@ class Bin:
             left_value = right_value
             right_value += tof_value
         _linear_bins.append(right_value)
-        self.linear_bins[TimeSpectraKeys.tof_array] = np.array(_linear_bins) * 1e-6
+        self.linear_bins[TimeSpectraKeys.tof_array] = np.array(_linear_bins)
 
     def create_linear_axis(self, source_array=TimeSpectraKeys.file_index_array):
         if source_array == TimeSpectraKeys.file_index_array:
@@ -62,16 +62,17 @@ class Bin:
 
             index_of_bins_in_original_array = [0]
             for _bin in tof_array:
-                result = np.where(_bin < original_tof_array)
-                index_of_bins_in_original_array.append(result[0][0])
+                result = np.where(_bin <= original_tof_array)
+                try:
+                    index_of_bins_in_original_array.append(result[0][0])
+                except IndexError:  # exception is value is outside of original range
+                    pass
 
             self.linear_bins[TimeSpectraKeys.file_index_array] = index_of_bins_in_original_array
 
             original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
             lambda_array = [original_lambda_array[int(_index)] for _index in index_of_bins_in_original_array]
             self.linear_bins[TimeSpectraKeys.lambda_array] = lambda_array
-
-
 
     def get_linear_delta_file_index(self):
         return self._get_linear_delta(key=TimeSpectraKeys.file_index_array)
