@@ -50,6 +50,14 @@ class MainWindow(QMainWindow):
                     TimeSpectraKeys.lambda_array: None,
                     TimeSpectraKeys.file_index_array: None}
 
+    linear_bins = {TimeSpectraKeys.tof_array: None,
+                   TimeSpectraKeys.file_index_array: None,
+                   TimeSpectraKeys.lambda_array: None}
+
+    log_bins = {TimeSpectraKeys.tof_array: None,
+                TimeSpectraKeys.file_index_array: None,
+                TimeSpectraKeys.lambda_array: None}
+
     # profile signal (displayed on the top right of combine and bin tab)
     # 1D array
     profile_signal = None

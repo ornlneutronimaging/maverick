@@ -1,5 +1,6 @@
 import copy
 import logging
+import numpy as np
 
 from ..session import SessionKeys
 from ..utilities import BinMode
@@ -7,6 +8,7 @@ from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys
 from .. import LAMBDA, MICRO, ANGSTROMS
 from .bin import Bin
+from ..utilities.table_handler import TableHandler
 
 
 class EventHandler:
@@ -71,6 +73,11 @@ class EventHandler:
         self.parent.ui.auto_linear_file_index_spinBox.blockSignals(True)
         self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(True)
         self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(True)
+
+        self.logger.info(f"-> raw_file_index_array_binned: {self.parent.time_spectra[TimeSpectraKeys.file_index_array]}")
+        self.logger.info(f"-> raw_tof_array_binned: {self.parent.time_spectra[TimeSpectraKeys.tof_array]}")
+        self.logger.info(f"-> raw_lambda_array_binned: {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
+
         if source_radio_button == TimeSpectraKeys.file_index_array:
             file_index_value = self.parent.ui.auto_linear_file_index_spinBox.value()
             o_bin.create_linear_file_index_bin_array(file_index_value)
@@ -106,3 +113,29 @@ class EventHandler:
         self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
         self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(False)
+
+        self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
+                                   TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
+                                   TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
+
+        self.fill_auto_table()
+
+    def fill_auto_table(self):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+        o_table.remove_all_rows()
+
+        linear_bins = self.parent.linear_bins
+        list_rows = np.arange(len(linear_bins[TimeSpectraKeys.file_index_array]))
+        for _row, _file_index, _tof, _lambda in zip(list_rows,
+                                              linear_bins[TimeSpectraKeys.file_index_array],
+                                              linear_bins[TimeSpectraKeys.tof_array],
+                                              linear_bins[TimeSpectraKeys.lambda_array]):
+
+            _tof *= 1e6  # to display in microS
+            _lambda *= 1e10  # to display in Angstroms
+
+            o_table.insert_empty_row(row=_row)
+            o_table.insert_item(row=_row, column=0, value=_row, editable=False)
+            o_table.insert_item(row=_row, column=1, value=_file_index, editable=False)
+            o_table.insert_item(row=_row, column=2, value=_tof, editable=False, format_str="{:.2f}")
+            o_table.insert_item(row=_row, column=3, value=_lambda, editable=False, format_str="{:.3f}")

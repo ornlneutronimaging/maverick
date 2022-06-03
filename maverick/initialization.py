@@ -46,6 +46,13 @@ class Initialization:
         column_sizes = [50, 60, 60]
         o_table.set_column_sizes(column_sizes=column_sizes)
 
+        # bin auto table
+        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+        column_sizes = [50, 60, 60, 60]
+        o_table.set_column_sizes(column_sizes=column_sizes)
+        column_names = ['Bin #', 'File #', 'tof (' + MICRO + 's)', LAMBDA + "(" + ANGSTROMS + ")"]
+        o_table.set_column_names(column_names=column_names)
+
     def labels(self):
         # combine tab
         self.parent.ui.combine_detector_offset_units.setText(MICRO + "s")
