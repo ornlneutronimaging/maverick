@@ -45,13 +45,11 @@ class Bin:
         self.linear_bins[TimeSpectraKeys.tof_array] = np.array(_linear_bins)
 
     def create_linear_axis(self, source_array=TimeSpectraKeys.file_index_array):
-        print("in create linear axis")
         if source_array == TimeSpectraKeys.file_index_array:
             file_index_array = self.linear_bins[TimeSpectraKeys.file_index_array]
 
             original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
             tof_array = [original_tof_array[int(_index)] for _index in file_index_array]
-            print(f"tof_array: {tof_array}")
             self.linear_bins[TimeSpectraKeys.tof_array] = tof_array
 
             original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
