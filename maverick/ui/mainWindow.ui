@@ -420,25 +420,6 @@
                   </property>
                  </widget>
                 </item>
-                <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="auto_log_file_index_doubleSpinBox">
-                  <property name="minimumSize">
-                   <size>
-                    <width>100</width>
-                    <height>0</height>
-                   </size>
-                  </property>
-                  <property name="maximumSize">
-                   <size>
-                    <width>1677215</width>
-                    <height>16777215</height>
-                   </size>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
                 <item row="2" column="0">
                  <widget class="QLabel" name="bin_auto_log_lambda_label">
                   <property name="text">
@@ -458,6 +439,16 @@
                    </size>
                   </property>
                  </spacer>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QSpinBox" name="auto_log_file_index_spinBox">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>2000</number>
+                  </property>
+                 </widget>
                 </item>
                </layout>
               </widget>
@@ -506,21 +497,17 @@
                 <enum>QFrame::Raised</enum>
                </property>
                <layout class="QGridLayout" name="gridLayout_4">
-                <item row="0" column="1">
-                 <widget class="QDoubleSpinBox" name="auto_linear_file_index_doubleSpinBox">
-                  <property name="singleStep">
-                   <double>1.000000000000000</double>
-                  </property>
-                  <property name="value">
-                   <double>1.000000000000000</double>
-                  </property>
-                 </widget>
-                </item>
                 <item row="0" column="0">
-                 <widget class="QLabel" name="label_10">
+                 <widget class="QLabel" name="bin_auto_linear_file_index_label">
+                  <property name="minimumSize">
+                   <size>
+                    <width>70</width>
+                    <height>0</height>
+                   </size>
+                  </property>
                   <property name="maximumSize">
                    <size>
-                    <width>60</width>
+                    <width>70</width>
                     <height>16777215</height>
                    </size>
                   </property>
@@ -531,6 +518,15 @@
                 </item>
                 <item row="2" column="1">
                  <widget class="QDoubleSpinBox" name="auto_linear_lambda_doubleSpinBox">
+                  <property name="decimals">
+                   <number>4</number>
+                  </property>
+                  <property name="minimum">
+                   <double>0.000100000000000</double>
+                  </property>
+                  <property name="maximum">
+                   <double>20.000000000000000</double>
+                  </property>
                   <property name="value">
                    <double>1.000000000000000</double>
                   </property>
@@ -544,14 +540,18 @@
                  </widget>
                 </item>
                 <item row="1" column="0">
-                 <widget class="QLabel" name="label_11">
+                 <widget class="QLabel" name="bin_auto_linear_tof_label">
                   <property name="text">
                    <string>tof</string>
                   </property>
                  </widget>
                 </item>
                 <item row="1" column="1">
-                 <widget class="QDoubleSpinBox" name="auto_linear_tof_doubleSpinBox"/>
+                 <widget class="QDoubleSpinBox" name="auto_linear_tof_doubleSpinBox">
+                  <property name="decimals">
+                   <number>3</number>
+                  </property>
+                 </widget>
                 </item>
                 <item row="1" column="2">
                  <widget class="QLabel" name="bin_auto_linear_tof_units_label">
@@ -567,21 +567,50 @@
                   </property>
                  </widget>
                 </item>
+                <item row="0" column="1">
+                 <widget class="QSpinBox" name="auto_linear_file_index_spinBox">
+                  <property name="minimum">
+                   <number>1</number>
+                  </property>
+                  <property name="maximum">
+                   <number>2000</number>
+                  </property>
+                 </widget>
+                </item>
                </layout>
               </widget>
              </item>
              <item>
-              <spacer name="verticalSpacer">
+              <widget class="Line" name="line_2">
                <property name="orientation">
-                <enum>Qt::Vertical</enum>
+                <enum>Qt::Horizontal</enum>
                </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>20</width>
-                 <height>307</height>
-                </size>
+              </widget>
+             </item>
+             <item>
+              <widget class="QTableWidget" name="bin_manual_tableWidget_2">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SingleSelection</enum>
                </property>
-              </spacer>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Bin index</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>from ...</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>to ...</string>
+                </property>
+               </column>
+              </widget>
              </item>
             </layout>
            </widget>
@@ -600,7 +629,7 @@
                </property>
                <column>
                 <property name="text">
-                 <string>Index</string>
+                 <string>Bin index</string>
                 </property>
                </column>
                <column>
@@ -944,7 +973,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>787</x>
-     <y>756</y>
+     <y>654</y>
     </hint>
     <hint type="destinationlabel">
      <x>1002</x>
@@ -960,7 +989,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>902</x>
-     <y>754</y>
+     <y>652</y>
     </hint>
     <hint type="destinationlabel">
      <x>1143</x>
@@ -976,7 +1005,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1005</x>
-     <y>751</y>
+     <y>649</y>
     </hint>
     <hint type="destinationlabel">
      <x>1307</x>
@@ -1081,38 +1110,6 @@
    </hints>
   </connection>
   <connection>
-   <sender>auto_log_file_index_doubleSpinBox</sender>
-   <signal>editingFinished()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>bin_auto_log_file_index_changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>152</x>
-     <y>160</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>162</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>auto_linear_file_index_doubleSpinBox</sender>
-   <signal>editingFinished()</signal>
-   <receiver>MainWindow</receiver>
-   <slot>bin_auto_linear_file_index_changed()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>151</x>
-     <y>336</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>5</x>
-     <y>349</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
    <sender>auto_linear_tof_doubleSpinBox</sender>
    <signal>editingFinished()</signal>
    <receiver>MainWindow</receiver>
@@ -1141,6 +1138,38 @@
     <hint type="destinationlabel">
      <x>6</x>
      <y>448</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>auto_linear_file_index_spinBox</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_linear_file_index_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>186</x>
+     <y>335</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>424</x>
+     <y>25</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>auto_log_file_index_spinBox</sender>
+   <signal>editingFinished()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_log_file_index_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>153</x>
+     <y>162</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>396</x>
+     <y>-11</y>
     </hint>
    </hints>
   </connection>

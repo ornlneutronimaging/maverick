@@ -53,7 +53,9 @@ class Initialization:
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
         # bin tab
         self.parent.ui.bin_auto_log_lambda_label.setText(LAMBDA)
-        self.parent.ui.bin_auto_linear_lambda_label.setText(LAMBDA)
+        self.parent.ui.bin_auto_linear_file_index_label.setText(DELTA + " file index")
+        self.parent.ui.bin_auto_linear_tof_label.setText(DELTA + " tof")
+        self.parent.ui.bin_auto_linear_lambda_label.setText(DELTA + LAMBDA)
         self.parent.ui.bin_auto_linear_tof_units_label.setText(MICRO + 's')
         self.parent.ui.bin_auto_linear_lambda_units_label.setText(ANGSTROMS)
 
