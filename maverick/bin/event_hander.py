@@ -39,18 +39,18 @@ class EventHandler:
 
 
         # display bins line according to bin defined on the left side
-        self.update_bin_autoradiobutton_delta_t_units()
+        # self.update_bin_autoradiobutton_delta_t_units()
 
-    def update_bin_autoradiobutton_delta_t_units(self):
-        o_get = Get(parent=self.parent)
-        time_spectra_x_axis_name = o_get.bin_x_axis_selected()
-        if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
-            x_axis_label = "file index"
-        elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-            x_axis_label = MICRO + "s"
-        elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-            x_axis_label = ANGSTROMS
-        self.parent.ui.auto_delta_t_units_label.setText(x_axis_label)
+    # def update_bin_autoradiobutton_delta_t_units(self):
+    #     o_get = Get(parent=self.parent)
+    #     time_spectra_x_axis_name = o_get.bin_x_axis_selected()
+    #     if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
+    #         x_axis_label = "file index"
+    #     elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+    #         x_axis_label = MICRO + "s"
+    #     elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
+    #         x_axis_label = ANGSTROMS
+    #     self.parent.ui.auto_delta_t_units_label.setText(x_axis_label)
 
     def bin_auto_radioButton_clicked(self):
         state_auto = self.parent.ui.auto_log_radioButton.isChecked()
@@ -83,6 +83,7 @@ class EventHandler:
         if source_radio_button == TimeSpectraKeys.file_index_array:
             file_index_value = self.parent.ui.auto_linear_file_index_doubleSpinBox.value()
             o_bin.create_linear_file_index_bin_array(file_index_value)
+            o_bin.create_linear_axis(source_array=source_radio_button)
 
         elif source_radio_button == TimeSpectraKeys.tof_array:
             tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()

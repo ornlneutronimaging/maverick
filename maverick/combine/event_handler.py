@@ -78,7 +78,7 @@ class EventHandler:
         list_folders = self.parent.session[SessionKeys.list_working_folders]
         _data_dict = {}
         for _folder in list_folders:
-            list_files = FileHandler.get_list_of_files(_folder)
+            list_files = FileHandler.get_list_of_tif(_folder)
             nbr_files = len(list_files)
             _data_dict[_folder] = {'data': None,
                                    'list_files': list_files,

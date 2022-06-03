@@ -23,6 +23,11 @@ class FileHandler(object):
         return full_list
 
     @classmethod
+    def get_list_of_tif(cls, folder):
+        full_list = glob.glob(folder + '/*.tif*')
+        return full_list
+
+    @classmethod
     def get_parent_folder(cls, full_folder):
         folder_parts = Path(full_folder).parts
         return folder_parts[-2]

@@ -24,16 +24,6 @@ class Get:
         full_config_file_name = Get.full_home_file_name(config_file_name)
         return full_config_file_name
 
-    def version(self):
-        setup_cfg = 'setup.cfg'
-        this_folder = os.path.abspath(os.path.dirname(__file__))
-        top_path = Path(this_folder).parent.parent
-        full_path_setup_cfg = str(Path(top_path) / Path(setup_cfg))
-        config = configparser.ConfigParser()
-        config.read(full_path_setup_cfg)
-        version = config['metadata']['version']
-        return version
-
     def combine_algorithm(self):
         if self.parent.ui.combine_mean_radioButton.isChecked():
             return CombineAlgorithm.mean
@@ -88,3 +78,14 @@ class Get:
         home_folder = expanduser("~")
         full_log_file_name = os.path.join(home_folder, base_file_name)
         return full_log_file_name
+
+    @staticmethod
+    def version():
+        setup_cfg = 'setup.cfg'
+        this_folder = os.path.abspath(os.path.dirname(__file__))
+        top_path = Path(this_folder).parent.parent
+        full_path_setup_cfg = str(Path(top_path) / Path(setup_cfg))
+        config = configparser.ConfigParser()
+        config.read(full_path_setup_cfg)
+        version = config['metadata']['version']
+        return version

@@ -105,7 +105,7 @@ class MainWindow(QMainWindow):
 
         o_get = Get(parent=self)
         log_file_name = o_get.log_file_name()
-        version = o_get.version()
+        version = Get.version()
         self.version = version
         self.log_file_name = log_file_name
         logging.basicConfig(filename=log_file_name,
