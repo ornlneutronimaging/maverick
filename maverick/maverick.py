@@ -219,7 +219,7 @@ class MainWindow(QMainWindow):
 
     def bin_auto_linear_lambda_changed(self):
         o_event = BinEventHandler(parent=self)
-        o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
+        o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
