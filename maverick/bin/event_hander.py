@@ -126,7 +126,7 @@ class EventHandler:
                                    TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
                                    TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
 
-        # self.fill_auto_table()
+        self.fill_auto_table()
 
     def fill_auto_table(self):
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
@@ -135,23 +135,31 @@ class EventHandler:
         linear_bins = self.parent.linear_bins
         list_rows = np.arange(len(linear_bins[TimeSpectraKeys.file_index_array]))
 
-        file_index_array = linear_bins[TimeSpectraKeys.file_index_array]
-        tof_array = linear_bins[TimeSpectraKeys.tof_array]
-        lambda_array = linear_bins[TimeSpectraKeys.lambda_array]
+        file_index_array_of_bins = linear_bins[TimeSpectraKeys.file_index_array]
+        tof_array_of_bins = linear_bins[TimeSpectraKeys.tof_array]
+        lambda_array_of_bins = linear_bins[TimeSpectraKeys.lambda_array]
 
-        _row = 0
-        for _row in np.arange(len(list_rows)-1):
-            left_file_index = file_index_array[_row]
-            right_file_index = file_index_array[_row+1]
-            str_file_index = f"[{left_file_index}, {right_file_index})"
+        for _row in np.arange(len(list_rows)):
+            if file_index_array_of_bins[_row] == []:
+                str_file_index = "N/A"
+            else:
+                from_file_index = file_index_array_of_bins[_row][0]
+                to_file_index = file_index_array_of_bins[_row][1]
+                str_file_index = f"[{from_file_index}, {to_file_index})"
 
-            left_tof = tof_array[_row] * 1e6  # to display in micros
-            right_tof = tof_array[_row+1] * 1e6
-            str_tof = f"[{left_tof:.2f}, {right_tof:.2f})"
+            if str_file_index == "N/A":
+                str_tof = "N/A"
+            else:
+                left_tof = tof_array_of_bins[_row][0] * 1e6  # to display in micros
+                right_tof = tof_array_of_bins[_row][1] * 1e6
+                str_tof = f"[{left_tof:.2f}, {right_tof:.2f})"
 
-            left_lambda = lambda_array[_row] * 1e10  # to display in Angstroms
-            right_lambda = lambda_array[_row+1] * 1e10
-            str_lambda = f"[{left_lambda:.3f}, {right_lambda:.3f})"
+            if str_file_index == "N/A":
+                str_lambda = "N/A"
+            else:
+                left_lambda = lambda_array_of_bins[_row][0] * 1e10  # to display in Angstroms
+                right_lambda = lambda_array_of_bins[_row][1] * 1e10
+                str_lambda = f"[{left_lambda:.3f}, {right_lambda:.3f})"
 
             o_table.insert_empty_row(row=_row)
             o_table.insert_item(row=_row, column=0, value=_row, editable=False)
