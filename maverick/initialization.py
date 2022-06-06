@@ -33,7 +33,7 @@ class Initialization:
 
     def splitter(self):
         self.parent.ui.combine_horizontal_splitter.setSizes([200, 500])
-        self.parent.ui.bin_horizontal_splitter.setSizes([30, 800])
+        self.parent.ui.bin_horizontal_splitter.setSizes([300, 800])
 
     def table(self):
         # combine table
@@ -48,7 +48,7 @@ class Initialization:
 
         # bin auto table
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        column_sizes = [50, 85, 85, 85]
+        column_sizes = [35, 60, 115, 115]
         o_table.set_column_sizes(column_sizes=column_sizes)
         column_names = ['Bin #', '[File, File)',
                         '[tof, tof)',

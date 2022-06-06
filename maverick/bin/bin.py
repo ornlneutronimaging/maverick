@@ -24,13 +24,20 @@ class Bin:
         o_get = Get(parent=self.parent)
         list_of_folders_to_use = o_get.list_of_folders_to_use()
         number_of_files = len(self.parent.raw_data_folders[list_of_folders_to_use[0]]['list_files'])
-        _array = np.arange(0, number_of_files, file_index_value)
+        new_index_array = np.arange(0, number_of_files, file_index_value)
+        original_file_index_array = np.arange(number_of_files)
 
         # there is a file index outside the range
-        if _array[-1] < (number_of_files-1):
-            _array = np.append(_array, number_of_files-1)
+        if new_index_array[-1] <= (number_of_files-1):
+            new_index_array = np.append(new_index_array, new_index_array[-1] + file_index_value)
 
-        self.linear_bins[TimeSpectraKeys.file_index_array] = _array
+        linear_file_index_bin_array = [[] for _ in np.arange(len(new_index_array)-1)]
+        for _file_index, _bin in enumerate(original_file_index_array):
+            result = np.where(_bin >= new_index_array)
+            index = result[0][-1]
+            linear_file_index_bin_array[index].append(_file_index)
+
+        self.linear_bins[TimeSpectraKeys.file_index_array] = linear_file_index_bin_array
 
     def create_linear_tof_bin_array(self, tof_value):
         """this method create the linear TOF bins array"""
@@ -112,18 +119,32 @@ class Bin:
         used to find the equivalent location in the other arrays, for example lambda and file_index when
         the bin_array was calculated for tof
 
+        it may look like [[0],[],[],[1],[],[],[2,3]]
+
         :param bin_array: bin array created (for example lambda_bin_array)
         :param original_array: original array (for example the original_lambda_array)
-        :return: an array of the index of each bin
+        :return: an array of the new bins with the file index position and in which bins they belong
         """
-        index_of_bins_in_original_array = []
-        for _bin in bin_array:
-            result = np.where(_bin <= original_array)
-            try:
-                index_of_bins_in_original_array.append(result[0][0])
-            except IndexError:  # exception is value is outside of original range
-                pass
-        return index_of_bins_in_original_array
+
+
+
+
+        bins_with_index_of_file_index_in_it = [[] for _ in np.arange(len(bin_array))]
+        for _file_index, _bin in enumerate(original_array):
+            result = np.where(_bin >= bin_array)
+            index = result[0][-1]
+            bins_with_index_of_file_index_in_it[index].append(_file_index)
+
+        return bins_with_index_of_file_index_in_it
+
+        # index_of_bins_in_original_array = []
+        # for _bin in bin_array:
+        #     result = np.where(_bin <= original_array)
+        #     try:
+        #         index_of_bins_in_original_array.append(result[0][0])
+        #     except IndexError:  # exception is value is outside of original range
+        #         pass
+        # return index_of_bins_in_original_array
 
     def get_linear_delta_file_index(self):
         return self._get_linear_delta(key=TimeSpectraKeys.file_index_array)
