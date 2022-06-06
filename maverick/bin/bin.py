@@ -37,7 +37,13 @@ class Bin:
             index = result[0][-1]
             linear_file_index_bin_array[index].append(_file_index)
 
-        self.linear_bins[TimeSpectraKeys.file_index_array] = linear_file_index_bin_array
+        array_of_bins = [[] for _ in np.arange(len(new_index_array)-2)]
+        for _index, _bin in enumerate(linear_file_index_bin_array[:-1]):
+            array_of_bins[_index] = [linear_file_index_bin_array[_index][0],
+                                     linear_file_index_bin_array[_index+1][0]]
+
+        self.linear_bins[TimeSpectraKeys.file_index_array] = array_of_bins
+        self.logger.info(f"linear file index array of bins: {array_of_bins}")
 
     def create_linear_tof_bin_array(self, tof_value):
         """this method create the linear TOF bins array"""
@@ -72,21 +78,25 @@ class Bin:
         return np.array(_linear_bins)
 
     def create_linear_bin_arrays(self, source_array=TimeSpectraKeys.file_index_array):
+        self.logger.info("Creating the other arrays")
         if source_array == TimeSpectraKeys.file_index_array:
-            file_index_bin_array = self.linear_bins[TimeSpectraKeys.file_index_array]
+            file_index_array_of_bins = self.linear_bins[TimeSpectraKeys.file_index_array]
 
             original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
+            tof_array_of_bins = [[] for _ in np.arange(len(file_index_array_of_bins))]
+            for _index, _file_index_bin in enumerate(file_index_array_of_bins):
+                if _file_index_bin == []:
+                    tof_array_of_bins[_index] = []
+                else:
+                    tof_array_of_bins[_index] = [original_tof_array[_file_index_bin[0]],
+                                                 original_tof_array[_file_index_bin[1]]]
 
+            self.linear_bins[TimeSpectraKeys.tof_array] = tof_array_of_bins
+            self.logger.info(f"-> tof_array_of_bins: {tof_array_of_bins}")
 
-
-
-
-            tof_array = [original_tof_array[int(_index)] for _index in file_index_array]
-            self.linear_bins[TimeSpectraKeys.tof_array] = tof_array
-
-            original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
-            lambda_array = [original_lambda_array[int(_index)] for _index in file_index_array]
-            self.linear_bins[TimeSpectraKeys.lambda_array] = lambda_array
+            # original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
+            # lambda_array = [original_lambda_array[int(_index)] for _index in file_index_array]
+            # self.linear_bins[TimeSpectraKeys.lambda_array] = lambda_array
 
         elif source_array == TimeSpectraKeys.tof_array:
             tof_array = self.linear_bins[TimeSpectraKeys.tof_array]
@@ -161,7 +171,7 @@ class Bin:
         return self._get_linear_delta(key=TimeSpectraKeys.lambda_array)
 
     def _get_linear_delta(self, key=TimeSpectraKeys.file_index_array):
-        return self.linear_bins[key][1] - self.linear_bins[key][0]
+        return self.linear_bins[key][0][1] - self.linear_bins[key][0][0]
 
     def get_linear_file_index(self):
         return self.linear_bins[TimeSpectraKeys.file_index_array]

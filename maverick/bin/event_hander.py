@@ -85,9 +85,9 @@ class EventHandler:
 
             delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
             self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
-
-            delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
-            self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
+            #
+            # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
+            # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
 
         # elif source_radio_button == TimeSpectraKeys.tof_array:
         #     tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
@@ -116,7 +116,7 @@ class EventHandler:
 
         self.logger.info(f"-> file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
         self.logger.info(f"-> tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
-        self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
+        # self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
 
         self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
