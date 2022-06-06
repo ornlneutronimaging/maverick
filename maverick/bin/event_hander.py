@@ -85,9 +85,9 @@ class EventHandler:
 
             delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
             self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
-            #
-            # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
-            # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
+
+            delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
+            self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
 
         # elif source_radio_button == TimeSpectraKeys.tof_array:
         #     tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
