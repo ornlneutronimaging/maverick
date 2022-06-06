@@ -102,7 +102,7 @@ class EventHandler:
 
         elif source_radio_button == TimeSpectraKeys.lambda_array:
             lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
-            o_bin.create_lineat_lambda_array(lambda_value * 1e-10)  # to move to m
+            o_bin.create_linear_lambda_array(lambda_value * 1e-10)  # to move to m
             o_bin.create_linear_axis(source_array=source_radio_button)
 
             delta_file_index = o_bin.get_linear_delta_file_index()

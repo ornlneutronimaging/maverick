@@ -35,18 +35,18 @@ class Bin:
     def create_linear_tof_bin_array(self, tof_value):
         """this method create the linear TOF bins array"""
         original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
-        linear_bins = self._create_generial_linear_array(stepping=tof_value,
+        linear_bins = self._create_general_linear_array(stepping=tof_value,
                                                          original_array=original_tof_array)
         self.linear_bins[TimeSpectraKeys.tof_array] = linear_bins
 
     def create_linear_lambda_array(self, lambda_value):
         """this method create the linear lambda array"""
         original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
-        linear_bins = self._create_generial_linear_array(stepping=lambda_value,
+        linear_bins = self._create_general_linear_array(stepping=lambda_value,
                                                          original_array=original_lambda_array)
         self.linear_bins[TimeSpectraKeys.lambda_array] = linear_bins
 
-    def _create_generial_linear_array(self, stepping=None, original_array=None):
+    def _create_general_linear_array(self, stepping=None, original_array=None):
         """
         generic function used to create a linear bin array
 
@@ -54,8 +54,8 @@ class Bin:
         :param original_array: original array that will be used to determine when to stop
         :return: the linear bin array
         """
-        left_value = 0
-        right_value = stepping
+        left_value = original_array[0]
+        right_value = stepping + left_value
         _linear_bins = []
         while right_value < original_array[-1]:
             _linear_bins.append(left_value)
@@ -116,7 +116,7 @@ class Bin:
         :param original_array: original array (for example the original_lambda_array)
         :return: an array of the index of each bin
         """
-        index_of_bins_in_original_array = [0]
+        index_of_bins_in_original_array = []
         for _bin in bin_array:
             result = np.where(_bin <= original_array)
             try:

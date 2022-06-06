@@ -48,9 +48,11 @@ class Initialization:
 
         # bin auto table
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        column_sizes = [50, 60, 60, 60]
+        column_sizes = [50, 85, 85, 85]
         o_table.set_column_sizes(column_sizes=column_sizes)
-        column_names = ['Bin #', 'File #', 'tof (' + MICRO + 's)', LAMBDA + "(" + ANGSTROMS + ")"]
+        column_names = ['Bin #', '[File, File)',
+                        '[tof, tof)',
+                        '[' + LAMBDA + ", " + LAMBDA + ")"]
         o_table.set_column_names(column_names=column_names)
 
     def labels(self):
