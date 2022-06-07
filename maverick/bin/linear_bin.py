@@ -117,15 +117,17 @@ class LinearBin:
     def create_linear_bin_arrays(self):
         self.logger.info("Creating the other arrays")
 
-        if self.source_array == TimeSpectraKeys.tof_array:
+        if self.source_array == TimeSpectraKeys.file_index_array:
             original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
             original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
-            tof_array_of_bins = self.linear_bins[self.source_array]
+
+            file_index_array_of_bins = self.linear_bins[self.source_array]
 
             linear_bins_tof_array = []
             linear_bins_lambda_array = []
 
-            for _index, _bin in enumerate(tof_array_of_bins):
+            for _index, _bin in enumerate(file_index_array_of_bins):
+
                 if _bin == []:
                     linear_bins_tof_array.append([])
                     linear_bins_lambda_array.append([])
@@ -141,6 +143,10 @@ class LinearBin:
 
             self.linear_bins[TimeSpectraKeys.tof_array] = linear_bins_tof_array
             self.linear_bins[TimeSpectraKeys.lambda_array] = linear_bins_lambda_array
+
+        elif self.source_array == TimeSpectraKeys.lambda_array:
+            pass
+
 
         # # if source_array == TimeSpectraKeys.file_index_array:
         # file_index_array_of_bins = self.linear_bins[TimeSpectraKeys.file_index_array]
