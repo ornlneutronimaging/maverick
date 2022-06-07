@@ -50,9 +50,10 @@ class Initialization:
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
         column_sizes = [35, 60, 115, 115]
         o_table.set_column_sizes(column_sizes=column_sizes)
-        column_names = ['LinearBin #', '[ File, File )',
-                        '[ tof, tof )',
-                        '[ ' + LAMBDA + ", " + LAMBDA + " )"]
+        column_names = ['bin #',
+                        'file #',
+                        'tof range',
+                        LAMBDA + " range"]
         o_table.set_column_names(column_names=column_names)
 
     def labels(self):

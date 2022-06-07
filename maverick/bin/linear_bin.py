@@ -11,45 +11,45 @@ class LinearBin:
                    TimeSpectraKeys.file_index_array: None,
                    TimeSpectraKeys.lambda_array: None}
 
-    def __init__(self, parent=None):
+    def __init__(self, parent=None, source_array=TimeSpectraKeys.file_index_array):
         self.parent = parent
+        self.source_array = source_array
         self.logger = logging.getLogger('maverick')
 
-    def create_linear_file_index_bin_array(self, source_array=TimeSpectraKeys.file_index_array,
-                                           bin_value=1):
+    def create_linear_file_index_bin_array(self, bin_value=1):
         """creates the array of bins
         output will look like [[0,1],[2,3],[4,5]...]
         """
-        if source_array == TimeSpectraKeys.file_index_array:
-            o_get = Get(parent=self.parent)
-            list_of_folders_to_use = o_get.list_of_folders_to_use()
-            number_of_files = len(self.parent.raw_data_folders[list_of_folders_to_use[0]]['list_files'])
+        original_array = np.array(self.parent.time_spectra[self.source_array])
+
+        if self.source_array == TimeSpectraKeys.file_index_array:
+            number_of_files = len(original_array)
             new_index_array = np.arange(0, number_of_files, bin_value)
-            original_file_index_array = np.arange(number_of_files)
 
-            # there is a file index outside the range
-            if new_index_array[-1] <= (number_of_files-1):
-                new_index_array = np.append(new_index_array, new_index_array[-1] + bin_value)
-
-            linear_file_index_bin_array = [[] for _ in np.arange(len(new_index_array)-1)]
-            for _file_index, _bin in enumerate(original_file_index_array):
+            linear_file_index_bin_array = [[] for _ in np.arange(len(new_index_array))]
+            for _file_index, _bin in enumerate(original_array):
                 result = np.where(_bin >= new_index_array)
                 index = result[0][-1]
                 linear_file_index_bin_array[index].append(_file_index)
 
-            array_of_bins = [[] for _ in np.arange(len(new_index_array)-1)]
-            for _index, _bin in enumerate(linear_file_index_bin_array[:-1]):
-                array_of_bins[_index] = [linear_file_index_bin_array[_index][0],
-                                         linear_file_index_bin_array[_index+1][0]]
-            # if len(linear_file_index_bin_array[-1]) > 2:
-            array_of_bins[-1] = [linear_file_index_bin_array[-1][0], linear_file_index_bin_array[-1][-1] + 1]
-            # else:
-            #     array_of_bins[-1] = [linear_file_index_bin_array[-1][0], linear_file_index_bin_array[-1][-1] + 1]
+            print(f"linear_file_index_bin_array: {linear_file_index_bin_array}")
 
-        elif source_array == TimeSpectraKeys.tof_array:
+            # array_of_bins = [[] for _ in np.arange(len(new_index_array)-1)]
+            # for _index, _bin in enumerate(linear_file_index_bin_array[:-1]):
+            #     array_of_bins[_index] = [linear_file_index_bin_array[_index][0],
+            #                              linear_file_index_bin_array[_index+1][0]]
+            # # if len(linear_file_index_bin_array[-1]) > 2:
+            # array_of_bins[-1] = [linear_file_index_bin_array[-1][0], linear_file_index_bin_array[-1][-1] + 1]
+            # # else:
+            # #     array_of_bins[-1] = [linear_file_index_bin_array[-1][0], linear_file_index_bin_array[-1][-1] + 1]
+
+            # print(f"array_of_bins: {array_of_bins}")
+
+        elif self.source_array == TimeSpectraKeys.tof_array:
             original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
+
             new_tof_array = np.arange(original_tof_array[0], original_tof_array[-1], bin_value)
-            new_tof_array = np.append(new_tof_array, original_tof_array[-1] + bin_value)
+            new_tof_array = np.append(new_tof_array, new_tof_array[-1] + bin_value)
 
             linear_tof_bin_array = [[] for _ in np.arange(len(new_tof_array)-1)]
             for _tof_index, _bin in enumerate(original_tof_array):
@@ -57,14 +57,16 @@ class LinearBin:
                 index = result[0][-1]
                 linear_tof_bin_array[index].append(_tof_index)
 
-            array_of_bins = [[] for _ in np.arange(len(new_tof_array)-1)]
-            for _index, _bin in enumerate(linear_tof_bin_array[:-1]):
-                array_of_bins[_index] = [linear_tof_bin_array[_index][0],
-                                         linear_tof_bin_array[_index+1][0]]
-            array_of_bins[-1] = [linear_tof_bin_array[-1][0],
-                                 linear_tof_bin_array[-1][-1] + 1]
+            print(f"linear_tof_bin_array: {linear_tof_bin_array}")
 
-        elif source_array == TimeSpectraKeys.lambda_array:
+            # array_of_bins = [[] for _ in np.arange(len(new_tof_array)-1)]
+            # for _index, _bin in enumerate(linear_tof_bin_array[:-1]):
+            #     array_of_bins[_index] = [linear_tof_bin_array[_index][0],
+            #                              linear_tof_bin_array[_index+1][0]]
+            # array_of_bins[-1] = [linear_tof_bin_array[-1][0],
+            #                      linear_tof_bin_array[-1][-1] + 1]
+
+        elif self.source_array == TimeSpectraKeys.lambda_array:
             original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
             new_lambda_array = np.arange(original_lambda_array[0], original_lambda_array[-1], bin_value)
             new_lambda_array = np.append(new_lambda_array, original_lambda_array[-1] + bin_value)
@@ -75,15 +77,17 @@ class LinearBin:
                 index = result[0][-1]
                 linear_lambda_bin_array[index].append(_tof_index)
 
-            array_of_bins = [[] for _ in np.arange(len(new_lambda_array)-1)]
-            for _index, _bin in enumerate(linear_lambda_bin_array[:-1]):
-                array_of_bins[_index] = [linear_lambda_bin_array[_index][0],
-                                         linear_lambda_bin_array[_index+1][0]]
-            array_of_bins[-1] = [linear_lambda_bin_array[-1][0],
-                                 linear_lambda_bin_array[-1][-1] + 1]
+            print(f"linear_lambda_bin_array: {linear_lambda_bin_array}")
 
-        self.linear_bins[TimeSpectraKeys.file_index_array] = array_of_bins
-        self.logger.info(f"linear file index array of bins: {array_of_bins}")
+            # array_of_bins = [[] for _ in np.arange(len(new_lambda_array)-1)]
+            # for _index, _bin in enumerate(linear_lambda_bin_array[:-1]):
+            #     array_of_bins[_index] = [linear_lambda_bin_array[_index][0],
+            #                              linear_lambda_bin_array[_index+1][0]]
+            # array_of_bins[-1] = [linear_lambda_bin_array[-1][0],
+            #                      linear_lambda_bin_array[-1][-1] + 1]
+
+        # self.linear_bins[TimeSpectraKeys.file_index_array] = array_of_bins
+        # self.logger.info(f"linear file index array of bins: {array_of_bins}")
 
     def create_linear_lambda_array(self, lambda_value):
         """this method create the linear lambda array"""

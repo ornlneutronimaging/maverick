@@ -293,17 +293,19 @@ class EventHandler:
         time_spectra = self.parent.time_spectra
 
         file_index_array = time_spectra[TimeSpectraKeys.file_index_array]
-        max_file_index = int(file_index_array[-1])
+        max_file_index = int(len(file_index_array))
 
         tof_array = time_spectra[TimeSpectraKeys.tof_array]
         max_tof = float(tof_array[-1]) * 1e6
+        min_tof = float(tof_array[0]) * 1e6
 
         lambda_array = time_spectra[TimeSpectraKeys.lambda_array]
         max_lambda = float(lambda_array[-1]) * 1e10
+        min_lambda = float(lambda_array[0]) * 1e10
 
         self.parent.ui.auto_linear_file_index_spinBox.setMaximum(max_file_index)
-        self.parent.ui.auto_linear_tof_doubleSpinBox.setMaximum(max_tof)
-        self.parent.ui.auto_linear_lambda_doubleSpinBox.setMaximum(max_lambda)
+        self.parent.ui.auto_linear_tof_doubleSpinBox.setMaximum(max_tof-min_tof)
+        self.parent.ui.auto_linear_lambda_doubleSpinBox.setMaximum(max_lambda-min_lambda)
 
         self.logger.info(f"Max values of bin linear spin box has been fixed:")
         self.logger.info(f"-> file index: {max_file_index}")
