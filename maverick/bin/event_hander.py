@@ -1,15 +1,18 @@
 import copy
 import logging
 import numpy as np
+import pyqtgraph as pg
 
 from ..session import SessionKeys
 from ..utilities import BinMode
 from ..utilities.get import Get
-from ..utilities import TimeSpectraKeys
+from ..utilities import TimeSpectraKeys, BinAutoMode
 from .. import LAMBDA, MICRO, ANGSTROMS
 from .linear_bin import LinearBin
 from ..utilities.table_handler import TableHandler
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
+
+BIN_MARGIN_COEFF = 0.1
 
 
 class EventHandler:
@@ -20,7 +23,12 @@ class EventHandler:
 
     def refresh_tab(self):
         # refresh profile using right x_axis
-        self.parent.bin_profile_view.clear()
+
+        self.parent.bin_profile_view.clear()  # clear previous plot
+        if not (self.parent.list_bins_items is None):  # remove previous bins
+            for _item in self.parent.list_bins_items:
+                self.parent.bin_profile_view.removeItem(_item)
+
         profile_signal = self.parent.profile_signal
 
         o_get = Get(parent=self.parent)
@@ -41,6 +49,38 @@ class EventHandler:
         self.parent.bin_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
         self.parent.bin_profile_view.setLabel("left", f"{combine_algorithm} counts")
         self.parent.bin_profile_view.setLabel("bottom", x_axis_label)
+
+        if o_get.bin_auto_mode() == BinAutoMode.linear:
+            bins = self.parent.linear_bins[time_spectra_x_axis_name]
+            list_item = []
+            for _bin in bins:
+
+                if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
+                    scale_bin = [_bin[0], _bin[1] - BIN_MARGIN_COEFF]
+                elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+                    coeff = 1e6
+                    scale_bin = [_value * coeff for _value in _bin]
+                    right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
+                    scale_bin[1] -= right_margin
+                elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
+                    coeff = 1e10
+                    scale_bin = [_value * coeff for _value in _bin]
+                    right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
+                    scale_bin[1] -= right_margin
+
+                item = pg.LinearRegionItem(values=scale_bin,
+                                           orientation='vertical',
+                                           brush=None,
+                                           movable=False,
+                                           bounds=None)
+                item.setZValue(-10)
+                self.parent.bin_profile_view.addItem(item)
+                list_item.append(item)
+
+            self.parent.list_bins_items = list_item
+
+        else:
+            pass
 
     def bin_auto_radioButton_clicked(self):
         state_auto = self.parent.ui.auto_log_radioButton.isChecked()
@@ -123,15 +163,16 @@ class EventHandler:
             else:
                 raise NotImplementedError("bin auto linear algorithm not implemented!")
 
-            self.logger.info(f"-> original file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
-            self.logger.info(f"-> original tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
-            self.logger.info(f"-> original lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
+            self.logger.info(f"-> file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
+            self.logger.info(f"-> tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
+            self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
 
             self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
                                        TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
                                        TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
 
             self.fill_auto_table()
+            self.refresh_tab()
 
             show_status_message(parent=self.parent,
                                 message=f"New {source_radio_button} bin size selected!",

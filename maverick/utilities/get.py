@@ -5,7 +5,7 @@ import configparser
 import copy
 import numpy as np
 
-from . import CombineAlgorithm, TimeSpectraKeys
+from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode
 from ..session import SessionKeys
 
 
@@ -41,6 +41,14 @@ class Get:
             return TimeSpectraKeys.lambda_array
         else:
             raise NotImplementedError("xaxis not implemented in the combine tab!")
+
+    def bin_auto_mode(self):
+        if self.parent.ui.auto_log_radioButton.isChecked():
+            return BinAutoMode.log
+        elif self.parent.ui.auto_linear_radioButton.isChecked():
+            return BinAutoMode.linear
+        else:
+            raise NotImplementedError("auto bin mode not implemented!")
 
     def bin_x_axis_selected(self):
         if self.parent.ui.bin_file_index_radioButton.isChecked():

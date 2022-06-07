@@ -71,6 +71,7 @@ class MainWindow(QMainWindow):
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
     live_combine_image = None  # live combine image used by ROI
+    list_bins_items = None
 
     def __init__(self, parent=None):
         """
