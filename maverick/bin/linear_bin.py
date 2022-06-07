@@ -6,7 +6,7 @@ from ..utilities import TimeSpectraKeys
 from ..utilities.get import Get
 
 
-class Bin:
+class LinearBin:
 
     linear_bins = {TimeSpectraKeys.tof_array: None,
                    TimeSpectraKeys.file_index_array: None,
@@ -150,68 +150,36 @@ class Bin:
         self.linear_bins[TimeSpectraKeys.tof_array] = tof_array_of_bins
         self.linear_bins[TimeSpectraKeys.lambda_array]= lambda_array_of_bins
 
-        # elif source_array == TimeSpectraKeys.tof_array:
-        #     tof_array = self.linear_bins[TimeSpectraKeys.tof_array]
-        #     original_tof_array = self.parent.time_spectra[TimeSpectraKeys.tof_array]
-        #
-        #     index_of_bins_in_original_array = \
-        #         Bin.create_index_of_bins_in_original_array(bin_array=tof_array,
-        #                                                    original_array=original_tof_array)
-        #     self.linear_bins[TimeSpectraKeys.file_index_array] = index_of_bins_in_original_array
-        #
-        #     original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
-        #     lambda_array = [original_lambda_array[int(_index)] for _index in index_of_bins_in_original_array]
-        #     self.linear_bins[TimeSpectraKeys.lambda_array] = lambda_array
-        #
-        # elif source_array == TimeSpectraKeys.lambda_array:
-        #     lambda_array = self.linear_bins[TimeSpectraKeys.lambda_array]
-        #     original_lambda_array = self.parent.time_spectra[TimeSpectraKeys.lambda_array]
-        #
-        #     index_of_bins_in_original_array = \
-        #         Bin.create_index_of_bins_in_original_array(bin_array=lambda_array,
-        #                                                    original_array=original_lambda_array)
-        #     self.linear_bins[TimeSpectraKeys.file_index_array] = index_of_bins_in_original_array
-        #
-        #     original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
-        #     tof_array = [original_tof_array[int(_index)] for _index in index_of_bins_in_original_array]
-        #     self.linear_bins[TimeSpectraKeys.tof_array] = tof_array
-
-        # else:
-        #     raise NotImplementedError(f"Bin parameter {source_array} not implemented!")
-
-    @staticmethod
-    def create_index_of_bins_in_original_array(bin_array=None, original_array=None):
-        """
-        This method determine the index of the various bin in the original array. This will then be
-        used to find the equivalent location in the other arrays, for example lambda and file_index when
-        the bin_array was calculated for tof
-
-        it may look like [[0],[],[],[1],[],[],[2,3]]
-
-        :param bin_array: bin array created (for example lambda_bin_array)
-        :param original_array: original array (for example the original_lambda_array)
-        :return: an array of the new bins with the file index position and in which bins they belong
-        """
-
-
-
-
-        bins_with_index_of_file_index_in_it = [[] for _ in np.arange(len(bin_array))]
-        for _file_index, _bin in enumerate(original_array):
-            result = np.where(_bin >= bin_array)
-            index = result[0][-1]
-            bins_with_index_of_file_index_in_it[index].append(_file_index)
-
-        return bins_with_index_of_file_index_in_it
-
-        # index_of_bins_in_original_array = []
-        # for _bin in bin_array:
-        #     result = np.where(_bin <= original_array)
-        #     try:
-        #         index_of_bins_in_original_array.append(result[0][0])
-        #     except IndexError:  # exception is value is outside of original range
-        #         pass
-        # return index_of_bins_in_original_array
+    # @staticmethod
+    # def create_index_of_bins_in_original_array(bin_array=None, original_array=None):
+    #     """
+    #     This method determine the index of the various bin in the original array. This will then be
+    #     used to find the equivalent location in the other arrays, for example lambda and file_index when
+    #     the bin_array was calculated for tof
+    #
+    #     it may look like [[0],[],[],[1],[],[],[2,3]]
+    #
+    #     :param bin_array: bin array created (for example lambda_bin_array)
+    #     :param original_array: original array (for example the original_lambda_array)
+    #     :return: an array of the new bins with the file index position and in which bins they belong
+    #     """
+    #
+    #     bins_with_index_of_file_index_in_it = [[] for _ in np.arange(len(bin_array))]
+    #     for _file_index, _bin in enumerate(original_array):
+    #         result = np.where(_bin >= bin_array)
+    #         index = result[0][-1]
+    #         bins_with_index_of_file_index_in_it[index].append(_file_index)
+    #
+    #     return bins_with_index_of_file_index_in_it
+    #
+    #     # index_of_bins_in_original_array = []
+    #     # for _bin in bin_array:
+    #     #     result = np.where(_bin <= original_array)
+    #     #     try:
+    #     #         index_of_bins_in_original_array.append(result[0][0])
+    #     #     except IndexError:  # exception is value is outside of original range
+    #     #         pass
+    #     # return index_of_bins_in_original_array
 
     def get_linear_delta_file_index(self):
         return self._get_linear_delta(key=TimeSpectraKeys.file_index_array)
