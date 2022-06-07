@@ -162,7 +162,7 @@ class EventHandler:
 
             # delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
             # self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
-            #
+
             # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
             # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
 
@@ -174,7 +174,7 @@ class EventHandler:
 
             # delta_file_index = o_bin.get_linear_delta_file_index()
             # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
-            #
+
             # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
             # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
 
@@ -186,7 +186,7 @@ class EventHandler:
 
             # delta_file_index = o_bin.get_linear_delta_file_index()
             # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
-            #
+
             # delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
             # self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
 
