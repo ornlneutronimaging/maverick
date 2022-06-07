@@ -9,6 +9,7 @@ from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys, BinAutoMode
 from .. import LAMBDA, MICRO, ANGSTROMS
 from .linear_bin import LinearBin
+from .log_bin import LogBin
 from ..utilities.table_handler import TableHandler
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
@@ -96,17 +97,37 @@ class EventHandler:
             raise NotImplementedError("LinearBin mode not implemented!")
 
     def bin_auto_log_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
+        self.logger.info(f"bin auto log changed: radio button changed -> {source_radio_button}")
+        o_bin = LogBin(parent=self.parent)
+
+        self.parent.ui.auto_log_file_index_spinBox.blockSignals(True)
+        self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(True)
+        self.parent.ui.auto_log_lambda_doubleSpinBox.blockSignals(True)
+
+        self.logger.info(f"-> raw_file_index_array_binned: {self.parent.time_spectra[TimeSpectraKeys.file_index_array]}")
+        self.logger.info(f"-> raw_tof_array_binned: {self.parent.time_spectra[TimeSpectraKeys.tof_array]}")
+        self.logger.info(f"-> raw_lambda_array_binned: {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
+
         if source_radio_button == TimeSpectraKeys.file_index_array:
             file_index_value = self.parent.ui.auto_log_file_index_spinBox.value()
+            self.logger.info(f"--> bin requested: {file_index_value}")
 
         elif source_radio_button == TimeSpectraKeys.tof_array:
             tof_value = self.parent.ui.auto_log_tof_doubleSpinBox.value()
+            self.logger.info(f"--> bin requested: {tof_value}")
+            o_bin.create_linear_file_index_bin_array(source_array=TimeSpectraKeys.tof_array,
+                                                     bin_value=tof_value)
 
         elif source_radio_button == TimeSpectraKeys.lambda_array:
             lambda_value = self.parent.ui.auto_log_lambda_doubleSpinBox.value()
+            self.logger.info(f"--> bin requested: {lambda_value}")
 
         else:
             raise NotImplementedError("bin auto log algorithm not implemented!")
+
+        self.parent.ui.auto_log_file_index_spinBox.blockSignals(False)
+        self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(False)
+        self.parent.ui.auto_log_lambda_doubleSpinBox.blockSignals(False)
 
     def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
         self.logger.info(f"bin auto linear changed: radio button changed -> {source_radio_button}")

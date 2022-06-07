@@ -442,6 +442,9 @@
                 </item>
                 <item row="0" column="1">
                  <widget class="QSpinBox" name="auto_log_file_index_spinBox">
+                  <property name="enabled">
+                   <bool>false</bool>
+                  </property>
                   <property name="minimum">
                    <number>1</number>
                   </property>

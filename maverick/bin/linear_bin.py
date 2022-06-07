@@ -1,7 +1,6 @@
 import numpy as np
 import logging
 
-from ..session import SessionKeys
 from ..utilities import TimeSpectraKeys
 from ..utilities.get import Get
 
@@ -11,10 +10,6 @@ class LinearBin:
     linear_bins = {TimeSpectraKeys.tof_array: None,
                    TimeSpectraKeys.file_index_array: None,
                    TimeSpectraKeys.lambda_array: None}
-
-    log_bins = {TimeSpectraKeys.tof_array: None,
-                TimeSpectraKeys.file_index_array: None,
-                TimeSpectraKeys.lambda_array: None}
 
     def __init__(self, parent=None):
         self.parent = parent
