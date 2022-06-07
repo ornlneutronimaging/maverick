@@ -158,8 +158,8 @@ class EventHandler:
             file_index_value = self.parent.ui.auto_linear_file_index_spinBox.value()
             self.logger.info(f"--> bin requested: {file_index_value}")
             o_bin.create_linear_file_index_bin_array(bin_value=file_index_value)
-            # o_bin.create_linear_bin_arrays()
-            #
+            o_bin.create_linear_bin_arrays()
+
             # delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
             # self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
             #
@@ -170,8 +170,8 @@ class EventHandler:
             tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
             self.logger.info(f"--> bin requested: {tof_value}")
             o_bin.create_linear_file_index_bin_array(bin_value=tof_value * 1e-6)   # to switch to seconds
-            # o_bin.create_linear_bin_arrays()
-            #
+            o_bin.create_linear_bin_arrays()
+
             # delta_file_index = o_bin.get_linear_delta_file_index()
             # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
             #
@@ -182,8 +182,8 @@ class EventHandler:
             lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
             self.logger.info(f"--> bin requested: {lambda_value}")
             o_bin.create_linear_file_index_bin_array(bin_value=lambda_value * 1e-10)   # to switch to seconds
-            # o_bin.create_linear_bin_arrays()
-            #
+            o_bin.create_linear_bin_arrays()
+
             # delta_file_index = o_bin.get_linear_delta_file_index()
             # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
             #
