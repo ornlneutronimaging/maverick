@@ -257,3 +257,25 @@ class EventHandler:
             o_table.insert_item(row=_row, column=1, value=str_file_index, editable=False)
             o_table.insert_item(row=_row, column=2, value=str_tof, editable=False)
             o_table.insert_item(row=_row, column=3, value=str_lambda, editable=False)
+
+    def auto_linear_radioButton_changed(self):
+        file_index_status = False
+        tof_status = False
+        lambda_status = False
+        if self.parent.ui.auto_linear_file_index_radioButton.isChecked():
+            file_index_status = True
+            source_button = TimeSpectraKeys.file_index_array
+        elif self.parent.ui.auto_linear_tof_radioButton.isChecked():
+            tof_status = True
+            source_button = TimeSpectraKeys.tof_array
+        else:
+            lambda_status = True
+            source_button = TimeSpectraKeys.lambda_array
+
+        self.parent.ui.auto_linear_file_index_spinBox.setEnabled(file_index_status)
+        self.parent.ui.auto_linear_tof_doubleSpinBox.setEnabled(tof_status)
+        self.parent.ui.bin_auto_linear_tof_units_label.setEnabled(tof_status)
+        self.parent.ui.auto_linear_lambda_doubleSpinBox.setEnabled(lambda_status)
+        self.parent.ui.bin_auto_linear_lambda_units_label.setEnabled(lambda_status)
+
+        self.bin_auto_linear_changed(source_radio_button=source_button)
