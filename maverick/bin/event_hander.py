@@ -13,7 +13,7 @@ from .log_bin import LogBin
 from ..utilities.table_handler import TableHandler
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
-BIN_MARGIN_COEFF = 0.1
+FILE_INDEX_BIN_MARGIN = 0.5
 TO_MICROS_UNITS = 1e6
 TO_ANGSTROMS_UNITS = 1e10
 
@@ -58,15 +58,25 @@ class EventHandler:
             for _bin in bins:
 
                 if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
-                    scale_bin = [_bin[0], _bin[1] - BIN_MARGIN_COEFF]
-                elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-                    scale_bin = [_value * TO_MICROS_UNITS for _value in _bin]
-                    right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
-                    scale_bin[1] -= right_margin
-                elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-                    scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in _bin]
-                    right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
-                    scale_bin[1] -= right_margin
+                    if _bin == []:
+                        continue
+
+                    elif len(_bin) == 1:
+                        scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
+                                     _bin[0] + FILE_INDEX_BIN_MARGIN]
+
+                    else:
+                        scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
+                                     _bin[-1] + FILE_INDEX_BIN_MARGIN]
+
+                # elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+                #     # scale_bin = [_value * TO_MICROS_UNITS for _value in _bin]
+                #     # right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
+                #     # scale_bin[1] -= right_margin
+                # elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
+                #     scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in _bin]
+                #     right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
+                #     scale_bin[1] -= right_margin
 
                 item = pg.LinearRegionItem(values=scale_bin,
                                            orientation='vertical',
@@ -181,8 +191,8 @@ class EventHandler:
                                    TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
 
         self.fill_auto_table()
-        # self.refresh_tab()
-        #
+        self.refresh_tab()
+
         # show_status_message(parent=self.parent,
         #                     message=f"New {source_radio_button} bin size selected!",
         #                     status=StatusMessageStatus.ready,

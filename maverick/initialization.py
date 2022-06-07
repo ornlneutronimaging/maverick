@@ -52,8 +52,8 @@ class Initialization:
         o_table.set_column_sizes(column_sizes=column_sizes)
         column_names = ['bin #',
                         'file #',
-                        'tof range',
-                        LAMBDA + " range"]
+                        'tof range (' + MICRO + "s)",
+                        LAMBDA + " range (" + ANGSTROMS + ")"]
         o_table.set_column_names(column_names=column_names)
 
     def labels(self):

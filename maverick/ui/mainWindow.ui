@@ -485,7 +485,7 @@
              <item>
               <widget class="QFrame" name="bin_auto_linear_frame">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Minimum" vsizetype="Preferred">
