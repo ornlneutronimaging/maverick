@@ -14,7 +14,8 @@ from ..utilities.table_handler import TableHandler
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
 BIN_MARGIN_COEFF = 0.1
-
+TO_MICROS_UNITS = 1e6
+TO_ANGSTROMS_UNITS = 1e10
 
 class EventHandler:
 
@@ -41,10 +42,10 @@ class EventHandler:
         if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
             x_axis_label = "file index"
         elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-            x_axis *= 1e6    # to display axis in micros
+            x_axis *= TO_MICROS_UNITS    # to display axis in micros
             x_axis_label = "tof (" + MICRO + "s)"
         elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-            x_axis *= 1e10    # to display axis in Angstroms
+            x_axis *= TO_ANGSTROMS_UNITS    # to display axis in Angstroms
             x_axis_label = LAMBDA + "(" + ANGSTROMS + ")"
 
         self.parent.bin_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
@@ -59,13 +60,11 @@ class EventHandler:
                 if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
                     scale_bin = [_bin[0], _bin[1] - BIN_MARGIN_COEFF]
                 elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-                    coeff = 1e6
-                    scale_bin = [_value * coeff for _value in _bin]
+                    scale_bin = [_value * TO_MICROS_UNITS for _value in _bin]
                     right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
                     scale_bin[1] -= right_margin
                 elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-                    coeff = 1e10
-                    scale_bin = [_value * coeff for _value in _bin]
+                    scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in _bin]
                     right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
                     scale_bin[1] -= right_margin
 
@@ -152,19 +151,11 @@ class EventHandler:
         self.logger.info(f"-> raw_tof_array_binned: {self.parent.time_spectra[TimeSpectraKeys.tof_array]}")
         self.logger.info(f"-> raw_lambda_array_binned: {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
 
-        # try:
-
         if source_radio_button == TimeSpectraKeys.file_index_array:
             file_index_value = self.parent.ui.auto_linear_file_index_spinBox.value()
             self.logger.info(f"--> bin requested: {file_index_value}")
             o_bin.create_linear_file_index_bin_array(bin_value=file_index_value)
             o_bin.create_linear_bin_arrays()
-
-            # delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
-            # self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
-
-            # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
-            # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
 
         elif source_radio_button == TimeSpectraKeys.tof_array:
             tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
@@ -172,23 +163,11 @@ class EventHandler:
             o_bin.create_linear_file_index_bin_array(bin_value=tof_value * 1e-6)   # to switch to seconds
             o_bin.create_linear_bin_arrays()
 
-            # delta_file_index = o_bin.get_linear_delta_file_index()
-            # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
-
-            # delta_lambda = o_bin.get_linear_delta_lambda() * 1e10  # to display in Angstroms
-            # self.parent.ui.auto_linear_lambda_doubleSpinBox.setValue(delta_lambda)
-
         elif source_radio_button == TimeSpectraKeys.lambda_array:
             lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
             self.logger.info(f"--> bin requested: {lambda_value}")
             o_bin.create_linear_file_index_bin_array(bin_value=lambda_value * 1e-10)   # to switch to seconds
             o_bin.create_linear_bin_arrays()
-
-            # delta_file_index = o_bin.get_linear_delta_file_index()
-            # self.parent.ui.auto_linear_file_index_spinBox.setValue(delta_file_index)
-
-            # delta_tof = o_bin.get_linear_delta_tof() * 1e6  # to display in micros
-            # self.parent.ui.auto_linear_tof_doubleSpinBox.setValue(delta_tof)
 
         else:
             raise NotImplementedError("bin auto linear algorithm not implemented!")
@@ -196,12 +175,12 @@ class EventHandler:
         self.logger.info(f"-> file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
         self.logger.info(f"-> tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
         self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
-        #
-        # self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
-        #                            TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
-        #                            TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
-        #
-        # self.fill_auto_table()
+
+        self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
+                                   TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
+                                   TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
+
+        self.fill_auto_table()
         # self.refresh_tab()
         #
         # show_status_message(parent=self.parent,
@@ -231,26 +210,34 @@ class EventHandler:
         lambda_array_of_bins = linear_bins[TimeSpectraKeys.lambda_array]
 
         for _row in np.arange(len(list_rows)):
-            if file_index_array_of_bins[_row] == []:
+
+            file_bin = file_index_array_of_bins[_row]
+            tof_bin = tof_array_of_bins[_row]
+            lambda_bin = lambda_array_of_bins[_row]
+
+            if file_bin == []:
                 str_file_index = "N/A"
-            else:
-                from_file_index = file_index_array_of_bins[_row][0]
-                to_file_index = file_index_array_of_bins[_row][1]
-                str_file_index = f"[{from_file_index}, {to_file_index})"
-
-            if str_file_index == "N/A":
                 str_tof = "N/A"
-            else:
-                left_tof = tof_array_of_bins[_row][0] * 1e6  # to display in micros
-                right_tof = tof_array_of_bins[_row][1] * 1e6
-                str_tof = f"[{left_tof:.2f}, {right_tof:.2f})"
-
-            if str_file_index == "N/A":
                 str_lambda = "N/A"
+
+            elif len(file_bin) == 1:
+                str_file_index = file_bin[0]
+                str_tof = f"{tof_bin[0] * TO_MICROS_UNITS: .2f}"
+                str_lambda = f"{lambda_bin[0] * TO_ANGSTROMS_UNITS: .3f}"
+
+            elif len(file_bin) == 2:
+                str_file_index = f"{file_bin[0]}, {file_bin[1]}"
+                str_tof = f"{tof_bin[0] * TO_MICROS_UNITS:.2f}, " \
+                          f"{tof_bin[1] * TO_MICROS_UNITS:.2f}"
+                str_lambda = f"{lambda_bin[0] * TO_ANGSTROMS_UNITS:.3f}, " \
+                             f"{lambda_bin[1] * TO_ANGSTROMS_UNITS:.3f}"
+
             else:
-                left_lambda = lambda_array_of_bins[_row][0] * 1e10  # to display in Angstroms
-                right_lambda = lambda_array_of_bins[_row][1] * 1e10
-                str_lambda = f"[{left_lambda:.3f}, {right_lambda:.3f})"
+                str_file_index = f"{file_bin[0]} ... {file_bin[-1]}"
+                str_tof = f"{tof_bin[0] * TO_MICROS_UNITS:.2f} ... " \
+                          f"{tof_bin[-1] * TO_MICROS_UNITS:.2f}"
+                str_lambda = f"{lambda_bin[0] * TO_ANGSTROMS_UNITS:.3f} ... " \
+                             f"{lambda_bin[-1] * TO_ANGSTROMS_UNITS:.3f}"
 
             o_table.insert_empty_row(row=_row)
             o_table.insert_item(row=_row, column=0, value=_row, editable=False)
