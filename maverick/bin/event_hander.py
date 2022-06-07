@@ -19,9 +19,18 @@ TO_ANGSTROMS_UNITS = 1e10
 
 class EventHandler:
 
+    tof_bin_margin = 0
+    lambda_bin_margin = 0
+
     def __init__(self, parent=None):
         self.parent = parent
         self.logger = logging.getLogger('maverick')
+
+        self.tof_bin_margin = (self.parent.time_spectra[TimeSpectraKeys.tof_array][1] -
+                               self.parent.time_spectra[TimeSpectraKeys.tof_array][0]) / 2.
+
+        self.lambda_bin_margin = (self.parent.time_spectra[TimeSpectraKeys.lambda_array][1] -
+                                  self.parent.time_spectra[TimeSpectraKeys.lambda_array][0]) / 2
 
     def refresh_tab(self):
         # refresh profile using right x_axis
@@ -57,26 +66,25 @@ class EventHandler:
             list_item = []
             for _bin in bins:
 
+                if _bin == []:
+                    continue
+
                 if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
-                    if _bin == []:
-                        continue
 
-                    elif len(_bin) == 1:
-                        scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
-                                     _bin[0] + FILE_INDEX_BIN_MARGIN]
+                    scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
+                                 _bin[-1] + FILE_INDEX_BIN_MARGIN]
 
-                    else:
-                        scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
-                                     _bin[-1] + FILE_INDEX_BIN_MARGIN]
+                elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
 
-                # elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-                #     # scale_bin = [_value * TO_MICROS_UNITS for _value in _bin]
-                #     # right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
-                #     # scale_bin[1] -= right_margin
-                # elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-                #     scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in _bin]
-                #     right_margin = BIN_MARGIN_COEFF * (x_axis[1] - x_axis[0])
-                #     scale_bin[1] -= right_margin
+                    scale_bin = [_bin[0] - self.tof_bin_margin,
+                                 _bin[-1] + self.tof_bin_margin]
+                    scale_bin = [_value * TO_MICROS_UNITS for _value in scale_bin]
+
+                else:
+
+                    scale_bin = [_bin[0] - self.lambda_bin_margin,
+                                 _bin[-1] + self.lambda_bin_margin]
+                    scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in scale_bin]
 
                 item = pg.LinearRegionItem(values=scale_bin,
                                            orientation='vertical',
