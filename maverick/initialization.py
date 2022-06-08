@@ -48,9 +48,10 @@ class Initialization:
 
         # bin auto table
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        column_sizes = [35, 60, 115, 115]
+        column_sizes = [40, 35, 60, 115, 115]
         o_table.set_column_sizes(column_sizes=column_sizes)
-        column_names = ['bin #',
+        column_names = ['Use?',
+                        'bin #',
                         'file #',
                         'tof range (' + MICRO + "s)",
                         LAMBDA + " range (" + ANGSTROMS + ")"]

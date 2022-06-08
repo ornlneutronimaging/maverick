@@ -230,6 +230,10 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         o_event.auto_linear_radioButton_changed()
 
+    def auto_table_use_checkbox_changed(self, state, row):
+        print(f"state: {state}")
+        print(f"row: {row}")
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()

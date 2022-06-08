@@ -649,6 +649,11 @@
                </property>
                <column>
                 <property name="text">
+                 <string>Use ?</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
                  <string>Bin #</string>
                 </property>
                </column>
