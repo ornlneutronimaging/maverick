@@ -20,6 +20,7 @@ from .initialization import Initialization
 from .utilities.check import Check
 from .combine.event_handler import EventHandler as CombineEventHandler
 from .bin.event_hander import EventHandler as BinEventHandler
+from .bin.preview_full_bin_axis import PreviewFullBinAxis
 
 from . import load_ui
 
@@ -57,6 +58,10 @@ class MainWindow(QMainWindow):
     log_bins = {TimeSpectraKeys.tof_array: None,
                 TimeSpectraKeys.file_index_array: None,
                 TimeSpectraKeys.lambda_array: None}
+
+    # use to preview the full axis
+    # ex: [1,2,3,4,5,6,7] or [0.1, 0.2, 0.4, 0.8, 1.6....]
+    full_bin_axis_requested = None
 
     # profile signal (displayed on the top right of combine and bin tab)
     # 1D array
@@ -239,6 +244,10 @@ class MainWindow(QMainWindow):
     def auto_table_use_checkbox_changed(self, state, row):
         print(f"state: {state}")
         print(f"row: {row}")
+
+    def bin_auto_visualize_axis_generated_button_clicked(self):
+        o_preview = PreviewFullBinAxis(parent=self)
+        o_preview.show()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

@@ -6,7 +6,7 @@ import pyqtgraph as pg
 
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS, DELTA
-from . import combine_image, bin_image, auto_image, manual_image, settings_image
+from . import combine_image, bin_image, auto_image, manual_image, settings_image, more_infos_image
 
 
 class Initialization:
@@ -22,6 +22,7 @@ class Initialization:
         self.table()
         self.labels()
         self.tab()
+        self.widgets()
 
     def statusbar(self):
         self.parent.eventProgress = QProgressBar(self.parent.ui.statusbar)
@@ -140,3 +141,7 @@ class Initialization:
         vertical_layout = QVBoxLayout()
         vertical_layout.addWidget(area)
         self.parent.ui.combine_widget.setLayout(vertical_layout)
+
+    def widgets(self):
+        self.parent.ui.visualize_auto_bins_axis_generated_pushButton.setIcon(QIcon(more_infos_image))
+        self.parent.ui.visualize_auto_bins_axis_generated_pushButton.setToolTip("Display full original bin axis")

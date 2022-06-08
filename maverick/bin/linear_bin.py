@@ -24,6 +24,7 @@ class LinearBin:
         if self.source_array == TimeSpectraKeys.file_index_array:
             number_of_files = len(original_array)
             new_index_array = np.arange(0, number_of_files, bin_value)
+            self.parent.full_bin_axis_requested = new_index_array
 
             linear_file_index_bin_array = [[] for _ in np.arange(len(new_index_array))]
             for _file_index, _bin in enumerate(original_array):
@@ -38,6 +39,7 @@ class LinearBin:
 
             new_tof_array = np.arange(original_tof_array[0], original_tof_array[-1], bin_value)
             new_tof_array = np.append(new_tof_array, new_tof_array[-1] + bin_value)
+            self.parent.full_bin_axis_requested = new_tof_array
 
             linear_tof_bin_array = [[] for _ in np.arange(len(new_tof_array)-1)]
             for _tof_index, _bin in enumerate(original_tof_array):
@@ -51,6 +53,7 @@ class LinearBin:
             original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
             new_lambda_array = np.arange(original_lambda_array[0], original_lambda_array[-1], bin_value)
             new_lambda_array = np.append(new_lambda_array, original_lambda_array[-1] + bin_value)
+            self.parent.full_bin_axis_requested = new_lambda_array
 
             linear_lambda_bin_array = [[] for _ in np.arange(len(new_lambda_array)-1)]
             for _tof_index, _bin in enumerate(original_lambda_array):

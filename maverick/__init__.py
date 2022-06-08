@@ -13,6 +13,7 @@ combine_image = os.path.join(root, "icons/combine.png")
 bin_image = os.path.join(root, "icons/bin.png")
 auto_image = os.path.join(root, "icons/auto.png")
 manual_image = os.path.join(root, "icons/manual.png")
+more_infos_image = os.path.join(root, "icons/more_infos.png")
 
 ANGSTROMS = u"\u212B"
 LAMBDA = u"\u03BB"

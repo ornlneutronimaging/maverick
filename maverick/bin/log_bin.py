@@ -37,6 +37,8 @@ class LogBin:
             parameter += parameter * bin_value
             new_bin_array.append(parameter)
 
+        self.parent.full_bin_axis_requested = new_bin_array
+
         self.logger.info(f"new bins array: {new_bin_array}")
 
         # we need to find where the file index end up in this array

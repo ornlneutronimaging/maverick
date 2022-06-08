@@ -70,6 +70,35 @@ class Get:
         else:
             raise NotImplementedError(f"auto log bin algorithm not implemented!")
 
+    def bin_log_axis(self):
+        if self.parent.ui.bin_auto_log_file_index_radioButton.isChecked():
+            return TimeSpectraKeys.file_index_array
+        elif self.parent.ui.bin_auto_log_tof_radioButton.isChecked():
+            return TimeSpectraKeys.tof_array
+        elif self.parent.ui.bin_auto_log_lambda_radioButton.isChecked():
+            return TimeSpectraKeys.lambda_array
+        else:
+            raise NotImplementedError(f"type not supported")
+
+    def bin_linear_axis(self):
+        if self.parent.ui.auto_linear_file_index_radioButton.isChecked():
+            return TimeSpectraKeys.file_index_array
+        elif self.parent.ui.auto_linear_tof_radioButton.isChecked():
+            return TimeSpectraKeys.tof_array
+        elif self.parent.ui.auto_linear_lambda_radioButton.isChecked():
+            return TimeSpectraKeys.lambda_array
+        else:
+            raise NotImplementedError(f"type not supported")
+
+    def current_bin_tab_working_axis(self):
+        bin_mode = self.bin_auto_mode()
+        if bin_mode == BinAutoMode.log:
+            return self.bin_log_axis()
+        elif bin_mode == BinAutoMode.linear:
+            return self.bin_linear_axis()
+        else:
+            raise NotImplementedError(f"type not supported")
+
     def list_array_to_combine(self):
         session = self.parent.session
         list_working_folders_status = session[SessionKeys.list_working_folders_status]

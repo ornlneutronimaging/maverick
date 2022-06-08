@@ -137,7 +137,7 @@
                   </sizepolicy>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>1</number>
                  </property>
                  <widget class="QWidget" name="tab_3">
                   <attribute name="title">
@@ -633,11 +633,69 @@
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>Summary of bins</string>
-               </property>
-              </widget>
+              <layout class="QHBoxLayout" name="horizontalLayout_6">
+               <item>
+                <widget class="QLabel" name="label_9">
+                 <property name="text">
+                  <string>Summary of bins</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <spacer name="horizontalSpacer_7">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_7">
+                 <property name="text">
+                  <string>Display full requested bin axis</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
+                <widget class="QPushButton" name="visualize_auto_bins_axis_generated_pushButton">
+                 <property name="minimumSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>20</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="sizeIncrement">
+                  <size>
+                   <width>20</width>
+                   <height>0</height>
+                  </size>
+                 </property>
+                 <property name="toolTip">
+                  <string/>
+                 </property>
+                 <property name="toolTipDuration">
+                  <number>4</number>
+                 </property>
+                 <property name="whatsThis">
+                  <string extracomment="aa"/>
+                 </property>
+                 <property name="text">
+                  <string extracomment="bb"/>
+                 </property>
+                </widget>
+               </item>
+              </layout>
              </item>
              <item>
               <widget class="QTableWidget" name="bin_auto_tableWidget">
@@ -939,7 +997,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>147</x>
-     <y>798</y>
+     <y>880</y>
     </hint>
     <hint type="destinationlabel">
      <x>1089</x>
@@ -955,7 +1013,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>92</x>
-     <y>800</y>
+     <y>804</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -970,8 +1028,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>116</x>
-     <y>800</y>
+     <x>161</x>
+     <y>804</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1331,6 +1389,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>visualize_auto_bins_axis_generated_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>594</x>
+     <y>461</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>7</x>
+     <y>515</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1353,5 +1427,6 @@
   <slot>bin_auto_linear_lambda_changed()</slot>
   <slot>auto_linear_radioButton_changed()</slot>
   <slot>auto_log_radioButton_changed()</slot>
+  <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
  </slots>
 </ui>

@@ -14,9 +14,10 @@ from .log_bin import LogBin
 from ..utilities.table_handler import TableHandler
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
+from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
+
 FILE_INDEX_BIN_MARGIN = 0.5
-TO_MICROS_UNITS = 1e6
-TO_ANGSTROMS_UNITS = 1e10
+
 
 class EventHandler:
 
@@ -280,7 +281,7 @@ class EventHandler:
             else:
                 checkbox.setChecked(True)
             checkbox.stateChanged.connect(lambda state=0,
-                                                 row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
+                                          row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
 
             o_table.insert_empty_row(row=_row)
             o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=True)
