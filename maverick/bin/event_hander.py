@@ -345,3 +345,16 @@ class EventHandler:
         self.parent.ui.auto_log_lambda_doubleSpinBox.setEnabled(lambda_status)
 
         self.bin_auto_log_changed(source_radio_button=source_button)
+
+    def use_auto_bin_state_changed(self, row=0, state=0):
+        """
+        user change the state of any of the bin checkbox
+        :param row:
+        :param state: 0 when unchecked and 2 otherwise
+        """
+        item = self.parent.dict_of_bins_item[row]
+
+        if state == 0:
+            self.parent.bin_profile_view.removeItem(item)
+        else:
+            self.parent.bin_profile_view.addItem(item)

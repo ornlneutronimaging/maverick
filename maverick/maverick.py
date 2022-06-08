@@ -242,8 +242,8 @@ class MainWindow(QMainWindow):
         o_event.auto_linear_radioButton_changed()
 
     def auto_table_use_checkbox_changed(self, state, row):
-        print(f"state: {state}")
-        print(f"row: {row}")
+        o_event = BinEventHandler(parent=self)
+        o_event.use_auto_bin_state_changed(row=row, state=state)
 
     def bin_auto_hide_empty_bins(self):
         o_event = BinEventHandler(parent=self)
