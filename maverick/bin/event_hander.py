@@ -102,8 +102,15 @@ class EventHandler:
 
     def bin_auto_radioButton_clicked(self):
         state_auto = self.parent.ui.auto_log_radioButton.isChecked()
+        self.parent.ui.auto_linear_radioButton.setChecked(state_auto)
+        self.parent.ui.auto_linear_radioButton.setChecked(not state_auto)
         self.parent.ui.bin_auto_log_frame.setEnabled(state_auto)
         self.parent.ui.bin_auto_linear_frame.setEnabled(not state_auto)
+        o_get = Get(parent=self.parent)
+        if o_get.bin_auto_mode() == BinAutoMode.log:
+            self.auto_log_radioButton_changed()
+        else:
+            self.auto_linear_radioButton_changed()
 
     def bin_auto_manual_tab_changed(self, new_tab_index=0):
         if new_tab_index == 0:
