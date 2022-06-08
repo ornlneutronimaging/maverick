@@ -246,10 +246,12 @@ class EventHandler:
             tof_bin = tof_array_of_bins[_row]
             lambda_bin = lambda_array_of_bins[_row]
 
+            checkbox_enabled = True
             if file_bin == []:
                 str_file_index = "N/A"
                 str_tof = "N/A"
                 str_lambda = "N/A"
+                checkbox_enabled = False
 
             elif len(file_bin) == 1:
                 str_file_index = file_bin[0]
@@ -272,7 +274,11 @@ class EventHandler:
 
             # use or not that bin
             checkbox = QCheckBox()
-            checkbox.setChecked(True)
+            checkbox.setEnabled(checkbox_enabled)
+            if not checkbox_enabled:
+                checkbox.setChecked(False)
+            else:
+                checkbox.setChecked(True)
             checkbox.stateChanged.connect(lambda state=0,
                                                  row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
 
