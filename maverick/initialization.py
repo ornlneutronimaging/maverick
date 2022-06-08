@@ -62,7 +62,10 @@ class Initialization:
         self.parent.ui.bin_tof_radioButton.setText("TOF (" + MICRO + "s)")
         self.parent.ui.bin_lambda_radioButton.setText(LAMBDA + " (" + ANGSTROMS + ")")
         # bin tab
-        self.parent.ui.bin_auto_log_lambda_label.setText(LAMBDA)
+        self.parent.ui.bin_auto_log_file_index_radioButton.setText(DELTA + "file_index/file_index")
+        self.parent.ui.bin_auto_log_tof_radioButton.setText(DELTA + "tof")
+        self.parent.ui.bin_auto_log_lambda_radioButton.setText(DELTA + LAMBDA + "/" + LAMBDA)
+
         self.parent.ui.auto_linear_file_index_radioButton.setText(DELTA + " file index")
         self.parent.ui.auto_linear_tof_radioButton.setText(DELTA + " tof")
         self.parent.ui.auto_linear_lambda_radioButton.setText(DELTA + LAMBDA)

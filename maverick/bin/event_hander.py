@@ -128,34 +128,31 @@ class EventHandler:
         self.logger.info(f"-> original raw_lambda_array_binned:"
                          f" {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
 
-        if source_radio_button == TimeSpectraKeys.file_index_array:
-            file_index_value = self.parent.ui.auto_log_file_index_spinBox.value()
-            self.logger.info(f"--> bin requested: {file_index_value}")
+        o_get = Get(parent=self.parent)
+        log_bin_requested = o_get.auto_log_bin_requested()
+        self.logger.info(f"--> bin requested: {log_bin_requested}")
 
-        elif source_radio_button == TimeSpectraKeys.tof_array:
-            tof_value = self.parent.ui.auto_log_tof_doubleSpinBox.value()
-            self.logger.info(f"--> bin requested: {tof_value}")
-            o_bin.create_log_file_index_bin_array(bin_value=tof_value)
-            # o_bin.create_log_bin_arrays()
+        # if source_radio_button == TimeSpectraKeys.file_index_array:
+        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
+        #
+        # elif source_radio_button == TimeSpectraKeys.tof_array:
+        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
+        #     # o_bin.create_log_bin_arrays()
+        #
+        # elif source_radio_button == TimeSpectraKeys.lambda_array:
+        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
+        #     # o_bin.create_log_bin_arrays()
+        #
+        # else:
+        #     raise NotImplementedError("bin auto log algorithm not implemented!")
 
-        elif source_radio_button == TimeSpectraKeys.lambda_array:
-            lambda_value = self.parent.ui.auto_log_lambda_doubleSpinBox.value()
-            self.logger.info(f"--> bin requested: {lambda_value}")
-            o_bin.create_log_file_index_bin_array(bin_value=lambda_value)
-            # o_bin.create_log_bin_arrays()
-
-        else:
-            raise NotImplementedError("bin auto log algorithm not implemented!")
-
-        self.logger.info(f"-> file_index_array_binned: {o_bin.log_bins[TimeSpectraKeys.file_index_array]}")
-        self.logger.info(f"-> tof_array_binned: {o_bin.log_bins[TimeSpectraKeys.tof_array]}")
-        self.logger.info(f"-> lambda_array_binned: {o_bin.log_bins[TimeSpectraKeys.lambda_array]}")
+        # self.logger.info(f"-> file_index_array_binned: {o_bin.log_bins[TimeSpectraKeys.file_index_array]}")
+        # self.logger.info(f"-> tof_array_binned: {o_bin.log_bins[TimeSpectraKeys.tof_array]}")
+        # self.logger.info(f"-> lambda_array_binned: {o_bin.log_bins[TimeSpectraKeys.lambda_array]}")
 
         self.parent.ui.auto_log_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(False)
         self.parent.ui.auto_log_lambda_doubleSpinBox.blockSignals(False)
-
-        del o_bin
 
     def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
         self.logger.info(f"bin auto linear changed: radio button changed -> {source_radio_button}")
@@ -278,3 +275,23 @@ class EventHandler:
         self.parent.ui.bin_auto_linear_lambda_units_label.setEnabled(lambda_status)
 
         self.bin_auto_linear_changed(source_radio_button=source_button)
+
+    def auto_log_radioButton_changed(self):
+        file_index_status = False
+        tof_status = False
+        lambda_status = False
+        if self.parent.ui.bin_auto_log_file_index_radioButton.isChecked():
+            file_index_status = True
+            source_button = TimeSpectraKeys.file_index_array
+        elif self.parent.ui.bin_auto_log_tof_radioButton.isChecked():
+            tof_status = True
+            source_button = TimeSpectraKeys.tof_array
+        else:
+            lambda_status = True
+            source_button = TimeSpectraKeys.lambda_array
+
+        self.parent.ui.auto_log_file_index_spinBox.setEnabled(file_index_status)
+        self.parent.ui.auto_log_tof_doubleSpinBox.setEnabled(tof_status)
+        self.parent.ui.auto_log_lambda_doubleSpinBox.setEnabled(lambda_status)
+
+        self.bin_auto_log_changed(source_radio_button=source_button)

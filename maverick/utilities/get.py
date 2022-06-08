@@ -60,6 +60,16 @@ class Get:
         else:
             raise NotImplementedError("xaxis not implemented in bin tab!")
 
+    def auto_log_bin_requested(self):
+        if self.parent.ui.bin_auto_log_file_index_radioButton.isChecked():
+            return self.parent.ui.auto_log_file_index_spinBox.value()
+        elif self.parent.ui.bin_auto_log_tof_radioButton.isChecked():
+            return self.parent.ui.auto_log_tof_doubleSpinBox.value()
+        elif self.parent.ui.bin_auto_log_lambda_radioButton.isChecked():
+            return self.parent.ui.auto_log_lambda_doubleSpinBox.value()
+        else:
+            raise NotImplementedError(f"auto log bin algorithm not implemented!")
+
     def list_array_to_combine(self):
         session = self.parent.session
         list_working_folders_status = session[SessionKeys.list_working_folders_status]

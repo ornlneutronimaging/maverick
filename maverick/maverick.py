@@ -222,6 +222,10 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
+    def auto_log_radioButton_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.auto_log_radioButton_changed()
+
     def auto_linear_radioButton_changed(self):
         o_event = BinEventHandler(parent=self)
         o_event.auto_linear_radioButton_changed()

@@ -60,17 +60,20 @@ class LogBin:
             except IndexError:
                 continue
 
+        array_of_bins = index_of_bin
+
         # remove empty bins
-        clean_index_of_bins = [_bin for _bin in index_of_bin if _bin != []]
-        self.logger.info(f"index of files in bins: {clean_index_of_bins}")
+        # clean_index_of_bins = [_bin for _bin in index_of_bin if _bin != []]
+        # self.logger.info(f"index of files in bins: {clean_index_of_bins}")
 
         # # create the array of bins [[left_bin,right_bin],[left_bin,right_bin]..]
         # array_of_bins = [[] for _ in np.arange(len(bin_array)-1)]
         # for _index, _bin in enumerate(bin_array[:-1]):
         #     array_of_bins[_index] = [bin_array[_index], bin_array[+1]]
         #
-        # # self.log_bins[self.source_radio_button] = bin_array
-        # self.logger.info(f"log {self.source_radio_button} array of bins: {bin_array}")
+        self.log_bins[self.source_radio_button] = array_of_bins
+        self.logger.info(f"log {self.source_radio_button} array of bins: {array_of_bins}")
+
         # self.log_bins[self.source_radio_button] = array_of_bins
 
     def create_log_bin_arrays(self):
