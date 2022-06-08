@@ -201,16 +201,10 @@ class EventHandler:
         self.fill_auto_table()
         self.refresh_tab()
 
-        # show_status_message(parent=self.parent,
-        #                     message=f"New {source_radio_button} bin size selected!",
-        #                     status=StatusMessageStatus.ready,
-        #                     duration_s=5)
-
-        # except IndexError:
-        #     show_status_message(parent=self.parent,
-        #                         message="Error - Try selecting a smaller bin size!",
-        #                         status=StatusMessageStatus.error,
-        #                         duration_s=5)
+        show_status_message(parent=self.parent,
+                            message=f"New {source_radio_button} bin size selected!",
+                            status=StatusMessageStatus.ready,
+                            duration_s=5)
 
         self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
