@@ -273,18 +273,16 @@ class EventHandler:
                 str_lambda = f"{lambda_bin[0] * TO_ANGSTROMS_UNITS:.3f} ... " \
                              f"{lambda_bin[-1] * TO_ANGSTROMS_UNITS:.3f}"
 
-            # use or not that bin
-            checkbox = QCheckBox()
-            checkbox.setEnabled(checkbox_enabled)
-            if not checkbox_enabled:
-                checkbox.setChecked(False)
-            else:
-                checkbox.setChecked(True)
-            checkbox.stateChanged.connect(lambda state=0,
-                                          row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
-
             o_table.insert_empty_row(row=_row)
-            o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=True)
+
+            # use or not that bin
+            if checkbox_enabled:
+                checkbox = QCheckBox()
+                checkbox.setChecked(True)
+                checkbox.stateChanged.connect(lambda state=0,
+                                              row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
+                o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=True)
+
             o_table.insert_item(row=_row, column=1, value=_row, editable=False)
             o_table.insert_item(row=_row, column=2, value=str_file_index, editable=False)
             o_table.insert_item(row=_row, column=3, value=str_tof, editable=False)
