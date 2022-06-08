@@ -71,7 +71,13 @@ class MainWindow(QMainWindow):
     tof_radio_button = None  # in combine view
     lambda_radio_button = None  # in combine view
     live_combine_image = None  # live combine image used by ROI
-    list_bins_items = None
+
+    # dictionary of all the bins pg item
+    # {0: pg.regionitem1,
+    #  2: pg.regionitem2,
+    #  ...
+    # }
+    dict_of_bins_item = None
 
     def __init__(self, parent=None):
         """

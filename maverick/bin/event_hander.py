@@ -37,9 +37,9 @@ class EventHandler:
         # refresh profile using right x_axis
 
         self.parent.bin_profile_view.clear()  # clear previous plot
-        if not (self.parent.list_bins_items is None):  # remove previous bins
-            for _item in self.parent.list_bins_items:
-                self.parent.bin_profile_view.removeItem(_item)
+        if not (self.parent.dict_of_bins_item is None):  # remove previous bins
+            for _key in self.parent.dict_of_bins_item.keys():
+                self.parent.bin_profile_view.removeItem(self.parent.dict_of_bins_item[_key])
 
         profile_signal = self.parent.profile_signal
 
@@ -67,8 +67,8 @@ class EventHandler:
         else:
             bins = self.parent.log_bins[time_spectra_x_axis_name]
 
-        list_item = []
-        for _bin in bins:
+        dict_of_bins_item = {}
+        for _index, _bin in enumerate(bins):
 
             if _bin == []:
                 continue
@@ -97,9 +97,9 @@ class EventHandler:
                                        bounds=None)
             item.setZValue(-10)
             self.parent.bin_profile_view.addItem(item)
-            list_item.append(item)
+            dict_of_bins_item[_index] = item
 
-        self.parent.list_bins_items = list_item
+        self.parent.dict_of_bins_item = dict_of_bins_item
 
     def bin_auto_radioButton_clicked(self):
         state_auto = self.parent.ui.auto_log_radioButton.isChecked()
