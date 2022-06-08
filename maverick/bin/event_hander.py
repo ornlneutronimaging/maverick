@@ -164,6 +164,7 @@ class EventHandler:
                                 TimeSpectraKeys.lambda_array: o_bin.get_log_lambda()}
 
         self.fill_auto_table()
+        self.update_auto_table()
         self.refresh_tab()
 
         self.parent.ui.auto_log_file_index_spinBox.blockSignals(False)
@@ -222,6 +223,21 @@ class EventHandler:
         self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
         self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(False)
+
+    def update_auto_table(self):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+        nbr_rows = o_table.row_count()
+
+        if self.parent.ui.bin_auto_hide_empty_bins_checkBox.isChecked():
+            for _row in np.arange(nbr_rows):
+                item = o_table.get_item_str_from_cell(row=_row,
+                                                      column=2)
+                if item == "N/A":
+                    o_table.set_row_hidden(_row, True)
+
+        else:
+            for _row in np.arange(nbr_rows):
+                o_table.set_row_hidden(_row, False)
 
     def fill_auto_table(self):
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)

@@ -245,6 +245,10 @@ class MainWindow(QMainWindow):
         print(f"state: {state}")
         print(f"row: {row}")
 
+    def bin_auto_hide_empty_bins(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.update_auto_table()
+
     def bin_auto_visualize_axis_generated_button_clicked(self):
         o_preview = PreviewFullBinAxis(parent=self)
         o_preview.show()

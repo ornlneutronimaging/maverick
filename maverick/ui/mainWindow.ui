@@ -655,7 +655,66 @@
                 </spacer>
                </item>
                <item>
-                <widget class="QLabel" name="label_7">
+                <widget class="QCheckBox" name="bin_auto_hide_empty_bins_checkBox">
+                 <property name="text">
+                  <string>Hide empty bins</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
+              <widget class="QTableWidget" name="bin_auto_tableWidget">
+               <property name="selectionMode">
+                <enum>QAbstractItemView::SingleSelection</enum>
+               </property>
+               <property name="selectionBehavior">
+                <enum>QAbstractItemView::SelectRows</enum>
+               </property>
+               <column>
+                <property name="text">
+                 <string>Use ?</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>Bin #</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>file index</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>tof</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>lambda</string>
+                </property>
+               </column>
+              </widget>
+             </item>
+             <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_7">
+               <item>
+                <spacer name="horizontalSpacer_8">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QLabel" name="label_8">
                  <property name="text">
                   <string>Display full requested bin axis</string>
                  </property>
@@ -696,41 +755,6 @@
                 </widget>
                </item>
               </layout>
-             </item>
-             <item>
-              <widget class="QTableWidget" name="bin_auto_tableWidget">
-               <property name="selectionMode">
-                <enum>QAbstractItemView::SingleSelection</enum>
-               </property>
-               <property name="selectionBehavior">
-                <enum>QAbstractItemView::SelectRows</enum>
-               </property>
-               <column>
-                <property name="text">
-                 <string>Use ?</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>Bin #</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>file index</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>tof</string>
-                </property>
-               </column>
-               <column>
-                <property name="text">
-                 <string>lambda</string>
-                </property>
-               </column>
-              </widget>
              </item>
             </layout>
            </widget>
@@ -1093,7 +1117,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>975</x>
-     <y>665</y>
+     <y>707</y>
     </hint>
     <hint type="destinationlabel">
      <x>1002</x>
@@ -1109,7 +1133,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1089</x>
-     <y>665</y>
+     <y>707</y>
     </hint>
     <hint type="destinationlabel">
      <x>1143</x>
@@ -1125,7 +1149,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1195</x>
-     <y>665</y>
+     <y>707</y>
     </hint>
     <hint type="destinationlabel">
      <x>1307</x>
@@ -1397,11 +1421,27 @@
    <hints>
     <hint type="sourcelabel">
      <x>594</x>
-     <y>461</y>
+     <y>702</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
      <y>515</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_auto_hide_empty_bins_checkBox</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_hide_empty_bins()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>509</x>
+     <y>449</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>585</y>
     </hint>
    </hints>
   </connection>
@@ -1428,5 +1468,6 @@
   <slot>auto_linear_radioButton_changed()</slot>
   <slot>auto_log_radioButton_changed()</slot>
   <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
+  <slot>bin_auto_hide_empty_bins()</slot>
  </slots>
 </ui>
