@@ -12,7 +12,7 @@ class LogBin:
 
     def __init__(self, parent=None, source_radio_button=TimeSpectraKeys.file_index_array):
         self.parent = parent
-        self.source_radio_button = source_radio_button
+        self.source_array = source_radio_button
         self.logger = logging.getLogger("maverick")
 
     def create_log_file_index_bin_array(self, bin_value=1):
@@ -21,18 +21,7 @@ class LogBin:
         :param source_array: either 'file_index', 'lambda' or 'tof'
         :param bin_value: value of the logarithmic bin
         """
-        original_array = np.array(self.parent.time_spectra[self.source_radio_button])
-        if self.source_radio_button == TimeSpectraKeys.file_index_array:
-            pass
-
-        elif self.source_radio_button == TimeSpectraKeys.tof_array:
-            pass
-
-        elif self.source_radio_button == TimeSpectraKeys.lambda_array:
-            pass
-
-        else:
-            raise NotImplementedError(f"method {self.source_radio_button} not implemented!")
+        original_array = np.array(self.parent.time_spectra[self.source_array])
 
         # create the log bin array [value1, value2, value3, value4....]
         start_parameter = original_array[0]
@@ -48,6 +37,8 @@ class LogBin:
             parameter += parameter * bin_value
             new_bin_array.append(parameter)
 
+        self.logger.info(f"new bins array: {new_bin_array}")
+
         # we need to find where the file index end up in this array
         # will create [[0],[],[],[1],[2,3],[4,5,6,7],...]
         index_of_bin = [[] for _ in np.arange(len(new_bin_array)-1)]
@@ -62,32 +53,38 @@ class LogBin:
 
         array_of_bins = index_of_bin
 
-        # remove empty bins
-        # clean_index_of_bins = [_bin for _bin in index_of_bin if _bin != []]
-        # self.logger.info(f"index of files in bins: {clean_index_of_bins}")
-
-        # # create the array of bins [[left_bin,right_bin],[left_bin,right_bin]..]
-        # array_of_bins = [[] for _ in np.arange(len(bin_array)-1)]
-        # for _index, _bin in enumerate(bin_array[:-1]):
-        #     array_of_bins[_index] = [bin_array[_index], bin_array[+1]]
-        #
-        self.log_bins[self.source_radio_button] = array_of_bins
-        self.logger.info(f"log {self.source_radio_button} array of bins: {array_of_bins}")
-
-        # self.log_bins[self.source_radio_button] = array_of_bins
+        self.log_bins[self.source_array] = array_of_bins
+        self.logger.info(f"log {self.source_array} array of bins: {array_of_bins}")
 
     def create_log_bin_arrays(self):
-        array_of_bins = self.log_bins[self.source_radio_button]
+        self.logger.info("Creating the other arrays")
 
-        if self.source_radio_button == TimeSpectraKeys.tof_array:
+        file_index_array_of_bins = self.log_bins[self.source_array]
 
-            file_index_array_of_bins = [[] for _ in np.arange(len(array_of_bins))]
-            lambda_array_of_bins = [[] for _ in np.arange(len(array_of_bins))]
+        original_tof_array = np.array(self.parent.time_spectra[TimeSpectraKeys.tof_array])
+        original_lambda_array = np.array(self.parent.time_spectra[TimeSpectraKeys.lambda_array])
 
+        log_bins_tof_array = []
+        log_bins_lambda_array = []
 
+        for _index, _bin in enumerate(file_index_array_of_bins):
 
+            if _bin == []:
+                log_bins_tof_array.append([])
+                log_bins_lambda_array.append([])
+                continue
 
-        pass
+            tof_bin = []
+            lambda_bin = []
+            for _file_index in _bin:
+                tof_bin.append(original_tof_array[_file_index])
+                lambda_bin.append(original_lambda_array[_file_index])
+            log_bins_tof_array.append(tof_bin)
+            log_bins_lambda_array.append(lambda_bin)
+
+        self.log_bins[TimeSpectraKeys.tof_array] = log_bins_tof_array
+        self.log_bins[TimeSpectraKeys.lambda_array] = log_bins_lambda_array
+        self.log_bins[TimeSpectraKeys.file_index_array] = file_index_array_of_bins
 
     def get_log_file_index(self):
         return self.log_bins[TimeSpectraKeys.file_index_array]

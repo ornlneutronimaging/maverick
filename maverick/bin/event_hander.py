@@ -63,42 +63,42 @@ class EventHandler:
 
         if o_get.bin_auto_mode() == BinAutoMode.linear:
             bins = self.parent.linear_bins[time_spectra_x_axis_name]
-            list_item = []
-            for _bin in bins:
-
-                if _bin == []:
-                    continue
-
-                if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
-
-                    scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
-                                 _bin[-1] + FILE_INDEX_BIN_MARGIN]
-
-                elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-
-                    scale_bin = [_bin[0] - self.tof_bin_margin,
-                                 _bin[-1] + self.tof_bin_margin]
-                    scale_bin = [_value * TO_MICROS_UNITS for _value in scale_bin]
-
-                else:
-
-                    scale_bin = [_bin[0] - self.lambda_bin_margin,
-                                 _bin[-1] + self.lambda_bin_margin]
-                    scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in scale_bin]
-
-                item = pg.LinearRegionItem(values=scale_bin,
-                                           orientation='vertical',
-                                           brush=None,
-                                           movable=False,
-                                           bounds=None)
-                item.setZValue(-10)
-                self.parent.bin_profile_view.addItem(item)
-                list_item.append(item)
-
-            self.parent.list_bins_items = list_item
-
         else:
-            pass
+            bins = self.parent.log_bins[time_spectra_x_axis_name]
+
+        list_item = []
+        for _bin in bins:
+
+            if _bin == []:
+                continue
+
+            if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
+
+                scale_bin = [_bin[0] - FILE_INDEX_BIN_MARGIN,
+                             _bin[-1] + FILE_INDEX_BIN_MARGIN]
+
+            elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+
+                scale_bin = [_bin[0] - self.tof_bin_margin,
+                             _bin[-1] + self.tof_bin_margin]
+                scale_bin = [_value * TO_MICROS_UNITS for _value in scale_bin]
+
+            else:
+
+                scale_bin = [_bin[0] - self.lambda_bin_margin,
+                             _bin[-1] + self.lambda_bin_margin]
+                scale_bin = [_value * TO_ANGSTROMS_UNITS for _value in scale_bin]
+
+            item = pg.LinearRegionItem(values=scale_bin,
+                                       orientation='vertical',
+                                       brush=None,
+                                       movable=False,
+                                       bounds=None)
+            item.setZValue(-10)
+            self.parent.bin_profile_view.addItem(item)
+            list_item.append(item)
+
+        self.parent.list_bins_items = list_item
 
     def bin_auto_radioButton_clicked(self):
         state_auto = self.parent.ui.auto_log_radioButton.isChecked()
@@ -132,23 +132,30 @@ class EventHandler:
         log_bin_requested = o_get.auto_log_bin_requested()
         self.logger.info(f"--> bin requested: {log_bin_requested}")
 
-        # if source_radio_button == TimeSpectraKeys.file_index_array:
-        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
-        #
-        # elif source_radio_button == TimeSpectraKeys.tof_array:
-        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
-        #     # o_bin.create_log_bin_arrays()
-        #
-        # elif source_radio_button == TimeSpectraKeys.lambda_array:
-        #     o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
-        #     # o_bin.create_log_bin_arrays()
-        #
-        # else:
-        #     raise NotImplementedError("bin auto log algorithm not implemented!")
+        if source_radio_button == TimeSpectraKeys.file_index_array:
+            o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
 
-        # self.logger.info(f"-> file_index_array_binned: {o_bin.log_bins[TimeSpectraKeys.file_index_array]}")
-        # self.logger.info(f"-> tof_array_binned: {o_bin.log_bins[TimeSpectraKeys.tof_array]}")
-        # self.logger.info(f"-> lambda_array_binned: {o_bin.log_bins[TimeSpectraKeys.lambda_array]}")
+        elif source_radio_button == TimeSpectraKeys.tof_array:
+            o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
+            o_bin.create_log_bin_arrays()
+
+        elif source_radio_button == TimeSpectraKeys.lambda_array:
+            o_bin.create_log_file_index_bin_array(bin_value=log_bin_requested)
+            o_bin.create_log_bin_arrays()
+
+        else:
+            raise NotImplementedError("bin auto log algorithm not implemented!")
+
+        self.logger.info(f"-> file_index_array_binned: {o_bin.log_bins[TimeSpectraKeys.file_index_array]}")
+        self.logger.info(f"-> tof_array_binned: {o_bin.log_bins[TimeSpectraKeys.tof_array]}")
+        self.logger.info(f"-> lambda_array_binned: {o_bin.log_bins[TimeSpectraKeys.lambda_array]}")
+
+        self.parent.log_bins = {TimeSpectraKeys.file_index_array: o_bin.get_log_file_index(),
+                                TimeSpectraKeys.tof_array: o_bin.get_log_tof(),
+                                TimeSpectraKeys.lambda_array: o_bin.get_log_lambda()}
+
+        self.fill_auto_table()
+        self.refresh_tab()
 
         self.parent.ui.auto_log_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(False)
@@ -211,12 +218,19 @@ class EventHandler:
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
         o_table.remove_all_rows()
 
-        linear_bins = self.parent.linear_bins
-        list_rows = np.arange(len(linear_bins[TimeSpectraKeys.file_index_array]))
+        o_get = Get(parent=self.parent)
+        bin_auto_mode = o_get.bin_auto_mode()
 
-        file_index_array_of_bins = linear_bins[TimeSpectraKeys.file_index_array]
-        tof_array_of_bins = linear_bins[TimeSpectraKeys.tof_array]
-        lambda_array_of_bins = linear_bins[TimeSpectraKeys.lambda_array]
+        if bin_auto_mode == BinAutoMode.linear:
+            bins = self.parent.linear_bins
+        else:
+            bins = self.parent.log_bins
+
+        list_rows = np.arange(len(bins[TimeSpectraKeys.file_index_array]))
+
+        file_index_array_of_bins = bins[TimeSpectraKeys.file_index_array]
+        tof_array_of_bins = bins[TimeSpectraKeys.tof_array]
+        lambda_array_of_bins = bins[TimeSpectraKeys.lambda_array]
 
         for _row in np.arange(len(list_rows)):
 
