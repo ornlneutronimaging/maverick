@@ -665,6 +665,9 @@
              </item>
              <item>
               <widget class="QTableWidget" name="bin_auto_tableWidget">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::SingleSelection</enum>
                </property>
@@ -1445,6 +1448,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bin_auto_tableWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_auto_table_right_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>397</x>
+     <y>602</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>4</x>
+     <y>680</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1469,5 +1488,6 @@
   <slot>auto_log_radioButton_changed()</slot>
   <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
   <slot>bin_auto_hide_empty_bins()</slot>
+  <slot>bin_auto_table_right_clicked()</slot>
  </slots>
 </ui>

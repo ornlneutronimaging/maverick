@@ -2,7 +2,8 @@ import copy
 import logging
 import numpy as np
 import pyqtgraph as pg
-from qtpy.QtWidgets import QCheckBox
+from qtpy.QtWidgets import QCheckBox, QMenu
+from qtpy import QtGui
 
 from ..session import SessionKeys
 from ..utilities import BinMode
@@ -297,7 +298,7 @@ class EventHandler:
                 checkbox.setChecked(True)
                 checkbox.stateChanged.connect(lambda state=0,
                                               row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
-                o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=True)
+                o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=False)
 
             o_table.insert_item(row=_row, column=1, value=_row, editable=False)
             o_table.insert_item(row=_row, column=2, value=str_file_index, editable=False)
@@ -346,15 +347,38 @@ class EventHandler:
 
         self.bin_auto_log_changed(source_radio_button=source_button)
 
-    def use_auto_bin_state_changed(self, row=0, state=0):
+    def use_auto_bin_state_changed(self, row=0, state=True):
         """
         user change the state of any of the bin checkbox
         :param row:
-        :param state: 0 when unchecked and 2 otherwise
+        :param state: True or False
         """
         item = self.parent.dict_of_bins_item[row]
 
-        if state == 0:
-            self.parent.bin_profile_view.removeItem(item)
-        else:
+        if state:
             self.parent.bin_profile_view.addItem(item)
+        else:
+            self.parent.bin_profile_view.removeItem(item)
+
+    def auto_table_right_click(self, position=None):
+        menu = QMenu(self.parent)
+
+        select_all = menu.addAction("Select all bins")
+        unselect_all = menu.addAction("Unselect all bins")
+
+        action = menu.exec_(QtGui.QCursor.pos())
+        if action == select_all:
+            self.all_auto_bins_checkbox(state=True)
+        elif action == unselect_all:
+            self.all_auto_bins_checkbox(state=False)
+        else:
+            pass
+
+    def all_auto_bins_checkbox(self, state=True):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+        nbr_rows = o_table.row_count()
+        for _row in np.arange(nbr_rows):
+            widget = o_table.get_widget(row=_row, column=0)
+            if widget:
+                widget.setChecked(state)
+                self.use_auto_bin_state_changed(row=_row, state=state)

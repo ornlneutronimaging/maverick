@@ -243,6 +243,7 @@ class MainWindow(QMainWindow):
 
     def auto_table_use_checkbox_changed(self, state, row):
         o_event = BinEventHandler(parent=self)
+        state = True if state == 2 else False
         o_event.use_auto_bin_state_changed(row=row, state=state)
 
     def bin_auto_hide_empty_bins(self):
@@ -252,6 +253,10 @@ class MainWindow(QMainWindow):
     def bin_auto_visualize_axis_generated_button_clicked(self):
         o_preview = PreviewFullBinAxis(parent=self)
         o_preview.show()
+
+    def bin_auto_table_right_clicked(self, position):
+        o_event = BinEventHandler(parent=self)
+        o_event.auto_table_right_click(position=position)
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
