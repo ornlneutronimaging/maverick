@@ -298,7 +298,7 @@ class EventHandler:
                 checkbox.setChecked(True)
                 checkbox.stateChanged.connect(lambda state=0,
                                               row=_row: self.parent.auto_table_use_checkbox_changed(state, row))
-                o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=False)
+                o_table.insert_widget(row=_row, column=0, widget=checkbox, centered=True)
 
             o_table.insert_item(row=_row, column=1, value=_row, editable=False)
             o_table.insert_item(row=_row, column=2, value=str_file_index, editable=False)
@@ -380,5 +380,6 @@ class EventHandler:
         for _row in np.arange(nbr_rows):
             widget = o_table.get_widget(row=_row, column=0)
             if widget:
-                widget.setChecked(state)
+                checkbox = widget.children()[1]
+                checkbox.setChecked(state)
                 self.use_auto_bin_state_changed(row=_row, state=state)
