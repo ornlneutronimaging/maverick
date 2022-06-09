@@ -40,8 +40,10 @@ class AutoEventHandler:
 
         if o_get.bin_auto_mode() == BinAutoMode.linear:
             bins = self.parent.linear_bins[time_spectra_x_axis_name]
+            bins_selected = self.parent.linear_bins_selected
         else:
             bins = self.parent.log_bins[time_spectra_x_axis_name]
+            bins_selected = self.parent.log_bins_selected
 
         dict_of_bins_item = {}
         for _index, _bin in enumerate(bins):
@@ -76,6 +78,11 @@ class AutoEventHandler:
             dict_of_bins_item[_index] = item
 
         self.parent.dict_of_bins_item = dict_of_bins_item
+
+        # bring back the row selected
+        if bins_selected:
+            o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+            o_table.select_rows(bins_selected)
 
     def auto_linear_radioButton_changed(self):
         file_index_status = False
@@ -385,8 +392,13 @@ class AutoEventHandler:
             return False
 
     def auto_table_selection_changed(self):
-        previous_rows_highlighted = self.parent.current_auto_bin_rows_highlighted
-        if not (previous_rows_highlighted == []):
+        o_get = Get(parent=self.parent)
+        if o_get.bin_auto_mode() == BinAutoMode.linear:
+            previous_rows_highlighted = self.parent.linear_bins_selected
+        else:
+            previous_rows_highlighted = self.parent.log_bins_selected
+
+        if previous_rows_highlighted:
             for _row in previous_rows_highlighted:
                 previous_item = self.parent.dict_of_bins_item.get(_row, None)
                 if previous_item:
@@ -407,3 +419,8 @@ class AutoEventHandler:
                 clean_list_of_new_rows_to_highlight.append(_row)
 
         self.parent.current_auto_bin_rows_highlighted = clean_list_of_new_rows_to_highlight
+
+        if o_get.bin_auto_mode() == BinAutoMode.linear:
+            self.parent.linear_bins_selected = clean_list_of_new_rows_to_highlight
+        else:
+            self.parent.log_bins_selected = clean_list_of_new_rows_to_highlight

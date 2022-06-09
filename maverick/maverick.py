@@ -65,6 +65,10 @@ class MainWindow(QMainWindow):
                    TimeSpectraKeys.file_index_array: None,
                    TimeSpectraKeys.lambda_array: None}
 
+    # list of rows selected by each of the linear and log bins
+    linear_bins_selected = None
+    log_bins_selected = None
+
     # use to preview the full axis
     # ex: [1,2,3,4,5,6,7] or [0.1, 0.2, 0.4, 0.8, 1.6....]
     full_bin_axis_requested = None
@@ -220,26 +224,32 @@ class MainWindow(QMainWindow):
 
     def bin_auto_log_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_log_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_log_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def bin_auto_linear_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        self.linear_bins_selected = None
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_linear_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        self.linear_bins_selected = None
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_linear_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        self.linear_bins_selected = None
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def auto_log_radioButton_changed(self):
