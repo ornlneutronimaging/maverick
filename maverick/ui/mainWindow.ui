@@ -668,8 +668,11 @@
                <property name="contextMenuPolicy">
                 <enum>Qt::CustomContextMenu</enum>
                </property>
+               <property name="alternatingRowColors">
+                <bool>true</bool>
+               </property>
                <property name="selectionMode">
-                <enum>QAbstractItemView::SingleSelection</enum>
+                <enum>QAbstractItemView::MultiSelection</enum>
                </property>
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
@@ -1007,8 +1010,8 @@
    <slot>select_top_folder_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>134</x>
-     <y>97</y>
+     <x>150</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel">
      <x>1086</x>
@@ -1023,8 +1026,8 @@
    <slot>time_spectra_preview_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>128</x>
-     <y>96</y>
+     <x>147</x>
+     <y>880</y>
     </hint>
     <hint type="destinationlabel">
      <x>1089</x>
@@ -1039,8 +1042,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>107</x>
-     <y>97</y>
+     <x>126</x>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1055,8 +1058,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>146</x>
-     <y>97</y>
+     <x>165</x>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1071,8 +1074,8 @@
    <slot>refresh_table_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>134</x>
-     <y>97</y>
+     <x>1131</x>
+     <y>130</y>
     </hint>
     <hint type="destinationlabel">
      <x>1078</x>
@@ -1087,8 +1090,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>79</y>
+     <x>112</x>
+     <y>782</y>
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
@@ -1103,8 +1106,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>93</x>
-     <y>86</y>
+     <x>112</x>
+     <y>789</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1506,5 +1509,6 @@
   <slot>bin_auto_hide_empty_bins()</slot>
   <slot>bin_auto_table_right_clicked()</slot>
   <slot>bin_auto_table_selection_changed()</slot>
+  <slot>bin_auto_table_selection_with_keyboard_changed()</slot>
  </slots>
 </ui>

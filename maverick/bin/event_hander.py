@@ -388,20 +388,20 @@ class EventHandler:
                 self.use_auto_bin_state_changed(row=_row, state=state)
 
     def auto_table_selection_changed(self):
+        previous_rows_highlighted = self.parent.current_auto_bin_rows_highlighted
+        if not (previous_rows_highlighted == []):
+            for _row in previous_rows_highlighted:
+                previous_item = self.parent.dict_of_bins_item[_row]
+                self.parent.bin_profile_view.removeItem(previous_item)
+                previous_item.setBrush(pg.mkBrush(UNSELECTED_BIN))
+                self.parent.bin_profile_view.addItem(previous_item)
+
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        new_row_to_highlight = o_table.get_row_selected()
-        previous_row_highlighted = self.parent.current_auto_bin_row_highlighted
+        new_rows_to_highlight = o_table.get_rows_of_table_selected()
+        for _row in new_rows_to_highlight:
+            new_item = self.parent.dict_of_bins_item[_row]
+            self.parent.bin_profile_view.removeItem(new_item)
+            new_item.setBrush(pg.mkBrush(SELECTED_BIN))
+            self.parent.bin_profile_view.addItem(new_item)
 
-        previous_item = self.parent.dict_of_bins_item[previous_row_highlighted]
-        self.parent.bin_profile_view.removeItem(previous_item)
-        previous_item.setBrush(pg.mkBrush(UNSELECTED_BIN))
-        self.parent.bin_profile_view.addItem(previous_item)
-
-        new_item = self.parent.dict_of_bins_item[new_row_to_highlight]
-        self.parent.bin_profile_view.removeItem(new_item)
-        new_item.setBrush(pg.mkBrush(SELECTED_BIN))
-        self.parent.bin_profile_view.addItem(new_item)
-
-
-
-        self.parent.current_auto_bin_row_highlighted = new_row_to_highlight
+        self.parent.current_auto_bin_rows_highlighted = new_rows_to_highlight

@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
     # }
     dict_of_bins_item = None
 
-    current_auto_bin_row_highlighted = 0
+    current_auto_bin_rows_highlighted = []
 
     def __init__(self, parent=None):
         """
