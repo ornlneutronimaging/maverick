@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -770,6 +770,42 @@
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_4">
              <item>
+              <layout class="QHBoxLayout" name="horizontalLayout_8">
+               <item>
+                <spacer name="horizontalSpacer_9">
+                 <property name="orientation">
+                  <enum>Qt::Horizontal</enum>
+                 </property>
+                 <property name="sizeHint" stdset="0">
+                  <size>
+                   <width>40</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                </spacer>
+               </item>
+               <item>
+                <widget class="QPushButton" name="bin_manual_add_pushButton">
+                 <property name="minimumSize">
+                  <size>
+                   <width>80</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="maximumSize">
+                  <size>
+                   <width>80</width>
+                   <height>20</height>
+                  </size>
+                 </property>
+                 <property name="text">
+                  <string>Add a bin</string>
+                 </property>
+                </widget>
+               </item>
+              </layout>
+             </item>
+             <item>
               <widget class="QTableWidget" name="bin_manual_tableWidget">
                <property name="selectionMode">
                 <enum>QAbstractItemView::SingleSelection</enum>
@@ -1488,6 +1524,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bin_manual_add_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_manual_add_bin_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>575</x>
+     <y>121</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>189</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1516,5 +1568,6 @@
   <slot>bin_auto_table_selection_changed()</slot>
   <slot>bin_auto_table_selection_with_keyboard_changed()</slot>
   <slot>bin_auto_manual_tab_changed()</slot>
+  <slot>bin_manual_add_bin_clicked()</slot>
  </slots>
 </ui>

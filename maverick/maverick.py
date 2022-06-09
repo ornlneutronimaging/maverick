@@ -20,6 +20,8 @@ from .initialization import Initialization
 from .utilities.check import Check
 from .combine.event_handler import EventHandler as CombineEventHandler
 from .bin.event_hander import EventHandler as BinEventHandler
+from .bin.manual_event_handler import ManualEventHandler as BinManualEventHandler
+from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
 
 from . import load_ui
@@ -200,57 +202,58 @@ class MainWindow(QMainWindow):
 
     # BIN
     def bin_xaxis_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.refresh_auto_tab()
-
-    def bin_auto_log_linear_radioButton_changed(self):
-        o_event = BinEventHandler(parent=self)
-        o_event.bin_auto_radioButton_clicked()
 
     def bin_auto_manual_tab_changed(self, new_tab_index):
         o_event = BinEventHandler(parent=self)
         o_event.bin_auto_manual_tab_changed(new_tab_index)
 
+    # - auto mode
+    def bin_auto_log_linear_radioButton_changed(self):
+        o_event = BinAutoEventHandler(parent=self)
+        o_event.bin_auto_radioButton_clicked()
+
     def bin_auto_log_file_index_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_log_tof_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_log_lambda_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def bin_auto_linear_file_index_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_linear_tof_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_linear_lambda_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def auto_log_radioButton_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.auto_log_radioButton_changed()
 
     def auto_linear_radioButton_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.auto_linear_radioButton_changed()
 
     def auto_table_use_checkbox_changed(self, state, row):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         state = True if state == 2 else False
         o_event.use_auto_bin_state_changed(row=row, state=state)
         self.bin_auto_table_selection_changed()
 
     def bin_auto_hide_empty_bins(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.update_auto_table()
 
     def bin_auto_visualize_axis_generated_button_clicked(self):
@@ -258,12 +261,16 @@ class MainWindow(QMainWindow):
         o_preview.show()
 
     def bin_auto_table_right_clicked(self, position):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.auto_table_right_click(position=position)
 
     def bin_auto_table_selection_changed(self):
-        o_event = BinEventHandler(parent=self)
+        o_event = BinAutoEventHandler(parent=self)
         o_event.auto_table_selection_changed()
+
+    # - manual mode
+    def bin_manual_add_bin_clicked(self):
+        pass
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
