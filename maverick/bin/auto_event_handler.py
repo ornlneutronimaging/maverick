@@ -1,5 +1,4 @@
 import logging
-from qtpy.QtWidgets import QCheckBox
 import numpy as np
 import pyqtgraph as pg
 from qtpy.QtWidgets import QCheckBox, QMenu
@@ -7,12 +6,10 @@ from qtpy import QtGui
 
 from .log_bin import LogBin
 from ..utilities.get import Get
-from ..utilities import TimeSpectraKeys, BinAutoMode, BinMode
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
-from ..utilities import TimeSpectraKeys, BinAutoMode, BinMode
+from ..utilities import TimeSpectraKeys, BinAutoMode
 from .plot import Plot
 from ..utilities.table_handler import TableHandler
-from ..session import SessionKeys
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 from .linear_bin import LinearBin
 
@@ -40,32 +37,6 @@ class AutoEventHandler:
 
         o_get = Get(parent=self.parent)
         time_spectra_x_axis_name = o_get.bin_x_axis_selected()
-
-        # self.parent.bin_profile_view.clear()  # clear previous plot
-        # if not (self.parent.dict_of_bins_item is None):  # remove previous bins
-        #     for _key in self.parent.dict_of_bins_item.keys():
-        #         self.parent.bin_profile_view.removeItem(self.parent.dict_of_bins_item[_key])
-        #
-        # profile_signal = self.parent.profile_signal
-        #
-        # o_get = Get(parent=self.parent)
-        # combine_algorithm = o_get.combine_algorithm()
-        # time_spectra_x_axis_name = o_get.bin_x_axis_selected()
-        #
-        # x_axis = copy.deepcopy(self.parent.time_spectra[time_spectra_x_axis_name])
-        #
-        # if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
-        #     x_axis_label = "file index"
-        # elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
-        #     x_axis *= TO_MICROS_UNITS    # to display axis in micros
-        #     x_axis_label = "tof (" + MICRO + "s)"
-        # elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
-        #     x_axis *= TO_ANGSTROMS_UNITS    # to display axis in Angstroms
-        #     x_axis_label = LAMBDA + "(" + ANGSTROMS + ")"
-        #
-        # self.parent.bin_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
-        # self.parent.bin_profile_view.setLabel("left", f"{combine_algorithm} counts")
-        # self.parent.bin_profile_view.setLabel("bottom", x_axis_label)
 
         if o_get.bin_auto_mode() == BinAutoMode.linear:
             bins = self.parent.linear_bins[time_spectra_x_axis_name]
@@ -273,17 +244,6 @@ class AutoEventHandler:
             o_table.insert_item(row=_row, column=2, value=str_file_index, editable=False)
             o_table.insert_item(row=_row, column=3, value=str_tof, editable=False)
             o_table.insert_item(row=_row, column=4, value=str_lambda, editable=False)
-
-    # def bin_auto_manual_tab_changed(self, new_tab_index=0):
-    #     if new_tab_index == 0:
-    #         self.parent.session[SessionKeys.bin_mode] = BinMode.auto
-    #
-    #     elif new_tab_index == 1:
-    #         self.parent.session[SessionKeys.bin_mode] = BinMode.manual
-    #     else:
-    #         raise NotImplementedError("LinearBin mode not implemented!")
-    #
-    #     self.entering_tab()
 
     def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
         self.logger.info(f"bin auto linear changed: radio button changed -> {source_radio_button}")

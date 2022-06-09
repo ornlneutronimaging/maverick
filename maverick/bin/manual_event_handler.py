@@ -1,6 +1,6 @@
 import logging
 
-from ..utilities import TimeSpectraKeys, BinAutoMode, BinMode
+from ..utilities import TimeSpectraKeys
 from .plot import Plot
 
 
