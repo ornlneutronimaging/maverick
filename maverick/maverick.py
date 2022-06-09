@@ -84,6 +84,8 @@ class MainWindow(QMainWindow):
     # }
     dict_of_bins_item = None
 
+    current_auto_bin_row_highlighted = 0
+
     def __init__(self, parent=None):
         """
         Initialization
@@ -257,6 +259,10 @@ class MainWindow(QMainWindow):
     def bin_auto_table_right_clicked(self, position):
         o_event = BinEventHandler(parent=self)
         o_event.auto_table_right_click(position=position)
+
+    def bin_auto_table_selection_changed(self):
+        o_event = BinEventHandler(parent=self)
+        o_event.auto_table_selection_changed()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

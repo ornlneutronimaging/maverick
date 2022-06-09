@@ -19,6 +19,9 @@ from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 
 FILE_INDEX_BIN_MARGIN = 0.5
 
+UNSELECTED_BIN = (0, 0, 200, 50)
+SELECTED_BIN = (0, 200, 0, 50)
+
 
 class EventHandler:
 
@@ -94,7 +97,7 @@ class EventHandler:
 
             item = pg.LinearRegionItem(values=scale_bin,
                                        orientation='vertical',
-                                       brush=None,
+                                       brush=UNSELECTED_BIN,
                                        movable=False,
                                        bounds=None)
             item.setZValue(-10)
@@ -383,3 +386,22 @@ class EventHandler:
                 checkbox = widget.children()[1]
                 checkbox.setChecked(state)
                 self.use_auto_bin_state_changed(row=_row, state=state)
+
+    def auto_table_selection_changed(self):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+        new_row_to_highlight = o_table.get_row_selected()
+        previous_row_highlighted = self.parent.current_auto_bin_row_highlighted
+
+        previous_item = self.parent.dict_of_bins_item[previous_row_highlighted]
+        self.parent.bin_profile_view.removeItem(previous_item)
+        previous_item.setBrush(pg.mkBrush(UNSELECTED_BIN))
+        self.parent.bin_profile_view.addItem(previous_item)
+
+        new_item = self.parent.dict_of_bins_item[new_row_to_highlight]
+        self.parent.bin_profile_view.removeItem(new_item)
+        new_item.setBrush(pg.mkBrush(SELECTED_BIN))
+        self.parent.bin_profile_view.addItem(new_item)
+
+
+
+        self.parent.current_auto_bin_row_highlighted = new_row_to_highlight
