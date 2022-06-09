@@ -54,6 +54,17 @@ class EventHandler:
             o_manual_event = ManualEventHandler(parent=self.parent)
             o_manual_event.refresh_manual_tab()
 
+    def bin_auto_manual_tab_changed(self, new_tab_index=0):
+        if new_tab_index == 0:
+            self.parent.session[SessionKeys.bin_mode] = BinMode.auto
+
+        elif new_tab_index == 1:
+            self.parent.session[SessionKeys.bin_mode] = BinMode.manual
+        else:
+            raise NotImplementedError("LinearBin mode not implemented!")
+
+        self.entering_tab()
+
     # def refresh_manual_tab(self):
     #     """refresh the right plot with profile + bin selected when the manual tab is selected"""
     #     self.refresh_profile_plot()
@@ -172,16 +183,16 @@ class EventHandler:
     #     else:
     #         self.auto_linear_radioButton_changed()
 
-    def bin_auto_manual_tab_changed(self, new_tab_index=0):
-        if new_tab_index == 0:
-            self.parent.session[SessionKeys.bin_mode] = BinMode.auto
-
-        elif new_tab_index == 1:
-            self.parent.session[SessionKeys.bin_mode] = BinMode.manual
-        else:
-            raise NotImplementedError("LinearBin mode not implemented!")
-
-        self.entering_tab()
+    # def bin_auto_manual_tab_changed(self, new_tab_index=0):
+    #     if new_tab_index == 0:
+    #         self.parent.session[SessionKeys.bin_mode] = BinMode.auto
+    #
+    #     elif new_tab_index == 1:
+    #         self.parent.session[SessionKeys.bin_mode] = BinMode.manual
+    #     else:
+    #         raise NotImplementedError("LinearBin mode not implemented!")
+    #
+    #     self.entering_tab()
 
     # def bin_auto_log_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
     #     self.logger.info(f"bin auto log changed: radio button changed -> {source_radio_button}")
@@ -232,73 +243,73 @@ class EventHandler:
     #     self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(False)
     #     self.parent.ui.auto_log_lambda_doubleSpinBox.blockSignals(False)
 
-    def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
-        self.logger.info(f"bin auto linear changed: radio button changed -> {source_radio_button}")
-        o_bin = LinearBin(parent=self.parent,
-                          source_array=source_radio_button)
-        self.parent.ui.auto_linear_file_index_spinBox.blockSignals(True)
-        self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(True)
-        self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(True)
-
-        self.logger.info(f"-> raw_file_index_array_binned: {self.parent.time_spectra[TimeSpectraKeys.file_index_array]}")
-        self.logger.info(f"-> raw_tof_array_binned: {self.parent.time_spectra[TimeSpectraKeys.tof_array]}")
-        self.logger.info(f"-> raw_lambda_array_binned: {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
-
-        if source_radio_button == TimeSpectraKeys.file_index_array:
-            file_index_value = self.parent.ui.auto_linear_file_index_spinBox.value()
-            self.logger.info(f"--> bin requested: {file_index_value}")
-            o_bin.create_linear_file_index_bin_array(bin_value=file_index_value)
-            o_bin.create_linear_bin_arrays()
-
-        elif source_radio_button == TimeSpectraKeys.tof_array:
-            tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
-            self.logger.info(f"--> bin requested: {tof_value}")
-            o_bin.create_linear_file_index_bin_array(bin_value=tof_value * 1e-6)   # to switch to seconds
-            o_bin.create_linear_bin_arrays()
-
-        elif source_radio_button == TimeSpectraKeys.lambda_array:
-            lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
-            self.logger.info(f"--> bin requested: {lambda_value}")
-            o_bin.create_linear_file_index_bin_array(bin_value=lambda_value * 1e-10)   # to switch to seconds
-            o_bin.create_linear_bin_arrays()
-
-        else:
-            raise NotImplementedError("bin auto linear algorithm not implemented!")
-
-        self.logger.info(f"-> file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
-        self.logger.info(f"-> tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
-        self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
-
-        self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
-                                   TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
-                                   TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
-
-        self.fill_auto_table()
-        self.refresh_auto_tab()
-
-        show_status_message(parent=self.parent,
-                            message=f"New {source_radio_button} bin size selected!",
-                            status=StatusMessageStatus.ready,
-                            duration_s=5)
-
-        self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
-        self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
-        self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(False)
-
-    def update_auto_table(self):
-        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        nbr_rows = o_table.row_count()
-
-        if self.parent.ui.bin_auto_hide_empty_bins_checkBox.isChecked():
-            for _row in np.arange(nbr_rows):
-                item = o_table.get_item_str_from_cell(row=_row,
-                                                      column=2)
-                if item == "N/A":
-                    o_table.set_row_hidden(_row, True)
-
-        else:
-            for _row in np.arange(nbr_rows):
-                o_table.set_row_hidden(_row, False)
+    # def bin_auto_linear_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
+    #     self.logger.info(f"bin auto linear changed: radio button changed -> {source_radio_button}")
+    #     o_bin = LinearBin(parent=self.parent,
+    #                       source_array=source_radio_button)
+    #     self.parent.ui.auto_linear_file_index_spinBox.blockSignals(True)
+    #     self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(True)
+    #     self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(True)
+    #
+    #     self.logger.info(f"-> raw_file_index_array_binned: {self.parent.time_spectra[TimeSpectraKeys.file_index_array]}")
+    #     self.logger.info(f"-> raw_tof_array_binned: {self.parent.time_spectra[TimeSpectraKeys.tof_array]}")
+    #     self.logger.info(f"-> raw_lambda_array_binned: {self.parent.time_spectra[TimeSpectraKeys.lambda_array]}")
+    #
+    #     if source_radio_button == TimeSpectraKeys.file_index_array:
+    #         file_index_value = self.parent.ui.auto_linear_file_index_spinBox.value()
+    #         self.logger.info(f"--> bin requested: {file_index_value}")
+    #         o_bin.create_linear_file_index_bin_array(bin_value=file_index_value)
+    #         o_bin.create_linear_bin_arrays()
+    #
+    #     elif source_radio_button == TimeSpectraKeys.tof_array:
+    #         tof_value = self.parent.ui.auto_linear_tof_doubleSpinBox.value()
+    #         self.logger.info(f"--> bin requested: {tof_value}")
+    #         o_bin.create_linear_file_index_bin_array(bin_value=tof_value * 1e-6)   # to switch to seconds
+    #         o_bin.create_linear_bin_arrays()
+    #
+    #     elif source_radio_button == TimeSpectraKeys.lambda_array:
+    #         lambda_value = self.parent.ui.auto_linear_lambda_doubleSpinBox.value()
+    #         self.logger.info(f"--> bin requested: {lambda_value}")
+    #         o_bin.create_linear_file_index_bin_array(bin_value=lambda_value * 1e-10)   # to switch to seconds
+    #         o_bin.create_linear_bin_arrays()
+    #
+    #     else:
+    #         raise NotImplementedError("bin auto linear algorithm not implemented!")
+    #
+    #     self.logger.info(f"-> file_index_array_binned: {o_bin.linear_bins[TimeSpectraKeys.file_index_array]}")
+    #     self.logger.info(f"-> tof_array_binned: {o_bin.linear_bins[TimeSpectraKeys.tof_array]}")
+    #     self.logger.info(f"-> lambda_array_binned: {o_bin.linear_bins[TimeSpectraKeys.lambda_array]}")
+    #
+    #     self.parent.linear_bins = {TimeSpectraKeys.file_index_array: o_bin.get_linear_file_index(),
+    #                                TimeSpectraKeys.tof_array: o_bin.get_linear_tof(),
+    #                                TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
+    #
+    #     self.fill_auto_table()
+    #     self.refresh_auto_tab()
+    #
+    #     show_status_message(parent=self.parent,
+    #                         message=f"New {source_radio_button} bin size selected!",
+    #                         status=StatusMessageStatus.ready,
+    #                         duration_s=5)
+    #
+    #     self.parent.ui.auto_linear_file_index_spinBox.blockSignals(False)
+    #     self.parent.ui.auto_linear_tof_doubleSpinBox.blockSignals(False)
+    #     self.parent.ui.auto_linear_lambda_doubleSpinBox.blockSignals(False)
+    #
+    # def update_auto_table(self):
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+    #     nbr_rows = o_table.row_count()
+    #
+    #     if self.parent.ui.bin_auto_hide_empty_bins_checkBox.isChecked():
+    #         for _row in np.arange(nbr_rows):
+    #             item = o_table.get_item_str_from_cell(row=_row,
+    #                                                   column=2)
+    #             if item == "N/A":
+    #                 o_table.set_row_hidden(_row, True)
+    #
+    #     else:
+    #         for _row in np.arange(nbr_rows):
+    #             o_table.set_row_hidden(_row, False)
 
     # def fill_auto_table(self):
     #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
@@ -407,97 +418,97 @@ class EventHandler:
     #
     #     self.bin_auto_log_changed(source_radio_button=source_button)
 
-    def use_auto_bin_state_changed(self, row=0, state=True):
-        """
-        user change the state of any of the bin checkbox
-        :param row:
-        :param state: True or False
-        """
-        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        rows_selected = o_table.get_rows_of_table_selected()
-
-        if row in rows_selected:
-
-            for _row in rows_selected:
-                item = self.parent.dict_of_bins_item.get(_row, None)
-                if item:
-
-                    if state:
-                        self.parent.bin_profile_view.addItem(item)
-                    else:
-                        self.parent.bin_profile_view.removeItem(item)
-
-                    widget = o_table.get_widget(row=_row, column=0)
-                    if widget:
-                        checkbox = widget.children()[1]
-                        if state:
-                            checkbox.setChecked(2)
-                        else:
-                            checkbox.setChecked(0)
-
-        else:
-
-            item = self.parent.dict_of_bins_item.get(row, None)
-            if item:
-
-                if state:
-                    self.parent.bin_profile_view.addItem(item)
-                else:
-                    self.parent.bin_profile_view.removeItem(item)
-
-    def auto_table_right_click(self, position=None):
-        menu = QMenu(self.parent)
-
-        select_all = menu.addAction("Select all bins")
-        unselect_all = menu.addAction("Unselect all bins")
-
-        action = menu.exec_(QtGui.QCursor.pos())
-        if action == select_all:
-            self.all_auto_bins_checkbox(state=True)
-        elif action == unselect_all:
-            self.all_auto_bins_checkbox(state=False)
-        else:
-            pass
-
-    def all_auto_bins_checkbox(self, state=True):
-        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        nbr_rows = o_table.row_count()
-        for _row in np.arange(nbr_rows):
-            widget = o_table.get_widget(row=_row, column=0)
-            if widget:
-                checkbox = widget.children()[1]
-                checkbox.setChecked(state)
-                self.use_auto_bin_state_changed(row=_row, state=state)
-
-    def use_this_bin(self, row=0):
-        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        widget = o_table.get_widget(row=row, column=0)
-        if widget:
-            checkbox = widget.children()[1]
-            return checkbox.isChecked()
-        else:
-            return False
-
-    def auto_table_selection_changed(self):
-        previous_rows_highlighted = self.parent.current_auto_bin_rows_highlighted
-        if not (previous_rows_highlighted == []):
-            for _row in previous_rows_highlighted:
-                previous_item = self.parent.dict_of_bins_item.get(_row, None)
-                if previous_item:
-                    self.parent.bin_profile_view.removeItem(previous_item)
-                    previous_item.setBrush(pg.mkBrush(UNSELECTED_BIN))
-                    if self.use_this_bin(row=_row):
-                        self.parent.bin_profile_view.addItem(previous_item)
-
-        o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
-        new_rows_to_highlight = o_table.get_rows_of_table_selected()
-        clean_list_of_new_rows_to_highlight = []  # removing rows that can not be selected (empty bins)
-        for _row in new_rows_to_highlight:
-            new_item = self.parent.dict_of_bins_item.get(_row, None)
-            if new_item:
-                self.parent.bin_profile_view.removeItem(new_item)
-                new_item.setBrush(pg.mkBrush(SELECTED_BIN))
-                self.parent.bin_profile_view.addItem(new_item)
-                clean_list_of_new_rows_to_highlight.append(_row)
-
-        self.parent.current_auto_bin_rows_highlighted = clean_list_of_new_rows_to_highlight
+    # def use_auto_bin_state_changed(self, row=0, state=True):
+    #     """
+    #     user change the state of any of the bin checkbox
+    #     :param row:
+    #     :param state: True or False
+    #     """
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+    #     rows_selected = o_table.get_rows_of_table_selected()
+    #
+    #     if row in rows_selected:
+    #
+    #         for _row in rows_selected:
+    #             item = self.parent.dict_of_bins_item.get(_row, None)
+    #             if item:
+    #
+    #                 if state:
+    #                     self.parent.bin_profile_view.addItem(item)
+    #                 else:
+    #                     self.parent.bin_profile_view.removeItem(item)
+    #
+    #                 widget = o_table.get_widget(row=_row, column=0)
+    #                 if widget:
+    #                     checkbox = widget.children()[1]
+    #                     if state:
+    #                         checkbox.setChecked(2)
+    #                     else:
+    #                         checkbox.setChecked(0)
+    #
+    #     else:
+    #
+    #         item = self.parent.dict_of_bins_item.get(row, None)
+    #         if item:
+    #
+    #             if state:
+    #                 self.parent.bin_profile_view.addItem(item)
+    #             else:
+    #                 self.parent.bin_profile_view.removeItem(item)
+    #
+    # def auto_table_right_click(self, position=None):
+    #     menu = QMenu(self.parent)
+    #
+    #     select_all = menu.addAction("Select all bins")
+    #     unselect_all = menu.addAction("Unselect all bins")
+    #
+    #     action = menu.exec_(QtGui.QCursor.pos())
+    #     if action == select_all:
+    #         self.all_auto_bins_checkbox(state=True)
+    #     elif action == unselect_all:
+    #         self.all_auto_bins_checkbox(state=False)
+    #     else:
+    #         pass
+    #
+    # def all_auto_bins_checkbox(self, state=True):
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+    #     nbr_rows = o_table.row_count()
+    #     for _row in np.arange(nbr_rows):
+    #         widget = o_table.get_widget(row=_row, column=0)
+    #         if widget:
+    #             checkbox = widget.children()[1]
+    #             checkbox.setChecked(state)
+    #             self.use_auto_bin_state_changed(row=_row, state=state)
+    #
+    # def use_this_bin(self, row=0):
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+    #     widget = o_table.get_widget(row=row, column=0)
+    #     if widget:
+    #         checkbox = widget.children()[1]
+    #         return checkbox.isChecked()
+    #     else:
+    #         return False
+    #
+    # def auto_table_selection_changed(self):
+    #     previous_rows_highlighted = self.parent.current_auto_bin_rows_highlighted
+    #     if not (previous_rows_highlighted == []):
+    #         for _row in previous_rows_highlighted:
+    #             previous_item = self.parent.dict_of_bins_item.get(_row, None)
+    #             if previous_item:
+    #                 self.parent.bin_profile_view.removeItem(previous_item)
+    #                 previous_item.setBrush(pg.mkBrush(UNSELECTED_BIN))
+    #                 if self.use_this_bin(row=_row):
+    #                     self.parent.bin_profile_view.addItem(previous_item)
+    #
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
+    #     new_rows_to_highlight = o_table.get_rows_of_table_selected()
+    #     clean_list_of_new_rows_to_highlight = []  # removing rows that can not be selected (empty bins)
+    #     for _row in new_rows_to_highlight:
+    #         new_item = self.parent.dict_of_bins_item.get(_row, None)
+    #         if new_item:
+    #             self.parent.bin_profile_view.removeItem(new_item)
+    #             new_item.setBrush(pg.mkBrush(SELECTED_BIN))
+    #             self.parent.bin_profile_view.addItem(new_item)
+    #             clean_list_of_new_rows_to_highlight.append(_row)
+    #
+    #     self.parent.current_auto_bin_rows_highlighted = clean_list_of_new_rows_to_highlight
