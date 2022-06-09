@@ -1,7 +1,7 @@
 import copy
 
 from ..utilities.get import Get
-from ..utilities import TimeSpectraKeys, BinAutoMode, BinMode
+from ..utilities import TimeSpectraKeys
 
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 from .. import LAMBDA, MICRO, ANGSTROMS
