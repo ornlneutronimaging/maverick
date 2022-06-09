@@ -247,6 +247,7 @@ class MainWindow(QMainWindow):
         o_event = BinEventHandler(parent=self)
         state = True if state == 2 else False
         o_event.use_auto_bin_state_changed(row=row, state=state)
+        self.bin_auto_table_selection_changed()
 
     def bin_auto_hide_empty_bins(self):
         o_event = BinEventHandler(parent=self)
