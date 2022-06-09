@@ -270,7 +270,8 @@ class MainWindow(QMainWindow):
 
     # - manual mode
     def bin_manual_add_bin_clicked(self):
-        pass
+        o_event = BinManualEventHandler(parent=self)
+        o_event.add_bin()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

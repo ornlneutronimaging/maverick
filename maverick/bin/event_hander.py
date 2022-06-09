@@ -47,6 +47,7 @@ class EventHandler:
 
         elif new_tab_index == 1:
             self.parent.session[SessionKeys.bin_mode] = BinMode.manual
+
         else:
             raise NotImplementedError("LinearBin mode not implemented!")
 
