@@ -336,7 +336,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -679,12 +679,12 @@
                </property>
                <column>
                 <property name="text">
-                 <string>Use ?</string>
+                 <string>use ?</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>Bin #</string>
+                 <string>bin #</string>
                 </property>
                </column>
                <column>
@@ -779,17 +779,22 @@
                </property>
                <column>
                 <property name="text">
-                 <string>Bin index</string>
+                 <string>col0</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>from ...</string>
+                 <string>col1</string>
                 </property>
                </column>
                <column>
                 <property name="text">
-                 <string>to ...</string>
+                 <string>col2</string>
+                </property>
+               </column>
+               <column>
+                <property name="text">
+                 <string>col3</string>
                 </property>
                </column>
               </widget>
@@ -1042,8 +1047,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>126</x>
-     <y>799</y>
+     <x>137</x>
+     <y>823</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1058,8 +1063,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>165</x>
-     <y>799</y>
+     <x>217</x>
+     <y>823</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1090,8 +1095,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>782</y>
+     <x>444</x>
+     <y>787</y>
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
@@ -1106,8 +1111,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>789</y>
+     <x>444</x>
+     <y>826</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1510,5 +1515,6 @@
   <slot>bin_auto_table_right_clicked()</slot>
   <slot>bin_auto_table_selection_changed()</slot>
   <slot>bin_auto_table_selection_with_keyboard_changed()</slot>
+  <slot>bin_auto_manual_tab_changed()</slot>
  </slots>
 </ui>

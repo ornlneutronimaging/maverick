@@ -42,20 +42,22 @@ class Initialization:
         column_sizes = [50, 50, 500]
         o_table.set_column_sizes(column_sizes=column_sizes)
 
-        # bin manual table
-        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
-        column_sizes = [50, 60, 60]
-        o_table.set_column_sizes(column_sizes=column_sizes)
-
         # bin auto table
         o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
         column_sizes = [40, 35, 60, 115, 115]
         o_table.set_column_sizes(column_sizes=column_sizes)
-        column_names = ['Use?',
+        column_names = ['use?',
                         'bin #',
                         'file #',
                         'tof range (' + MICRO + "s)",
                         LAMBDA + " range (" + ANGSTROMS + ")"]
+        o_table.set_column_names(column_names=column_names)
+
+        # bin manual table
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+        column_sizes = column_sizes[1:]
+        o_table.set_column_sizes(column_sizes=column_sizes)
+        column_names = column_names[1:]
         o_table.set_column_names(column_names=column_names)
 
     def labels(self):

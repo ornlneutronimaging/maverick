@@ -45,11 +45,20 @@ class EventHandler:
                 self.auto_linear_radioButton_changed()
             elif o_get.bin_auto_mode() == BinAutoMode.log:
                 self.auto_log_radioButton_changed()
-        elif o_get.bin_mode() == BinMode.manual:
-            pass
+            self.refresh_auto_tab()
 
-    def refresh_tab(self):
-        # refresh profile using right x_axis
+        elif o_get.bin_mode() == BinMode.manual:
+            self.refresh_manual_tab()
+
+
+    def refresh_manual_tab(self):
+        """refresh the right plot with profile + bin selected when the manual tab is selected"""
+        self.refresh_profile_plot()
+
+    def refresh_profile_plot(self):
+        """
+        this clear, remove all bin items and just replot the profile on the bin right imageView
+        """
 
         self.parent.bin_profile_view.clear()  # clear previous plot
         if not (self.parent.dict_of_bins_item is None):  # remove previous bins
@@ -76,6 +85,38 @@ class EventHandler:
         self.parent.bin_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
         self.parent.bin_profile_view.setLabel("left", f"{combine_algorithm} counts")
         self.parent.bin_profile_view.setLabel("bottom", x_axis_label)
+
+    def refresh_auto_tab(self):
+        # refresh the right plot with profile + bin selected when the auto tab is selected
+        self.refresh_profile_plot()
+        o_get = Get(parent=self.parent)
+        time_spectra_x_axis_name = o_get.bin_x_axis_selected()
+
+        # self.parent.bin_profile_view.clear()  # clear previous plot
+        # if not (self.parent.dict_of_bins_item is None):  # remove previous bins
+        #     for _key in self.parent.dict_of_bins_item.keys():
+        #         self.parent.bin_profile_view.removeItem(self.parent.dict_of_bins_item[_key])
+        #
+        # profile_signal = self.parent.profile_signal
+        #
+        # o_get = Get(parent=self.parent)
+        # combine_algorithm = o_get.combine_algorithm()
+        # time_spectra_x_axis_name = o_get.bin_x_axis_selected()
+        #
+        # x_axis = copy.deepcopy(self.parent.time_spectra[time_spectra_x_axis_name])
+        #
+        # if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
+        #     x_axis_label = "file index"
+        # elif time_spectra_x_axis_name == TimeSpectraKeys.tof_array:
+        #     x_axis *= TO_MICROS_UNITS    # to display axis in micros
+        #     x_axis_label = "tof (" + MICRO + "s)"
+        # elif time_spectra_x_axis_name == TimeSpectraKeys.lambda_array:
+        #     x_axis *= TO_ANGSTROMS_UNITS    # to display axis in Angstroms
+        #     x_axis_label = LAMBDA + "(" + ANGSTROMS + ")"
+        #
+        # self.parent.bin_profile_view.plot(x_axis, profile_signal, pen='r', symbol='x')
+        # self.parent.bin_profile_view.setLabel("left", f"{combine_algorithm} counts")
+        # self.parent.bin_profile_view.setLabel("bottom", x_axis_label)
 
         if o_get.bin_auto_mode() == BinAutoMode.linear:
             bins = self.parent.linear_bins[time_spectra_x_axis_name]
@@ -131,10 +172,13 @@ class EventHandler:
     def bin_auto_manual_tab_changed(self, new_tab_index=0):
         if new_tab_index == 0:
             self.parent.session[SessionKeys.bin_mode] = BinMode.auto
+
         elif new_tab_index == 1:
             self.parent.session[SessionKeys.bin_mode] = BinMode.manual
         else:
             raise NotImplementedError("LinearBin mode not implemented!")
+
+        self.entering_tab()
 
     def bin_auto_log_changed(self, source_radio_button=TimeSpectraKeys.file_index_array):
         self.logger.info(f"bin auto log changed: radio button changed -> {source_radio_button}")
@@ -179,7 +223,7 @@ class EventHandler:
 
         self.fill_auto_table()
         self.update_auto_table()
-        self.refresh_tab()
+        self.refresh_auto_tab()
 
         self.parent.ui.auto_log_file_index_spinBox.blockSignals(False)
         self.parent.ui.auto_log_tof_doubleSpinBox.blockSignals(False)
@@ -227,7 +271,7 @@ class EventHandler:
                                    TimeSpectraKeys.lambda_array: o_bin.get_linear_lambda()}
 
         self.fill_auto_table()
-        self.refresh_tab()
+        self.refresh_auto_tab()
 
         show_status_message(parent=self.parent,
                             message=f"New {source_radio_button} bin size selected!",

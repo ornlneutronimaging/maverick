@@ -160,7 +160,6 @@ class MainWindow(QMainWindow):
         if new_tab_index == 1:  # bin
             o_event = BinEventHandler(parent=self)
             o_event.entering_tab()
-            o_event.refresh_tab()
 
     def select_top_folder_button_clicked(self):
         o_event = CombineEventHandler(parent=self)
@@ -202,7 +201,7 @@ class MainWindow(QMainWindow):
     # BIN
     def bin_xaxis_changed(self):
         o_event = BinEventHandler(parent=self)
-        o_event.refresh_tab()
+        o_event.refresh_auto_tab()
 
     def bin_auto_log_linear_radioButton_changed(self):
         o_event = BinEventHandler(parent=self)
