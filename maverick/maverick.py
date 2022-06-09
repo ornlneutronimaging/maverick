@@ -159,6 +159,7 @@ class MainWindow(QMainWindow):
     def combine_bin_tab_changed(self, new_tab_index):
         if new_tab_index == 1:  # bin
             o_event = BinEventHandler(parent=self)
+            o_event.entering_tab()
             o_event.refresh_tab()
 
     def select_top_folder_button_clicked(self):

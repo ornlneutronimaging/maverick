@@ -5,7 +5,7 @@ import configparser
 import copy
 import numpy as np
 
-from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode
+from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode, BinMode
 from ..session import SessionKeys
 
 
@@ -41,6 +41,14 @@ class Get:
             return TimeSpectraKeys.lambda_array
         else:
             raise NotImplementedError("xaxis not implemented in the combine tab!")
+
+    def bin_mode(self):
+        if self.parent.ui.bin_tabWidget.currentIndex() == 0:
+            return BinMode.auto
+        elif self.parent.ui.bin_tabWidget.currentIndex() == 1:
+            return BinMode.manual
+        else:
+            raise NotImplementedError("tab not implemented!")
 
     def bin_auto_mode(self):
         if self.parent.ui.auto_log_radioButton.isChecked():

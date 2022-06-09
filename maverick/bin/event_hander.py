@@ -8,7 +8,7 @@ from qtpy import QtGui
 from ..session import SessionKeys
 from ..utilities import BinMode
 from ..utilities.get import Get
-from ..utilities import TimeSpectraKeys, BinAutoMode
+from ..utilities import TimeSpectraKeys, BinAutoMode, BinMode
 from .. import LAMBDA, MICRO, ANGSTROMS
 from .linear_bin import LinearBin
 from .log_bin import LogBin
@@ -37,6 +37,16 @@ class EventHandler:
 
         self.lambda_bin_margin = (self.parent.time_spectra[TimeSpectraKeys.lambda_array][1] -
                                   self.parent.time_spectra[TimeSpectraKeys.lambda_array][0]) / 2
+
+    def entering_tab(self):
+        o_get = Get(parent=self.parent)
+        if o_get.bin_mode() == BinMode.auto:
+            if o_get.bin_auto_mode() == BinAutoMode.linear:
+                self.auto_linear_radioButton_changed()
+            elif o_get.bin_auto_mode() == BinAutoMode.log:
+                self.auto_log_radioButton_changed()
+        elif o_get.bin_mode() == BinMode.manual:
+            pass
 
     def refresh_tab(self):
         # refresh profile using right x_axis
@@ -382,7 +392,7 @@ class EventHandler:
 
             item = self.parent.dict_of_bins_item.get(row, None)
             if item:
-        
+
                 if state:
                     self.parent.bin_profile_view.addItem(item)
                 else:
