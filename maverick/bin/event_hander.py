@@ -52,3 +52,12 @@ class EventHandler:
             raise NotImplementedError("LinearBin mode not implemented!")
 
         self.entering_tab()
+
+    def bin_axis_changed(self):
+        o_get = Get(parent=self.parent)
+        if o_get.bin_mode() == BinMode.auto:
+            o_event = AutoEventHandler(parent=self.parent)
+            o_event.refresh_auto_tab()
+        else:
+            o_event = ManualEventHandler(parent=self.parent)
+            o_event.refresh_manual_tab()

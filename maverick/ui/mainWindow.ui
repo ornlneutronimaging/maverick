@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -336,7 +336,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>1</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -772,6 +772,13 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
+                <widget class="QPushButton" name="pushButton">
+                 <property name="text">
+                  <string>Populate table with auto mode bins</string>
+                 </property>
+                </widget>
+               </item>
+               <item>
                 <spacer name="horizontalSpacer_9">
                  <property name="orientation">
                   <enum>Qt::Horizontal</enum>
@@ -788,18 +795,18 @@
                 <widget class="QPushButton" name="bin_manual_add_pushButton">
                  <property name="minimumSize">
                   <size>
-                   <width>80</width>
+                   <width>100</width>
                    <height>20</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>80</width>
+                   <width>100</width>
                    <height>20</height>
                   </size>
                  </property>
                  <property name="text">
-                  <string>Add a bin</string>
+                  <string>Add a new bin</string>
                  </property>
                 </widget>
                </item>
@@ -1540,6 +1547,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>182</x>
+     <y>127</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>35</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1569,5 +1592,6 @@
   <slot>bin_auto_table_selection_with_keyboard_changed()</slot>
   <slot>bin_auto_manual_tab_changed()</slot>
   <slot>bin_manual_add_bin_clicked()</slot>
+  <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
  </slots>
 </ui>

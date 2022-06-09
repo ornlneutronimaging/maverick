@@ -61,3 +61,6 @@ class ManualEventHandler:
         dict_of_bins_item[last_row] = item
 
         self.parent.dict_of_bins_item = dict_of_bins_item
+
+    def populate_table_with_auto_mode(self):
+        pass

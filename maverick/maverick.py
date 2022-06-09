@@ -61,6 +61,10 @@ class MainWindow(QMainWindow):
                 TimeSpectraKeys.file_index_array: None,
                 TimeSpectraKeys.lambda_array: None}
 
+    manual_bins = {TimeSpectraKeys.tof_array: None,
+                   TimeSpectraKeys.file_index_array: None,
+                   TimeSpectraKeys.lambda_array: None}
+
     # use to preview the full axis
     # ex: [1,2,3,4,5,6,7] or [0.1, 0.2, 0.4, 0.8, 1.6....]
     full_bin_axis_requested = None
@@ -202,8 +206,8 @@ class MainWindow(QMainWindow):
 
     # BIN
     def bin_xaxis_changed(self):
-        o_event = BinAutoEventHandler(parent=self)
-        o_event.refresh_auto_tab()
+        o_event = BinEventHandler(parent=self)
+        o_event.bin_axis_changed()
 
     def bin_auto_manual_tab_changed(self, new_tab_index):
         o_event = BinEventHandler(parent=self)
@@ -272,6 +276,10 @@ class MainWindow(QMainWindow):
     def bin_manual_add_bin_clicked(self):
         o_event = BinManualEventHandler(parent=self)
         o_event.add_bin()
+
+    def bin_manual_populate_table_with_auto_mode_bins_clicked(self):
+        o_event = BinManualEventHandler(parent=self)
+        o_event.populate_table_with_auto_mode()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
