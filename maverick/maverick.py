@@ -9,7 +9,7 @@ warnings.filterwarnings("ignore")
 
 from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
-from .utilities import TimeSpectraKeys
+from .utilities import TimeSpectraKeys, BinAutoMode
 from .utilities.time_spectra import TimeSpectraLauncher
 from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
@@ -224,40 +224,39 @@ class MainWindow(QMainWindow):
 
     def bin_auto_log_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_log_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_log_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        # self.log_bins_selected = None
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def bin_auto_linear_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        self.linear_bins_selected = None
+        o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.file_index_array)
 
     def bin_auto_linear_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        self.linear_bins_selected = None
+        o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
 
     def bin_auto_linear_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
-        self.linear_bins_selected = None
+        o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
 
     def auto_log_radioButton_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        o_event.clear_selection(auto_mode=BinAutoMode.log)
         o_event.auto_log_radioButton_changed()
 
     def auto_linear_radioButton_changed(self):
         o_event = BinAutoEventHandler(parent=self)
+        o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.auto_linear_radioButton_changed()
 
     def auto_table_use_checkbox_changed(self, state, row):
