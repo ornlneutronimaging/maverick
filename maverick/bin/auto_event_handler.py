@@ -81,8 +81,6 @@ class AutoEventHandler:
 
         # bring back the row selected
         if bins_selected:
-            print(f"bins_selected")
-            print(bins_selected)
             o_table = TableHandler(table_ui=self.parent.ui.bin_auto_tableWidget)
             o_table.select_rows(bins_selected)
 

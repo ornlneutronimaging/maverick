@@ -295,7 +295,8 @@ class MainWindow(QMainWindow):
         o_event.populate_table_with_auto_mode()
 
     def bin_manual_region_changed(self):
-        print("bin_manual_region_changed")
+        o_event = BinManualEventHandler(parent=self)
+        o_event.bin_manually_moved()
 
     def bin_manual_table_right_click(self, position):
         o_event = BinManualEventHandler(parent=self)

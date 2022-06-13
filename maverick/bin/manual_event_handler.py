@@ -8,6 +8,7 @@ from .plot import Plot
 from ..utilities.get import Get
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 from ..utilities.table_handler import TableHandler
+from ..utilities.math_tools import get_value_of_closest_match
 
 FILE_INDEX_BIN_MARGIN = 0.5
 UNSELECTED_BIN = (0, 0, 200, 50)
@@ -40,7 +41,6 @@ class ManualEventHandler:
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         last_row = o_table.row_count()
 
-        dict_of_bins_item = {}
         if time_spectra_x_axis_name == TimeSpectraKeys.file_index_array:
             default_bin = [x_axis[0] - FILE_INDEX_BIN_MARGIN,
                            x_axis[0] + FILE_INDEX_BIN_MARGIN]
@@ -80,14 +80,14 @@ class ManualEventHandler:
                             value=_file_index,
                             editable=False)
 
-        _tof = self.parent.time_spectra[TimeSpectraKeys.tof_array][0]
+        _tof = self.parent.time_spectra[TimeSpectraKeys.tof_array][0] * TO_MICROS_UNITS
         o_table.insert_item(row=last_row,
                             column=2,
                             value=_tof,
                             format_str="{:.2f}",
                             editable=False)
 
-        _lambda = self.parent.time_spectra[TimeSpectraKeys.lambda_array][0]
+        _lambda = self.parent.time_spectra[TimeSpectraKeys.lambda_array][0] * TO_ANGSTROMS_UNITS
         o_table.insert_item(row=last_row,
                             column=3,
                             value=_lambda,
@@ -128,3 +128,57 @@ class ManualEventHandler:
         self.parent.list_of_manual_bins_item.pop(row_selected)
         o_table.remove_row(row=row_selected)
         self.logger.info(f"User manually removed row: {row_selected}")
+
+    def bin_manually_moved(self):
+
+        list_of_manual_bins_item = []
+        for _row, _item in enumerate(self.parent.list_of_manual_bins_item):
+            [left, right] = _item.getRegion()
+
+            # bring left and right to closest correct values
+            left_checked, right_checked = self.checked_range(left=left,
+                                                             right=right)
+
+            self.parent.bin_profile_view.removeItem(_item)
+
+            item = pg.LinearRegionItem(values=[left_checked, right_checked],
+                                       orientation='vertical',
+                                       brush=SELECTED_BIN,
+                                       movable=True,
+                                       bounds=None)
+            item.setZValue(-10)
+            item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+            self.parent.bin_profile_view.addItem(item)
+            list_of_manual_bins_item.append(item)
+
+        self.parent.list_of_manual_bins_item = list_of_manual_bins_item
+
+    def margin(self, axis_type=TimeSpectraKeys.file_index_array):
+        if axis_type == TimeSpectraKeys.file_index_array:
+            return FILE_INDEX_BIN_MARGIN
+        elif axis_type == TimeSpectraKeys.tof_array:
+            return self.tof_bin_margin
+        elif axis_type == TimeSpectraKeys.lambda_array:
+            return self.lambda_bin_margin
+        else:
+            raise NotImplementedError(f"axis type {axis_type} not implemented!")
+
+    def checked_range(self, left=0, right=0):
+        """this method makes sure that the left and right values stay within the maximum range of the data
+        for the current axis selected"""
+        o_get = Get(parent=self.parent)
+        x_axis_type_selected = o_get.bin_x_axis_selected()
+        x_axis = self.parent.time_spectra[x_axis_type_selected]
+
+        margin = self.margin(axis_type=x_axis_type_selected)
+
+        if left < x_axis[0] - margin:
+            left = x_axis[0] - margin
+
+        if right >= x_axis[-1] + margin:
+            right = x_axis[-1] + margin
+
+        clean_left = get_value_of_closest_match(array_to_look_for=x_axis, value=left, left_margin=True)
+        clean_right = get_value_of_closest_match(array_to_look_for=x_axis, value=right, left_margin=False)
+
+        return clean_left - margin, clean_right + margin
