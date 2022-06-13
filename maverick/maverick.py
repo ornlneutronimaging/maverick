@@ -61,9 +61,17 @@ class MainWindow(QMainWindow):
                 TimeSpectraKeys.file_index_array: None,
                 TimeSpectraKeys.lambda_array: None}
 
+    # each will be a dictionaries of ranges
+    # ex: TimeSpectraKeys.tof_array = {0: [1],
+    #                                  1: [2,6],
+    #                                  3: [7,8,9,10], ...}
     manual_bins = {TimeSpectraKeys.tof_array: None,
                    TimeSpectraKeys.file_index_array: None,
                    TimeSpectraKeys.lambda_array: None}
+
+    # dictionary that will record the range for each bin
+    # {0: [0, 3], 1: [1, 10], ...}
+    manual_snapping_indexes_bins = None
 
     # list of rows selected by each of the linear and log bins
     linear_bins_selected = None

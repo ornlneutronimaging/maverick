@@ -2,6 +2,7 @@ import logging
 import pyqtgraph as pg
 from qtpy.QtWidgets import QMenu
 from qtpy import QtGui
+import numpy as np
 
 from ..utilities import TimeSpectraKeys
 from .plot import Plot
@@ -130,28 +131,68 @@ class ManualEventHandler:
         self.logger.info(f"User manually removed row: {row_selected}")
 
     def bin_manually_moved(self):
+        # 1. using region selected threshold, and the current axis, find the snapping left and right indexes
+        #    and save them into a manual_snapping_indexes_bins = {0: [0, 3], 1: [1, 10], ..}
+        self.record_snapping_indexes_bin()
 
-        list_of_manual_bins_item = []
+        # 2. reposition the clean bins into the plot
+        self.update_items_displayed()
+
+        # 3. using those indexes create the ranges for each bins and for each time axis and save those in
+        #    self.parent.manual_bins['file_index_array': {0: [0, 1, 2, 3], 1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...},...}
+
+
+
+        # self.snaping_bin_to_closest_x_values()
+        # self.record_bin_ranges()
+
+    def update_items_displayed(self):
+        """
+        this will remove the old item and put the new one with the edges snap to the x-axis
+        """
+        pass
+
+    def record_bin_ranges(self):
+        """
+        record all the bins ranges in all the x-axis values
+        """
+        pass
+
+    def record_snapping_indexes_bin(self):
+        """
+        This will check each bin from the manual table and move, if necessary, any of the edges
+        to snap to the closet x axis values
+        """
+        o_get = Get(parent=self.parent)
+        x_axis_type_selected = o_get.bin_x_axis_selected()
+        x_axis = self.parent.time_spectra[x_axis_type_selected]
+
+        # list_of_manual_bins_item = []
+        # manual_bins_list_of_indexes = {}
+
+        manual_snapping_indexes_bins = {}
         for _row, _item in enumerate(self.parent.list_of_manual_bins_item):
             [left, right] = _item.getRegion()
 
             # bring left and right to closest correct values
-            left_checked, right_checked = self.checked_range(left=left,
-                                                             right=right)
+            left_value_checked, right_value_checked = self.checked_range(left=left, right=right)
+            manual_snapping_indexes_bins[_row] = [left_value_checked, right_value_checked]
+            # self.parent.bin_profile_view.removeItem(_item)
 
-            self.parent.bin_profile_view.removeItem(_item)
+            # item = pg.LinearRegionItem(values=[left_value_checked, right_value_checked],
+            #                            orientation='vertical',
+            #                            brush=SELECTED_BIN,
+            #                            movable=True,
+            #                            bounds=None)
+            # item.setZValue(-10)
+            # item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+            # self.parent.bin_profile_view.addItem(item)
+            # list_of_manual_bins_item.append(item)
+            # manual_bins_list_of_indexes[_row] = [np.arange(left_index_checked, right_index_checked+1)]
 
-            item = pg.LinearRegionItem(values=[left_checked, right_checked],
-                                       orientation='vertical',
-                                       brush=SELECTED_BIN,
-                                       movable=True,
-                                       bounds=None)
-            item.setZValue(-10)
-            item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
-            self.parent.bin_profile_view.addItem(item)
-            list_of_manual_bins_item.append(item)
-
-        self.parent.list_of_manual_bins_item = list_of_manual_bins_item
+        # self.parent.list_of_manual_bins_item = list_of_manual_bins_item
+        # self.parent.manual_bins[TimeSpectraKeys.file_index_array] = manual_bins_list_of_indexes
+        self.parent.manual_snapping_indexes_bins = manual_snapping_indexes_bins
 
     def margin(self, axis_type=TimeSpectraKeys.file_index_array):
         if axis_type == TimeSpectraKeys.file_index_array:
@@ -170,15 +211,17 @@ class ManualEventHandler:
         x_axis_type_selected = o_get.bin_x_axis_selected()
         x_axis = self.parent.time_spectra[x_axis_type_selected]
 
-        margin = self.margin(axis_type=x_axis_type_selected)
+        if left < x_axis[0]:
+            left = x_axis[0]
 
-        if left < x_axis[0] - margin:
-            left = x_axis[0] - margin
+        if right >= x_axis[-1]:
+            right = x_axis[-1]
 
-        if right >= x_axis[-1] + margin:
-            right = x_axis[-1] + margin
+        clean_left_value = get_value_of_closest_match(array_to_look_for=x_axis,
+                                                      value=left,
+                                                      left_margin=True)
+        clean_right_value = get_value_of_closest_match(array_to_look_for=x_axis,
+                                                       value=right,
+                                                       left_margin=False)
 
-        clean_left = get_value_of_closest_match(array_to_look_for=x_axis, value=left, left_margin=True)
-        clean_right = get_value_of_closest_match(array_to_look_for=x_axis, value=right, left_margin=False)
-
-        return clean_left - margin, clean_right + margin
+        return clean_left_value, clean_right_value
