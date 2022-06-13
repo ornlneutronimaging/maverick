@@ -677,6 +677,9 @@
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
                <column>
                 <property name="text">
                  <string>use ?</string>
@@ -774,7 +777,7 @@
                <item>
                 <widget class="QPushButton" name="pushButton">
                  <property name="text">
-                  <string>Populate table with auto mode bins</string>
+                  <string>Import auto. mode table</string>
                  </property>
                 </widget>
                </item>
@@ -820,6 +823,9 @@
                <property name="selectionBehavior">
                 <enum>QAbstractItemView::SelectRows</enum>
                </property>
+               <attribute name="verticalHeaderVisible">
+                <bool>false</bool>
+               </attribute>
                <column>
                 <property name="text">
                  <string>col0</string>

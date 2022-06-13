@@ -62,5 +62,34 @@ class ManualEventHandler:
 
         self.parent.dict_of_bins_item = dict_of_bins_item
 
+        # add new entry in table
+        o_table.insert_empty_row(last_row)
+
+        o_table.insert_item(row=last_row,
+                            column=0,
+                            value=f"{last_row}",
+                            editable=False)
+
+        _file_index = self.parent.time_spectra[TimeSpectraKeys.file_index_array][0]
+        o_table.insert_item(row=last_row,
+                            column=1,
+                            value=_file_index,
+                            editable=False)
+
+        _tof = self.parent.time_spectra[TimeSpectraKeys.tof_array][0]
+        o_table.insert_item(row=last_row,
+                            column=2,
+                            value=_tof,
+                            format_str="{:.2f}",
+                            editable=False)
+
+        _lambda = self.parent.time_spectra[TimeSpectraKeys.lambda_array][0]
+        o_table.insert_item(row=last_row,
+                            column=3,
+                            value=_lambda,
+                            format_str="{:.3f}",
+                            editable=False)
+
     def populate_table_with_auto_mode(self):
+
         pass
