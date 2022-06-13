@@ -140,6 +140,36 @@ class ManualEventHandler:
 
         # 3. using those indexes create the ranges for each bins and for each time axis and save those in
         #    self.parent.manual_bins['file_index_array': {0: [0, 1, 2, 3], 1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...},...}
+        self.create_all_ranges()
+
+    def create_all_ranges(self):
+        manual_snapping_indexes_bins = self.parent.manual_snapping_indexes_bins
+
+        file_index_array = {}
+        tof_array = {}
+        lambda_array = {}
+
+        for _bin in manual_snapping_indexes_bins.keys():
+            left_index, right_index = manual_snapping_indexes_bins[_bin]
+
+            # tof_array
+            bins_file_index_array = self.parent.time_spectra[TimeSpectraKeys.file_index_array]
+            bins_file_index_range = bins_file_index_array[left_index: right_index+1]
+            file_index_array[_bin] = bins_file_index_range
+
+            # tof_array
+            bins_tof_array = self.parent.time_spectra[TimeSpectraKeys.tof_array]
+            bins_tof_range = bins_tof_array[left_index: right_index+1]
+            tof_array[_bin] = bins_tof_range
+
+            # lambda_array
+            bins_lambda_array = self.parent.time_spectra[TimeSpectraKeys.lambda_array]
+            bins_lambda_range = bins_lambda_array[left_index: right_index+1]
+            lambda_array[_bin] = bins_lambda_range
+
+        self.parent.manual_bins[TimeSpectraKeys.file_index_array] = file_index_array
+        self.parent.manual_bins[TimeSpectraKeys.tof_array] = tof_array
+        self.parent.manual_bins[TimeSpectraKeys.lambda_array] = lambda_array
 
     def update_items_displayed(self):
         """
@@ -148,9 +178,6 @@ class ManualEventHandler:
         o_get = Get(parent=self.parent)
         x_axis_type_selected = o_get.bin_x_axis_selected()
         x_axis = self.parent.time_spectra[x_axis_type_selected]
-
-        # list_of_manual_bins_item = []
-        # manual_bins_list_of_indexes = {}
 
         manual_snapping_indexes_bins = self.parent.manual_snapping_indexes_bins
 
@@ -186,13 +213,6 @@ class ManualEventHandler:
         This will check each bin from the manual table and move, if necessary, any of the edges
         to snap to the closet x axis values
         """
-        o_get = Get(parent=self.parent)
-        x_axis_type_selected = o_get.bin_x_axis_selected()
-        x_axis = self.parent.time_spectra[x_axis_type_selected]
-
-        # list_of_manual_bins_item = []
-        # manual_bins_list_of_indexes = {}
-
         manual_snapping_indexes_bins = {}
         for _row, _item in enumerate(self.parent.list_of_manual_bins_item):
             [left, right] = _item.getRegion()
@@ -200,21 +220,7 @@ class ManualEventHandler:
             # bring left and right to closest correct values
             left_value_checked, right_value_checked = self.checked_range(left=left, right=right)
             manual_snapping_indexes_bins[_row] = [left_value_checked, right_value_checked]
-            # self.parent.bin_profile_view.removeItem(_item)
 
-            # item = pg.LinearRegionItem(values=[left_value_checked, right_value_checked],
-            #                            orientation='vertical',
-            #                            brush=SELECTED_BIN,
-            #                            movable=True,
-            #                            bounds=None)
-            # item.setZValue(-10)
-            # item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
-            # self.parent.bin_profile_view.addItem(item)
-            # list_of_manual_bins_item.append(item)
-            # manual_bins_list_of_indexes[_row] = [np.arange(left_index_checked, right_index_checked+1)]
-
-        # self.parent.list_of_manual_bins_item = list_of_manual_bins_item
-        # self.parent.manual_bins[TimeSpectraKeys.file_index_array] = manual_bins_list_of_indexes
         self.parent.manual_snapping_indexes_bins = manual_snapping_indexes_bins
 
     def margin(self, axis_type=TimeSpectraKeys.file_index_array):
