@@ -94,6 +94,10 @@ class MainWindow(QMainWindow):
     # }
     dict_of_bins_item = None
 
+    # list of manual bins.
+    # using a list because any of the bin can be removed by the user
+    list_of_manual_bins_item = []
+
     current_auto_bin_rows_highlighted = []
 
     def __init__(self, parent=None):
@@ -292,6 +296,10 @@ class MainWindow(QMainWindow):
 
     def bin_manual_region_changed(self):
         print("bin_manual_region_changed")
+
+    def bin_manual_table_right_click(self, position):
+        o_event = BinManualEventHandler(parent=self)
+        o_event.manual_table_right_click()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

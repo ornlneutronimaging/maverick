@@ -1,5 +1,7 @@
 import logging
 import pyqtgraph as pg
+from qtpy.QtWidgets import QMenu
+from qtpy import QtGui
 
 from ..utilities import TimeSpectraKeys
 from .plot import Plot
@@ -60,9 +62,9 @@ class ManualEventHandler:
         item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
 
         self.parent.bin_profile_view.addItem(item)
-        dict_of_bins_item[last_row] = item
-
-        self.parent.dict_of_bins_item = dict_of_bins_item
+        # dict_of_bins_item[last_row] = item
+        # self.parent.dict_of_bins_item = dict_of_bins_item
+        self.parent.list_of_manual_bins_item.append(item)
 
         # add new entry in table
         o_table.insert_empty_row(last_row)
@@ -93,5 +95,36 @@ class ManualEventHandler:
                             editable=False)
 
     def populate_table_with_auto_mode(self):
-
         pass
+
+    def manual_table_right_click(self):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+        last_row = o_table.row_count()
+        if last_row == 0:  # no entry in the table
+            return
+
+        row_selected = o_table.get_row_selected()
+        if row_selected == -1:  # no row selected, exit
+            return
+
+        menu = QMenu(self.parent)
+
+        remove_bin = menu.addAction("Remove selected bin")
+
+        action = menu.exec_(QtGui.QCursor.pos())
+        if action == remove_bin:
+            self.remove_selected_bin()
+        else:
+            pass
+
+    def remove_selected_bin(self):
+        """
+        remove from the manual table the bin selected
+        """
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+        row_selected = o_table.get_row_selected()
+        item_to_remove = self.parent.list_of_manual_bins_item[row_selected]
+        self.parent.bin_profile_view.removeItem(item_to_remove)
+        self.parent.list_of_manual_bins_item.pop(row_selected)
+        o_table.remove_row(row=row_selected)
+        self.logger.info(f"User manually removed row: {row_selected}")

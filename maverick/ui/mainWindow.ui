@@ -817,6 +817,9 @@
              </item>
              <item>
               <widget class="QTableWidget" name="bin_manual_tableWidget">
+               <property name="contextMenuPolicy">
+                <enum>Qt::CustomContextMenu</enum>
+               </property>
                <property name="selectionMode">
                 <enum>QAbstractItemView::SingleSelection</enum>
                </property>
@@ -1096,8 +1099,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>137</x>
-     <y>823</y>
+     <x>165</x>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1112,8 +1115,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>217</x>
-     <y>823</y>
+     <x>165</x>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1144,8 +1147,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>444</x>
-     <y>787</y>
+     <x>112</x>
+     <y>781</y>
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
@@ -1160,8 +1163,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>444</x>
-     <y>826</y>
+     <x>112</x>
+     <y>788</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1480,7 +1483,7 @@
    <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>625</x>
+     <x>740</x>
      <y>706</y>
     </hint>
     <hint type="destinationlabel">
@@ -1496,8 +1499,8 @@
    <slot>bin_auto_hide_empty_bins()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>509</x>
-     <y>449</y>
+     <x>740</x>
+     <y>462</y>
     </hint>
     <hint type="destinationlabel">
      <x>4</x>
@@ -1544,8 +1547,8 @@
    <slot>bin_manual_add_bin_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>575</x>
-     <y>121</y>
+     <x>740</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -1566,6 +1569,22 @@
     <hint type="destinationlabel">
      <x>5</x>
      <y>35</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_manual_tableWidget</sender>
+   <signal>customContextMenuRequested(QPoint)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_manual_table_right_click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>263</x>
+     <y>393</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>6</x>
+     <y>566</y>
     </hint>
    </hints>
   </connection>
@@ -1599,5 +1618,6 @@
   <slot>bin_auto_manual_tab_changed()</slot>
   <slot>bin_manual_add_bin_clicked()</slot>
   <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
+  <slot>bin_manual_table_right_click()</slot>
  </slots>
 </ui>
