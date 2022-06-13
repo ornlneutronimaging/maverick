@@ -57,6 +57,8 @@ class ManualEventHandler:
                                    movable=True,
                                    bounds=None)
         item.setZValue(-10)
+        item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+
         self.parent.bin_profile_view.addItem(item)
         dict_of_bins_item[last_row] = item
 

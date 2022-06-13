@@ -290,6 +290,9 @@ class MainWindow(QMainWindow):
         o_event = BinManualEventHandler(parent=self)
         o_event.populate_table_with_auto_mode()
 
+    def bin_manual_region_changed(self):
+        print("bin_manual_region_changed")
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()
