@@ -141,16 +141,39 @@ class ManualEventHandler:
         # 3. using those indexes create the ranges for each bins and for each time axis and save those in
         #    self.parent.manual_bins['file_index_array': {0: [0, 1, 2, 3], 1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...},...}
 
-
-
-        # self.snaping_bin_to_closest_x_values()
-        # self.record_bin_ranges()
-
     def update_items_displayed(self):
         """
         this will remove the old item and put the new one with the edges snap to the x-axis
         """
-        pass
+        o_get = Get(parent=self.parent)
+        x_axis_type_selected = o_get.bin_x_axis_selected()
+        x_axis = self.parent.time_spectra[x_axis_type_selected]
+
+        # list_of_manual_bins_item = []
+        # manual_bins_list_of_indexes = {}
+
+        manual_snapping_indexes_bins = self.parent.manual_snapping_indexes_bins
+
+        list_of_manual_bins_item = []
+        for _row in manual_snapping_indexes_bins.keys():
+            left_value_checked, right_value_checked = manual_snapping_indexes_bins[_row]
+            left_value_checked = x_axis[left_value_checked]
+            right_value_checked = x_axis[right_value_checked]
+
+            _item = self.parent.list_of_manual_bins_item[_row]
+            self.parent.bin_profile_view.removeItem(_item)
+
+            item = pg.LinearRegionItem(values=[left_value_checked, right_value_checked],
+                                       orientation='vertical',
+                                       brush=SELECTED_BIN,
+                                       movable=True,
+                                       bounds=None)
+            item.setZValue(-10)
+            item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+            self.parent.bin_profile_view.addItem(item)
+            list_of_manual_bins_item.append(item)
+
+        self.parent.list_of_manual_bins_item = list_of_manual_bins_item
 
     def record_bin_ranges(self):
         """
