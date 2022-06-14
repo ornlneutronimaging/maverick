@@ -130,7 +130,11 @@ class ManualEventHandler:
         o_table.remove_row(row=row_selected)
         self.logger.info(f"User manually removed row: {row_selected}")
 
-    def bin_manually_moved(self):
+    def bin_manually_moved(self, item_id=None):
+        o_get = Get(parent=self.parent)
+        working_row = o_get.manual_working_row(working_item_id=item_id)
+        self.select_working_row(working_row=working_row)
+
         # 1. using region selected threshold, and the current axis, find the snapping left and right indexes
         #    and save them into a manual_snapping_indexes_bins = {0: [0, 3], 1: [1, 10], ..}
         self.record_snapping_indexes_bin()
@@ -141,6 +145,62 @@ class ManualEventHandler:
         # 3. using those indexes create the ranges for each bins and for each time axis and save those in
         #    self.parent.manual_bins['file_index_array': {0: [0, 1, 2, 3], 1: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], ...},...}
         self.create_all_ranges()
+
+        # 4. update table
+        self.update_table()
+
+    def select_working_row(self, working_row=0):
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+        o_table.select_rows(list_of_rows=[working_row])
+
+    def update_table(self):
+
+        def format_str(input_list, format_str="{}", factor=1, data_type=TimeSpectraKeys.file_index_array):
+            """
+            format the list of file_index, tof or lambda to fill the manual bin table
+            :param input_list:
+            :param format_str:
+            :param factor:
+            :param data_type:
+            :return:
+            """
+            if data_type == TimeSpectraKeys.file_index_array:
+                if len(input_list) == 1:
+                    return format_str.format(input_list[0]*factor)
+                elif len(input_list) == 2:
+                    return format_str.format(input_list[0]*factor) + ", " + \
+                           format_str.format(input_list[1]*factor)
+                else:
+                    return format_str.format(input_list[0]*factor) + " ... " + \
+                           format_str.format(input_list[-1]*factor)
+            else:
+                if len(input_list) == 1:
+                    return format_str.format(input_list[0]*factor)
+                else:
+                    return format_str.format(input_list[0]*factor) + " ... " + \
+                           format_str.format(input_list[-1]*factor)
+
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+
+        file_index_array = self.parent.manual_bins[TimeSpectraKeys.file_index_array]
+        tof_array = self.parent.manual_bins[TimeSpectraKeys.tof_array]
+        lambda_array = self.parent.manual_bins[TimeSpectraKeys.lambda_array]
+
+        for _row in file_index_array.keys():
+            list_runs = file_index_array[_row]
+            list_runs_formatted = format_str(list_runs, format_str="{:d}", factor=1,
+                                             data_type=TimeSpectraKeys.file_index_array)
+            o_table.set_item_with_str(row=_row, column=1, cell_str=list_runs_formatted)
+
+            list_tof = tof_array[_row]
+            list_tof_formatted = format_str(list_tof, format_str="{:.2f}", factor=TO_MICROS_UNITS,
+                                            data_type=TimeSpectraKeys.tof_array)
+            o_table.set_item_with_str(row=_row, column=2, cell_str=list_tof_formatted)
+
+            list_lambda = lambda_array[_row]
+            list_lambda_formatted = format_str(list_lambda, format_str="{:.3f}", factor=TO_ANGSTROMS_UNITS,
+                                               data_type=TimeSpectraKeys.lambda_array)
+            o_table.set_item_with_str(row=_row, column=3, cell_str=list_lambda_formatted)
 
     def create_all_ranges(self):
         manual_snapping_indexes_bins = self.parent.manual_snapping_indexes_bins

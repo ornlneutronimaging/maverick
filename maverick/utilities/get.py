@@ -126,6 +126,13 @@ class Get:
         list_working_folders = np.array(session[SessionKeys.list_working_folders])
         return list_working_folders[list_working_folders_status]
 
+    def manual_working_row(self, working_item_id=None):
+        list_item_id = self.parent.list_of_manual_bins_item
+        for _row, item in enumerate(list_item_id):
+            if item == working_item_id:
+                return _row
+        return -1
+
     @staticmethod
     def full_home_file_name(base_file_name):
         home_folder = expanduser("~")
