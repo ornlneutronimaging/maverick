@@ -55,7 +55,7 @@ class Initialization:
 
         # bin manual table
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
-        column_sizes = column_sizes[1:]
+        column_sizes = [35, 80, 130, 130]
         o_table.set_column_sizes(column_sizes=column_sizes)
         column_names = column_names[1:]
         o_table.set_column_names(column_names=column_names)

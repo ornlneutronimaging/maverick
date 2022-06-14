@@ -306,6 +306,10 @@ class MainWindow(QMainWindow):
         o_event = BinManualEventHandler(parent=self)
         o_event.bin_manually_moved(item_id=item_id)
 
+    def bin_manual_region_changing(self, item_id):
+        o_event = BinManualEventHandler(parent=self)
+        o_event.bin_manually_moving(item_id=item_id)
+
     def bin_manual_table_right_click(self, position):
         o_event = BinManualEventHandler(parent=self)
         o_event.manual_table_right_click()

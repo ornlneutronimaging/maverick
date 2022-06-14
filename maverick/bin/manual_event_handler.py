@@ -131,9 +131,7 @@ class ManualEventHandler:
         self.logger.info(f"User manually removed row: {row_selected}")
 
     def bin_manually_moved(self, item_id=None):
-        o_get = Get(parent=self.parent)
-        working_row = o_get.manual_working_row(working_item_id=item_id)
-        self.select_working_row(working_row=working_row)
+        self.bin_manually_moving(item_id=item_id)
 
         # 1. using region selected threshold, and the current axis, find the snapping left and right indexes
         #    and save them into a manual_snapping_indexes_bins = {0: [0, 3], 1: [1, 10], ..}
@@ -148,6 +146,11 @@ class ManualEventHandler:
 
         # 4. update table
         self.update_table()
+
+    def bin_manually_moving(self, item_id=None):
+        o_get = Get(parent=self.parent)
+        working_row = o_get.manual_working_row(working_item_id=item_id)
+        self.select_working_row(working_row=working_row)
 
     def select_working_row(self, working_row=0):
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
@@ -257,6 +260,7 @@ class ManualEventHandler:
                                        bounds=None)
             item.setZValue(-10)
             item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+            item.sigRegionChanged.connect(self.parent.bin_manual_region_changing)
             self.parent.bin_profile_view.addItem(item)
             list_of_manual_bins_item.append(item)
 
