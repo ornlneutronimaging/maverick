@@ -96,7 +96,104 @@ class ManualEventHandler:
                             editable=False)
 
     def populate_table_with_auto_mode(self):
-        pass
+        o_get = Get(parent=self.parent)
+        bins = o_get.auto_bins_currently_activated()
+
+        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+        o_table.remove_all_rows()
+
+        file_index_array = bins[TimeSpectraKeys.file_index_array]
+        tof_array = bins[TimeSpectraKeys.tof_array]
+        lambda_array = bins[TimeSpectraKeys.lambda_array]
+
+        self.parent.list_of_manual_bins_item = []
+
+        _row = 0
+        for _index, _bin in enumerate(file_index_array):
+
+            if _bin == []:
+                continue
+
+            o_table.insert_empty_row(_row)
+
+            o_table.insert_item(row=_row,
+                                column=0,
+                                value=f"{_row}",
+                                editable=False)
+
+            _file_index = _bin
+            _file_index_formatted = ManualEventHandler.format_str(_file_index,
+                                                                  format_str="{:d}",
+                                                                  factor=1,
+                                                                  data_type=TimeSpectraKeys.file_index_array)
+            o_table.insert_item(row=_row,
+                                column=1,
+                                format_str=_file_index_formatted,
+                                editable=False)
+
+            _tof = tof_array[_index]
+            _tof_formatted = ManualEventHandler.format_str(_tof,
+                                                           format_str="{:.2f}",
+                                                           factor=TO_MICROS_UNITS,
+                                                           data_type=TimeSpectraKeys.tof_array)
+
+            o_table.insert_item(row=_row,
+                                column=2,
+                                format_str=_tof_formatted,
+                                editable=False)
+
+            _lambda = lambda_array[_index]
+            _lambda_formatted = ManualEventHandler.format_str(_lambda,
+                                                              format_str="{:.3f}",
+                                                              factor=TO_ANGSTROMS_UNITS,
+                                                              data_type=TimeSpectraKeys.lambda_array)
+            o_table.insert_item(row=_row,
+                                column=3,
+                                format_str=_lambda_formatted,
+                                editable=False)
+
+            item = self.add_bin_in_plot(row=_row,
+                                        file_index_bin=_bin,
+                                        tof_bin=_tof,
+                                        lambda_bin=_lambda)
+
+            self.parent.list_of_manual_bins_item.append(item)
+
+            _row += 1
+
+    def add_bin_in_plot(self, row=0, file_index_bin=None, tof_bin=None, lambda_bin=None):
+        o_get = Get(parent=self.parent)
+        current_x_axis = o_get.bin_x_axis_selected()
+        if current_x_axis == TimeSpectraKeys.file_index_array:
+            bin = file_index_bin
+            bin_size = [bin[0] - FILE_INDEX_BIN_MARGIN,
+                        bin[-1] + FILE_INDEX_BIN_MARGIN]
+        elif current_x_axis == TimeSpectraKeys.tof_array:
+            bin = tof_bin
+            bin_size = [bin[0] - self.tof_bin_margin,
+                        bin[-1] + self.tof_bin_margin]
+        elif current_x_axis == TimeSpectraKeys.lambda_array:
+            bin = lambda_bin
+            bin_size = [bin[0] - self.lambda_bin_margin,
+                        bin[1] + self.lambda_bin_margin]
+        else:
+            raise NotImplementedError("x_axis not implemented!")
+
+        if row == 0:
+            brush_selection = SELECTED_BIN
+        else:
+            brush_selection = UNSELECTED_BIN
+
+        item = pg.LinearRegionItem(values=bin_size,
+                                   orientation='vertical',
+                                   brush=brush_selection,
+                                   movable=True,
+                                   bounds=None)
+        item.setZValue(-10)
+        item.sigRegionChangeFinished.connect(self.parent.bin_manual_region_changed)
+        self.parent.bin_profile_view.addItem(item)
+
+        return item
 
     def manual_table_right_click(self):
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
@@ -158,31 +255,6 @@ class ManualEventHandler:
 
     def update_table(self):
 
-        def format_str(input_list, format_str="{}", factor=1, data_type=TimeSpectraKeys.file_index_array):
-            """
-            format the list of file_index, tof or lambda to fill the manual bin table
-            :param input_list:
-            :param format_str:
-            :param factor:
-            :param data_type:
-            :return:
-            """
-            if data_type == TimeSpectraKeys.file_index_array:
-                if len(input_list) == 1:
-                    return format_str.format(input_list[0]*factor)
-                elif len(input_list) == 2:
-                    return format_str.format(input_list[0]*factor) + ", " + \
-                           format_str.format(input_list[1]*factor)
-                else:
-                    return format_str.format(input_list[0]*factor) + " ... " + \
-                           format_str.format(input_list[-1]*factor)
-            else:
-                if len(input_list) == 1:
-                    return format_str.format(input_list[0]*factor)
-                else:
-                    return format_str.format(input_list[0]*factor) + " ... " + \
-                           format_str.format(input_list[-1]*factor)
-
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
 
         file_index_array = self.parent.manual_bins[TimeSpectraKeys.file_index_array]
@@ -191,18 +263,24 @@ class ManualEventHandler:
 
         for _row in file_index_array.keys():
             list_runs = file_index_array[_row]
-            list_runs_formatted = format_str(list_runs, format_str="{:d}", factor=1,
-                                             data_type=TimeSpectraKeys.file_index_array)
+            list_runs_formatted = ManualEventHandler.format_str(list_runs,
+                                                                format_str="{:d}",
+                                                                factor=1,
+                                                                data_type=TimeSpectraKeys.file_index_array)
             o_table.set_item_with_str(row=_row, column=1, cell_str=list_runs_formatted)
 
             list_tof = tof_array[_row]
-            list_tof_formatted = format_str(list_tof, format_str="{:.2f}", factor=TO_MICROS_UNITS,
-                                            data_type=TimeSpectraKeys.tof_array)
+            list_tof_formatted = ManualEventHandler.format_str(list_tof,
+                                                               format_str="{:.2f}",
+                                                               factor=TO_MICROS_UNITS,
+                                                               data_type=TimeSpectraKeys.tof_array)
             o_table.set_item_with_str(row=_row, column=2, cell_str=list_tof_formatted)
 
             list_lambda = lambda_array[_row]
-            list_lambda_formatted = format_str(list_lambda, format_str="{:.3f}", factor=TO_ANGSTROMS_UNITS,
-                                               data_type=TimeSpectraKeys.lambda_array)
+            list_lambda_formatted = ManualEventHandler.format_str(list_lambda,
+                                                                  format_str="{:.3f}",
+                                                                  factor=TO_ANGSTROMS_UNITS,
+                                                                  data_type=TimeSpectraKeys.lambda_array)
             o_table.set_item_with_str(row=_row, column=3, cell_str=list_lambda_formatted)
 
     def create_all_ranges(self):
@@ -217,17 +295,17 @@ class ManualEventHandler:
 
             # tof_array
             bins_file_index_array = self.parent.time_spectra[TimeSpectraKeys.file_index_array]
-            bins_file_index_range = bins_file_index_array[left_index: right_index+1]
+            bins_file_index_range = bins_file_index_array[left_index: right_index + 1]
             file_index_array[_bin] = bins_file_index_range
 
             # tof_array
             bins_tof_array = self.parent.time_spectra[TimeSpectraKeys.tof_array]
-            bins_tof_range = bins_tof_array[left_index: right_index+1]
+            bins_tof_range = bins_tof_array[left_index: right_index + 1]
             tof_array[_bin] = bins_tof_range
 
             # lambda_array
             bins_lambda_array = self.parent.time_spectra[TimeSpectraKeys.lambda_array]
-            bins_lambda_range = bins_lambda_array[left_index: right_index+1]
+            bins_lambda_range = bins_lambda_array[left_index: right_index + 1]
             lambda_array[_bin] = bins_lambda_range
 
         self.parent.manual_bins[TimeSpectraKeys.file_index_array] = file_index_array
@@ -318,3 +396,29 @@ class ManualEventHandler:
                                                        left_margin=False)
 
         return clean_left_value, clean_right_value
+
+    @staticmethod
+    def format_str(input_list, format_str="{}", factor=1, data_type=TimeSpectraKeys.file_index_array):
+        """
+        format the list of file_index, tof or lambda to fill the manual bin table
+        :param input_list:
+        :param format_str:
+        :param factor:
+        :param data_type:
+        :return:
+        """
+        if data_type == TimeSpectraKeys.file_index_array:
+            if len(input_list) == 1:
+                return format_str.format(input_list[0] * factor)
+            elif len(input_list) == 2:
+                return format_str.format(input_list[0] * factor) + ", " + \
+                       format_str.format(input_list[1] * factor)
+            else:
+                return format_str.format(input_list[0] * factor) + " ... " + \
+                       format_str.format(input_list[-1] * factor)
+        else:
+            if len(input_list) == 1:
+                return format_str.format(input_list[0] * factor)
+            else:
+                return format_str.format(input_list[0] * factor) + " ... " + \
+                       format_str.format(input_list[-1] * factor)

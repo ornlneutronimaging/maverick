@@ -293,6 +293,10 @@ class MainWindow(QMainWindow):
         o_event = BinAutoEventHandler(parent=self)
         o_event.auto_table_selection_changed()
 
+    def mouse_moved_in_combine_image_preview(self):
+        """Mouse moved in the combine pyqtgraph image preview (top right)"""
+        pass
+
     # - manual mode
     def bin_manual_add_bin_clicked(self):
         o_event = BinManualEventHandler(parent=self)
@@ -325,9 +329,6 @@ class MainWindow(QMainWindow):
         logging.info(" #### Leaving maverick ####")
         self.close()
 
-    def mouse_moved_in_combine_image_preview(self):
-        """Mouse moved in the combine pyqtgraph image preview (top right)"""
-        pass
 
 
 def main(args):
