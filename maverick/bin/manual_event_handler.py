@@ -102,6 +102,11 @@ class ManualEventHandler:
 
         self.parent.list_of_manual_bins_item = None
 
+    def display_all_items(self):
+        list_of_manually_bins_item = self.parent.list_of_manual_bins_item
+        for _item in list_of_manually_bins_item:
+            self.parent.bin_profile_view.addItem(_item)
+
     def populate_table_with_auto_mode(self):
         o_get = Get(parent=self.parent)
         bins = o_get.auto_bins_currently_activated()

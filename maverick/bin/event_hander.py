@@ -40,6 +40,7 @@ class EventHandler:
         elif o_get.bin_mode() == BinMode.manual:
             o_manual_event = ManualEventHandler(parent=self.parent)
             o_manual_event.refresh_manual_tab()
+            o_manual_event.display_all_items()
 
     def bin_auto_manual_tab_changed(self, new_tab_index=0):
         if new_tab_index == 0:
