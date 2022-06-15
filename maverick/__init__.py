@@ -14,6 +14,8 @@ bin_image = os.path.join(root, "icons/bin.png")
 auto_image = os.path.join(root, "icons/auto.png")
 manual_image = os.path.join(root, "icons/manual.png")
 more_infos_image = os.path.join(root, "icons/more_infos.png")
+stats_table_image = os.path.join(root, "icons/stats_table.png")
+stats_plot_image = os.path.join(root, "icons/stats_plot.png")
 
 ANGSTROMS = u"\u212B"
 LAMBDA = u"\u03BB"

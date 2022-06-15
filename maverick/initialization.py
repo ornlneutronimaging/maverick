@@ -7,6 +7,7 @@ import pyqtgraph as pg
 from .utilities.table_handler import TableHandler
 from . import MICRO, LAMBDA, ANGSTROMS, DELTA
 from . import combine_image, bin_image, auto_image, manual_image, settings_image, more_infos_image
+from . import stats_table_image, stats_plot_image
 
 
 class Initialization:
@@ -82,6 +83,8 @@ class Initialization:
         self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
         self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))
         self.parent.ui.combine_bottom_tabWidget.setTabIcon(2, QIcon(settings_image))
+        self.parent.ui.stats_tabWidget.setTabIcon(0, QIcon(stats_table_image))
+        self.parent.ui.stats_tabWidget.setTabIcon(1, QIcon(stats_plot_image))
 
     def pyqtgraph_bin(self):
         bin_view = pg.PlotWidget(title="")

@@ -931,18 +931,23 @@
              </item>
             </layout>
            </widget>
-           <widget class="QTabWidget" name="tabWidget">
+           <widget class="QTabWidget" name="stats_tabWidget">
             <property name="currentIndex">
-             <number>1</number>
+             <number>0</number>
             </property>
             <widget class="QWidget" name="tab_6">
              <attribute name="title">
-              <string>Stats_table</string>
+              <string>Statistics</string>
              </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_11">
+              <item>
+               <widget class="QTableWidget" name="tableWidget"/>
+              </item>
+             </layout>
             </widget>
             <widget class="QWidget" name="tab_7">
              <attribute name="title">
-              <string>Stats_plot</string>
+              <string>Statistics</string>
              </attribute>
             </widget>
            </widget>
