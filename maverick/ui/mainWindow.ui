@@ -854,7 +854,7 @@
             </layout>
            </widget>
           </widget>
-          <widget class="QSplitter" name="splitter">
+          <widget class="QSplitter" name="bin_vertical_splitter">
            <property name="orientation">
             <enum>Qt::Vertical</enum>
            </property>

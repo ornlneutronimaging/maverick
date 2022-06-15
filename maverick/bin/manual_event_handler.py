@@ -2,7 +2,6 @@ import logging
 import pyqtgraph as pg
 from qtpy.QtWidgets import QMenu
 from qtpy import QtGui
-import numpy as np
 
 from ..utilities import TimeSpectraKeys
 from .plot import Plot
@@ -10,6 +9,7 @@ from ..utilities.get import Get
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 from ..utilities.table_handler import TableHandler
 from ..utilities.math_tools import get_value_of_closest_match
+from ..utilities.string import format_str
 
 FILE_INDEX_BIN_MARGIN = 0.5
 UNSELECTED_BIN = (0, 0, 200, 50)
@@ -120,6 +120,9 @@ class ManualEventHandler:
 
         self.parent.list_of_manual_bins_item = []
 
+        if file_index_array is None:
+            return
+
         _row = 0
         for _index, _bin in enumerate(file_index_array):
 
@@ -134,20 +137,20 @@ class ManualEventHandler:
                                 editable=False)
 
             _file_index = _bin
-            _file_index_formatted = ManualEventHandler.format_str(_file_index,
-                                                                  format_str="{:d}",
-                                                                  factor=1,
-                                                                  data_type=TimeSpectraKeys.file_index_array)
+            _file_index_formatted = format_str(_file_index,
+                                               format_str="{:d}",
+                                               factor=1,
+                                               data_type=TimeSpectraKeys.file_index_array)
             o_table.insert_item(row=_row,
                                 column=1,
                                 format_str=_file_index_formatted,
                                 editable=False)
 
             _tof = tof_array[_index]
-            _tof_formatted = ManualEventHandler.format_str(_tof,
-                                                           format_str="{:.2f}",
-                                                           factor=TO_MICROS_UNITS,
-                                                           data_type=TimeSpectraKeys.tof_array)
+            _tof_formatted = format_str(_tof,
+                                        format_str="{:.2f}",
+                                        factor=TO_MICROS_UNITS,
+                                        data_type=TimeSpectraKeys.tof_array)
 
             o_table.insert_item(row=_row,
                                 column=2,
@@ -155,10 +158,10 @@ class ManualEventHandler:
                                 editable=False)
 
             _lambda = lambda_array[_index]
-            _lambda_formatted = ManualEventHandler.format_str(_lambda,
-                                                              format_str="{:.3f}",
-                                                              factor=TO_ANGSTROMS_UNITS,
-                                                              data_type=TimeSpectraKeys.lambda_array)
+            _lambda_formatted = format_str(_lambda,
+                                           format_str="{:.3f}",
+                                           factor=TO_ANGSTROMS_UNITS,
+                                           data_type=TimeSpectraKeys.lambda_array)
             o_table.insert_item(row=_row,
                                 column=3,
                                 format_str=_lambda_formatted,
@@ -285,24 +288,24 @@ class ManualEventHandler:
 
         for _row in file_index_array.keys():
             list_runs = file_index_array[_row]
-            list_runs_formatted = ManualEventHandler.format_str(list_runs,
-                                                                format_str="{:d}",
-                                                                factor=1,
-                                                                data_type=TimeSpectraKeys.file_index_array)
+            list_runs_formatted = format_str(list_runs,
+                                             format_str="{:d}",
+                                             factor=1,
+                                             data_type=TimeSpectraKeys.file_index_array)
             o_table.set_item_with_str(row=_row, column=1, cell_str=list_runs_formatted)
 
             list_tof = tof_array[_row]
-            list_tof_formatted = ManualEventHandler.format_str(list_tof,
-                                                               format_str="{:.2f}",
-                                                               factor=TO_MICROS_UNITS,
-                                                               data_type=TimeSpectraKeys.tof_array)
+            list_tof_formatted = format_str(list_tof,
+                                            format_str="{:.2f}",
+                                            factor=TO_MICROS_UNITS,
+                                            data_type=TimeSpectraKeys.tof_array)
             o_table.set_item_with_str(row=_row, column=2, cell_str=list_tof_formatted)
 
             list_lambda = lambda_array[_row]
-            list_lambda_formatted = ManualEventHandler.format_str(list_lambda,
-                                                                  format_str="{:.3f}",
-                                                                  factor=TO_ANGSTROMS_UNITS,
-                                                                  data_type=TimeSpectraKeys.lambda_array)
+            list_lambda_formatted = format_str(list_lambda,
+                                               format_str="{:.3f}",
+                                               factor=TO_ANGSTROMS_UNITS,
+                                               data_type=TimeSpectraKeys.lambda_array)
             o_table.set_item_with_str(row=_row, column=3, cell_str=list_lambda_formatted)
 
     def create_all_ranges(self):
@@ -413,11 +416,11 @@ class ManualEventHandler:
             right = x_axis[-1]
 
         index_clean_left_value = get_value_of_closest_match(array_to_look_for=x_axis,
-                                                      value=left,
-                                                      left_margin=True)
+                                                            value=left,
+                                                            left_margin=True)
         index_clean_right_value = get_value_of_closest_match(array_to_look_for=x_axis,
-                                                       value=right,
-                                                       left_margin=False)
+                                                             value=right,
+                                                             left_margin=False)
 
         clean_left_value = x_axis[index_clean_left_value]
         if clean_left_value < left:
@@ -428,29 +431,3 @@ class ManualEventHandler:
             clean_right_value = x_axis[index_clean_right_value - 1]
 
         return clean_left_value, clean_right_value
-
-    @staticmethod
-    def format_str(input_list, format_str="{}", factor=1, data_type=TimeSpectraKeys.file_index_array):
-        """
-        format the list of file_index, tof or lambda to fill the manual bin table
-        :param input_list:
-        :param format_str:
-        :param factor:
-        :param data_type:
-        :return:
-        """
-        if data_type == TimeSpectraKeys.file_index_array:
-            if len(input_list) == 1:
-                return format_str.format(input_list[0] * factor)
-            elif len(input_list) == 2:
-                return format_str.format(input_list[0] * factor) + ", " + \
-                       format_str.format(input_list[1] * factor)
-            else:
-                return format_str.format(input_list[0] * factor) + " ... " + \
-                       format_str.format(input_list[-1] * factor)
-        else:
-            if len(input_list) == 1:
-                return format_str.format(input_list[0] * factor)
-            else:
-                return format_str.format(input_list[0] * factor) + " ... " + \
-                       format_str.format(input_list[-1] * factor)

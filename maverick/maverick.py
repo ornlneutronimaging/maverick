@@ -23,6 +23,7 @@ from .bin.event_hander import EventHandler as BinEventHandler
 from .bin.manual_event_handler import ManualEventHandler as BinManualEventHandler
 from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
+from .bin.statistics import Statistics
 
 from . import load_ui
 
@@ -338,7 +339,8 @@ class MainWindow(QMainWindow):
 
     # - statistics
     def update_statistics(self):
-        print("update statistics")
+        o_stat = Statistics(parent=self)
+        o_stat.update()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

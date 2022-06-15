@@ -38,6 +38,7 @@ class Initialization:
     def splitter(self):
         self.parent.ui.combine_horizontal_splitter.setSizes([200, 500])
         self.parent.ui.bin_horizontal_splitter.setSizes([300, 800])
+        self.parent.ui.bin_vertical_splitter.setSizes([500, 50])
 
     def table(self):
         # combine table
