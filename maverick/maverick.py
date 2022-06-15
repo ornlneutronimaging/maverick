@@ -331,7 +331,6 @@ class MainWindow(QMainWindow):
         self.close()
 
 
-
 def main(args):
     app = QApplication(args)
     app.setStyle("Fusion")
