@@ -95,6 +95,9 @@ class MainWindow(QMainWindow):
     lambda_radio_button = None  # in combine view
     live_combine_image = None  # live combine image used by ROI
 
+    # matplotlib plot
+    statistics_plot = None  # matplotlib plot
+
     # dictionary of all the bins pg item
     # {0: pg.regionitem1,
     #  2: pg.regionitem2,
@@ -228,54 +231,65 @@ class MainWindow(QMainWindow):
     def bin_auto_manual_tab_changed(self, new_tab_index):
         o_event = BinEventHandler(parent=self)
         o_event.bin_auto_manual_tab_changed(new_tab_index)
+        self.update_statistics()
 
     # - auto mode
     def bin_auto_log_linear_radioButton_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_radioButton_clicked()
+        self.update_statistics()
 
     def bin_auto_log_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.file_index_array)
+        self.update_statistics()
 
     def bin_auto_log_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.tof_array)
+        self.update_statistics()
 
     def bin_auto_log_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.bin_auto_log_changed(source_radio_button=TimeSpectraKeys.lambda_array)
+        self.update_statistics()
 
     def bin_auto_linear_file_index_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.file_index_array)
+        self.update_statistics()
 
     def bin_auto_linear_tof_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.tof_array)
+        self.update_statistics()
 
     def bin_auto_linear_lambda_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.bin_auto_linear_changed(source_radio_button=TimeSpectraKeys.lambda_array)
+        self.update_statistics()
 
     def auto_log_radioButton_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.clear_selection(auto_mode=BinAutoMode.log)
         o_event.auto_log_radioButton_changed()
+        self.update_statistics()
 
     def auto_linear_radioButton_changed(self):
         o_event = BinAutoEventHandler(parent=self)
         o_event.clear_selection(auto_mode=BinAutoMode.linear)
         o_event.auto_linear_radioButton_changed()
+        self.update_statistics()
 
     def auto_table_use_checkbox_changed(self, state, row):
         o_event = BinAutoEventHandler(parent=self)
         state = True if state == 2 else False
         o_event.use_auto_bin_state_changed(row=row, state=state)
         self.bin_auto_table_selection_changed()
+        self.update_statistics()
 
     def bin_auto_hide_empty_bins(self):
         o_event = BinAutoEventHandler(parent=self)
@@ -301,15 +315,18 @@ class MainWindow(QMainWindow):
     def bin_manual_add_bin_clicked(self):
         o_event = BinManualEventHandler(parent=self)
         o_event.add_bin()
+        self.update_statistics()
 
     def bin_manual_populate_table_with_auto_mode_bins_clicked(self):
         o_event = BinManualEventHandler(parent=self)
         o_event.clear_all_items()
         o_event.populate_table_with_auto_mode()
+        self.update_statistics()
 
     def bin_manual_region_changed(self, item_id):
         o_event = BinManualEventHandler(parent=self)
         o_event.bin_manually_moved(item_id=item_id)
+        self.update_statistics()
 
     def bin_manual_region_changing(self, item_id):
         o_event = BinManualEventHandler(parent=self)
@@ -318,6 +335,10 @@ class MainWindow(QMainWindow):
     def bin_manual_table_right_click(self, position):
         o_event = BinManualEventHandler(parent=self)
         o_event.manual_table_right_click()
+
+    # - statistics
+    def update_statistics(self):
+        print("update statistics")
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

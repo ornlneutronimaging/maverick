@@ -222,10 +222,15 @@ class ManualEventHandler:
         menu = QMenu(self.parent)
 
         remove_bin = menu.addAction("Remove selected bin")
+        clean_sort = menu.addAction("Sort and remove duplicates")
 
         action = menu.exec_(QtGui.QCursor.pos())
         if action == remove_bin:
             self.remove_selected_bin()
+            self.parent.update_statistics()
+        elif action == clean_sort:
+            self.sort_and_remove_duplicates()
+
         else:
             pass
 
@@ -240,6 +245,9 @@ class ManualEventHandler:
         self.parent.list_of_manual_bins_item.pop(row_selected)
         o_table.remove_row(row=row_selected)
         self.logger.info(f"User manually removed row: {row_selected}")
+
+    def sort_and_remove_duplicates(self):
+        print("sort and remove duplicates")
 
     def bin_manually_moved(self, item_id=None):
         self.bin_manually_moving(item_id=item_id)

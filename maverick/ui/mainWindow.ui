@@ -336,7 +336,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>1</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -941,7 +941,7 @@
              </attribute>
              <layout class="QVBoxLayout" name="verticalLayout_11">
               <item>
-               <widget class="QTableWidget" name="tableWidget"/>
+               <widget class="QTableWidget" name="statistics_tableWidget"/>
               </item>
              </layout>
             </widget>
@@ -949,6 +949,11 @@
              <attribute name="title">
               <string>Statistics</string>
              </attribute>
+             <layout class="QVBoxLayout" name="verticalLayout_12">
+              <item>
+               <widget class="QWidget" name="statistics_plot_widget" native="true"/>
+              </item>
+             </layout>
             </widget>
            </widget>
           </widget>
