@@ -304,6 +304,7 @@ class MainWindow(QMainWindow):
 
     def bin_manual_populate_table_with_auto_mode_bins_clicked(self):
         o_event = BinManualEventHandler(parent=self)
+        o_event.clear_all_items()
         o_event.populate_table_with_auto_mode()
 
     def bin_manual_region_changed(self, item_id):

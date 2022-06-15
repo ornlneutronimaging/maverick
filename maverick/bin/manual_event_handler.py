@@ -95,6 +95,13 @@ class ManualEventHandler:
                             format_str="{:.3f}",
                             editable=False)
 
+    def clear_all_items(self):
+        list_of_manually_bins_item = self.parent.list_of_manual_bins_item
+        for _item in list_of_manually_bins_item:
+            self.parent.bin_profile_view.removeItem(_item)
+
+        self.parent.list_of_manual_bins_item = None
+
     def populate_table_with_auto_mode(self):
         o_get = Get(parent=self.parent)
         bins = o_get.auto_bins_currently_activated()
@@ -406,8 +413,6 @@ class ManualEventHandler:
         clean_right_value = x_axis[index_clean_right_value]
         if clean_right_value > right:
             clean_right_value = x_axis[index_clean_right_value - 1]
-
-        print(f"left: {left} and clean_left_value:{clean_left_value}")
 
         return clean_left_value, clean_right_value
 
