@@ -63,6 +63,22 @@ class Initialization:
         column_names = column_names[1:]
         o_table.set_column_names(column_names=column_names)
 
+        # statistics
+        o_table = TableHandler(table_ui=self.parent.ui.statistics_tableWidget)
+        column_names = ['bin #',
+                        'file #',
+                        'tof range (' + MICRO + "s)",
+                        LAMBDA + " range (" + ANGSTROMS + ")",
+                        'mean',
+                        'median',
+                        'std',
+                        'min',
+                        'max',
+                        ]
+        o_table.set_column_names(column_names=column_names)
+        column_sizes = [35, 80, 130, 130, 100, 100, 100, 100, 100]
+        o_table.set_column_sizes(column_sizes=column_sizes)
+
     def labels(self):
         # combine tab
         self.parent.ui.combine_detector_offset_units.setText(MICRO + "s")
