@@ -161,6 +161,8 @@ class ManualEventHandler:
 
             _row += 1
 
+        o_table.select_rows([0])
+
     def add_bin_in_plot(self, row=0, file_index_bin=None, tof_bin=None, lambda_bin=None):
         o_get = Get(parent=self.parent)
         current_x_axis = o_get.bin_x_axis_selected()
@@ -322,11 +324,13 @@ class ManualEventHandler:
 
         manual_snapping_indexes_bins = self.parent.manual_snapping_indexes_bins
 
+        margin = self.margin()
+
         list_of_manual_bins_item = []
         for _row in manual_snapping_indexes_bins.keys():
             left_value_checked, right_value_checked = manual_snapping_indexes_bins[_row]
-            left_value_checked = x_axis[left_value_checked]
-            right_value_checked = x_axis[right_value_checked]
+            left_value_checked = x_axis[left_value_checked] - margin
+            right_value_checked = x_axis[right_value_checked] + margin
 
             _item = self.parent.list_of_manual_bins_item[_row]
             self.parent.bin_profile_view.removeItem(_item)
@@ -388,12 +392,22 @@ class ManualEventHandler:
         if right >= x_axis[-1]:
             right = x_axis[-1]
 
-        clean_left_value = get_value_of_closest_match(array_to_look_for=x_axis,
+        index_clean_left_value = get_value_of_closest_match(array_to_look_for=x_axis,
                                                       value=left,
                                                       left_margin=True)
-        clean_right_value = get_value_of_closest_match(array_to_look_for=x_axis,
+        index_clean_right_value = get_value_of_closest_match(array_to_look_for=x_axis,
                                                        value=right,
                                                        left_margin=False)
+
+        clean_left_value = x_axis[index_clean_left_value]
+        if clean_left_value < left:
+            clean_left_value = x_axis[index_clean_left_value + 1]
+
+        clean_right_value = x_axis[index_clean_right_value]
+        if clean_right_value > right:
+            clean_right_value = x_axis[index_clean_right_value - 1]
+
+        print(f"left: {left} and clean_left_value:{clean_left_value}")
 
         return clean_left_value, clean_right_value
 
