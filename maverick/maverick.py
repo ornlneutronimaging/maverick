@@ -342,6 +342,7 @@ class MainWindow(QMainWindow):
     def update_statistics(self):
         o_stat = Statistics(parent=self)
         o_stat.update()
+        o_stat.plot_statistics()
 
     def bin_statistics_comboBox_changed(self, new_index):
         o_stat = Statistics(parent=self)

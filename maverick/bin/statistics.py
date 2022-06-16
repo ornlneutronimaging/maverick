@@ -96,47 +96,73 @@ class Statistics:
             # mean
             full_mean = np.mean(full_image)
             roi_mean = np.mean(roi_of_image)
-            str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
+            str_mean_full = f"{full_mean:.3f}"
+            str_mean_roi = f"{roi_mean:.3f}"
             o_table.insert_item(row=_row,
                                 column=4,
-                                value=str_mean,
+                                value=str_mean_full,
+                                editable=False)
+            o_table.insert_item(row=_row,
+                                column=5,
+                                value=str_mean_roi,
                                 editable=False)
 
             # median
             full_median = np.median(full_image)
             roi_median = np.median(roi_of_image)
-            str_median = f"{full_median:.3f} ({roi_median:.3f})"
+            str_median_full = f"{full_median:.3f}"
+            str_median_roi = f"{roi_median: .3f}"
             o_table.insert_item(row=_row,
-                                column=5,
-                                value=str_median,
+                                column=6,
+                                value=str_median_full,
+                                editable=False)
+            o_table.insert_item(row=_row,
+                                column=7,
+                                value=str_median_roi,
                                 editable=False)
 
             # std
             full_std = np.std(full_image)
             roi_std = np.std(roi_of_image)
-            str_std = f"{full_std:.3f} ({roi_std:.3f})"
+            str_std_full = f"{full_std:.3f}"
+            str_std_roi = f"{roi_std: .3f}"
             o_table.insert_item(row=_row,
-                                column=6,
-                                value=str_std,
+                                column=8,
+                                value=str_std_full,
+                                editable=False)
+            o_table.insert_item(row=_row,
+                                column=9,
+                                value=str_std_roi,
                                 editable=False)
 
             # min
             full_min = np.min(full_image)
             roi_min = np.min(roi_of_image)
-            str_min = f"{full_min:.3f} ({roi_min:.3f})"
+            str_min_full = f"{full_min:.3f}"
+            str_min_roi = f"{roi_min: .3f}"
             o_table.insert_item(row=_row,
-                                column=7,
-                                value=str_min,
+                                column=10,
+                                value=str_min_full,
+                                editable=False)
+            o_table.insert_item(row=_row,
+                                column=11,
+                                value=str_min_roi,
                                 editable=False)
 
             # max
             full_max = np.max(full_image)
             roi_max = np.max(roi_of_image)
-            str_max = f"{full_max:.3f} ({roi_max:.3f})"
+            str_max_full = f"{full_max:.3f}"
+            str_max_roi = f"{roi_max: .3f}"
             o_table.insert_item(row=_row,
-                                column=8,
-                                value=str_max,
+                                column=12,
+                                value=str_max_full,
                                 editable=False)
+            o_table.insert_item(row=_row,
+                                column=13,
+                                value=str_max_roi,
+                                editable=False)
+
             _row += 1
 
     def extract_data_for_this_bin(self, list_runs=None):
@@ -171,4 +197,4 @@ class Statistics:
                 'roi_of_image': roi_image_to_work_with}
 
     def plot_statistics(self):
-        print("plotting statistics!")
+        pass

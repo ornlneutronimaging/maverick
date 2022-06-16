@@ -336,7 +336,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>2</number>
+            <number>0</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -1046,6 +1046,31 @@
                   <string>New Column</string>
                  </property>
                 </column>
+                <column>
+                 <property name="text">
+                  <string>New Column</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>New Column</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>New Column</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>New Column</string>
+                 </property>
+                </column>
+                <column>
+                 <property name="text">
+                  <string>New Column</string>
+                 </property>
+                </column>
                </widget>
               </item>
               <item>
@@ -1244,8 +1269,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>165</x>
-     <y>799</y>
+     <x>137</x>
+     <y>823</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1260,8 +1285,8 @@
    <slot>combine_algorithm_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>165</x>
-     <y>799</y>
+     <x>217</x>
+     <y>823</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1292,8 +1317,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>781</y>
+     <x>478</x>
+     <y>810</y>
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
@@ -1308,8 +1333,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>112</x>
-     <y>788</y>
+     <x>478</x>
+     <y>849</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1324,8 +1349,8 @@
    <slot>bin_xaxis_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>975</x>
-     <y>707</y>
+     <x>1020</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>1002</x>
@@ -1340,8 +1365,8 @@
    <slot>bin_xaxis_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1089</x>
-     <y>707</y>
+     <x>1134</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>1143</x>
@@ -1356,8 +1381,8 @@
    <slot>bin_xaxis_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1195</x>
-     <y>707</y>
+     <x>1240</x>
+     <y>211</y>
     </hint>
     <hint type="destinationlabel">
      <x>1307</x>
@@ -1628,7 +1653,7 @@
    <slot>bin_auto_visualize_axis_generated_button_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>740</x>
+     <x>683</x>
      <y>706</y>
     </hint>
     <hint type="destinationlabel">
@@ -1644,7 +1669,7 @@
    <slot>bin_auto_hide_empty_bins()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>740</x>
+     <x>683</x>
      <y>462</y>
     </hint>
     <hint type="destinationlabel">
@@ -1692,7 +1717,7 @@
    <slot>bin_manual_add_bin_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>740</x>
+     <x>683</x>
      <y>131</y>
     </hint>
     <hint type="destinationlabel">
@@ -1733,6 +1758,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>bin_stats_comboBox</sender>
+   <signal>currentIndexChanged(int)</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_statistics_comboBox_changed()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>829</x>
+     <y>285</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1493</x>
+     <y>448</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1764,5 +1805,6 @@
   <slot>bin_manual_add_bin_clicked()</slot>
   <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
   <slot>bin_manual_table_right_click()</slot>
+  <slot>bin_statistics_comboBox_changed()</slot>
  </slots>
 </ui>
