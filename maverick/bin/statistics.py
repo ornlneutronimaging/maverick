@@ -169,3 +169,6 @@ class Statistics:
 
         return {'full_image': full_image_to_work_with,
                 'roi_of_image': roi_image_to_work_with}
+
+    def plot_statistics(self):
+        print("plotting statistics!")

@@ -25,6 +25,7 @@ class Initialization:
         self.table()
         self.labels()
         self.tab()
+        self.combobox()
         self.widgets()
 
     def statusbar(self):
@@ -39,6 +40,10 @@ class Initialization:
         self.parent.ui.combine_horizontal_splitter.setSizes([200, 500])
         self.parent.ui.bin_horizontal_splitter.setSizes([300, 800])
         self.parent.ui.bin_vertical_splitter.setSizes([500, 50])
+
+    def combobox(self):
+        list_of_options = ['mean', 'median', 'std', 'min', 'max']
+        self.parent.ui.bin_stats_comboBox.addItems(list_of_options)
 
     def table(self):
         # combine table

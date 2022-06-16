@@ -336,7 +336,7 @@
             </size>
            </property>
            <property name="currentIndex">
-            <number>0</number>
+            <number>2</number>
            </property>
            <widget class="QWidget" name="tab">
             <attribute name="title">
@@ -1062,6 +1062,9 @@
               <string>Statistics</string>
              </attribute>
              <layout class="QVBoxLayout" name="verticalLayout_12">
+              <item>
+               <widget class="QComboBox" name="bin_stats_comboBox"/>
+              </item>
               <item>
                <widget class="QWidget" name="statistics_plot_widget" native="true"/>
               </item>

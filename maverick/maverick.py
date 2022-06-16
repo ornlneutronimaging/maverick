@@ -343,6 +343,10 @@ class MainWindow(QMainWindow):
         o_stat = Statistics(parent=self)
         o_stat.update()
 
+    def bin_statistics_comboBox_changed(self, new_index):
+        o_stat = Statistics(parent=self)
+        o_stat.plot_statistics()
+
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)
         o_session.save_from_ui()
