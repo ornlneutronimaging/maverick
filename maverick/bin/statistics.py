@@ -1,8 +1,10 @@
-from ..utilities.get import Get
+import numpy as np
 
-from ..utilities import BinMode, BinAutoMode, TimeSpectraKeys
+from ..utilities.get import Get
+from ..utilities import BinMode, BinAutoMode, TimeSpectraKeys, BinAlgorithm
 from ..utilities.string import format_str
 from ..utilities.table_handler import TableHandler
+from ..session import SessionKeys
 
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 
@@ -85,4 +87,58 @@ class Statistics:
                                 value=list_lambda_formatted,
                                 editable=False)
 
+            # calculate statistics
+            _data_dict = self.extract_data_for_this_bin(list_runs=list_runs)
+
+            full_image = _data_dict['full_image']
+            roi_of_image = _data_dict['roi_of_image']
+
+            # mean
+            full_mean = np.mean(full_image)
+            roi_mean = np.mean(roi_of_image)
+            str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
+            o_table.insert_item(row=_row,
+                                column=4,
+                                value=str_mean,
+                                editable=False)
+
+            # median
+
+            # std
+
+            # min
+
+            # max
+
             _row += 1
+
+    def extract_data_for_this_bin(self, list_runs=None):
+        """
+        this method isolate the data of only the runs of the corresponding runs, and only for the ROI selected
+
+        :param list_runs:
+        :return:
+        """
+        # retrieve statistics
+        [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
+
+        data_to_work_with = []
+        for _run_index in list_runs:
+            data_to_work_with.append(self.parent.combine_data[_run_index])
+
+        region_to_work_with = [_data[y0: y0+height, x0: x0+width] for _data in data_to_work_with]
+
+        # how to add images
+        o_get = Get(parent=self.parent)
+        bin_method = o_get.bin_add_method()
+        if bin_method == BinAlgorithm.mean:
+            full_image_to_work_with = np.mean(data_to_work_with, axis=0)
+            roi_image_to_work_with = np.mean(region_to_work_with, axis=0)
+        elif bin_method == BinAlgorithm.median:
+            full_image_to_work_with = np.median(data_to_work_with, axis=0)
+            roi_image_to_work_with = np.median(region_to_work_with, axis=0)
+        else:
+            raise NotImplementedError("this method of adding the binned images is not suppported!")
+
+        return {'full_image': full_image_to_work_with,
+                'roi_of_image': roi_image_to_work_with}

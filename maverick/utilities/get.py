@@ -5,7 +5,7 @@ import configparser
 import copy
 import numpy as np
 
-from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode, BinMode
+from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode, BinMode, BinAlgorithm
 from ..session import SessionKeys
 
 
@@ -106,6 +106,14 @@ class Get:
             return TimeSpectraKeys.lambda_array
         else:
             raise NotImplementedError(f"type not supported")
+
+    def bin_add_method(self):
+        if self.parent.ui.bin_mean_radioButton.isChecked():
+            return BinAlgorithm.mean
+        elif self.parent.ui.bin_median_radioButton.isChecked():
+            return BinAlgorithm.median
+        else:
+            raise NotImplementedError("Bin method to add images not supported")
 
     def current_bin_tab_working_axis(self):
         bin_mode = self.bin_auto_mode()

@@ -25,3 +25,10 @@ class BinAutoMode:
 
     log = 'log'
     linear = 'linear'
+
+
+class BinAlgorithm:
+    """list of algorithm used to bin the images"""
+
+    mean = 'mean'
+    median = 'median'
