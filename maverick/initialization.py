@@ -77,7 +77,7 @@ class Initialization:
                         'max',
                         ]
         o_table.set_column_names(column_names=column_names)
-        column_sizes = [35, 80, 130, 130, 100, 100, 100, 100, 100]
+        column_sizes = [35, 80, 130, 130, 130, 130, 130, 130, 130]
         o_table.set_column_sizes(column_sizes=column_sizes)
 
     def labels(self):
