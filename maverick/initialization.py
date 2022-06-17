@@ -106,6 +106,7 @@ class Initialization:
         self.parent.ui.combine_bin_tabWidget.setTabIcon(1, QIcon(bin_image))
         self.parent.ui.bin_tabWidget.setTabIcon(0, QIcon(auto_image))
         self.parent.ui.bin_tabWidget.setTabIcon(1, QIcon(manual_image))
+        self.parent.ui.bin_tabWidget.setTabIcon(2, QIcon(settings_image))
         self.parent.ui.combine_bottom_tabWidget.setTabIcon(2, QIcon(settings_image))
         self.parent.ui.stats_tabWidget.setTabIcon(0, QIcon(stats_table_image))
         self.parent.ui.stats_tabWidget.setTabIcon(1, QIcon(stats_plot_image))

@@ -855,7 +855,7 @@
            </widget>
            <widget class="QWidget" name="tab_8">
             <attribute name="title">
-             <string>Page</string>
+             <string>Settings</string>
             </attribute>
             <layout class="QVBoxLayout" name="verticalLayout_13">
              <item>
