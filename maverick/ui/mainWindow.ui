@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -1001,31 +1001,6 @@
              <layout class="QVBoxLayout" name="verticalLayout_11">
               <item>
                <widget class="QTableWidget" name="statistics_tableWidget">
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
-                <column>
-                 <property name="text">
-                  <string>New Column</string>
-                 </property>
-                </column>
                 <column>
                  <property name="text">
                   <string>New Column</string>

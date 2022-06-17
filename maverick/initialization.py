@@ -75,19 +75,14 @@ class Initialization:
                         'file #',
                         'tof range (' + MICRO + "s)",
                         LAMBDA + " range (" + ANGSTROMS + ")",
-                        'mean (full)',
-                        'mean (ROI)',
-                        'median (full)',
-                        'median (ROI)',
-                        'std (full)',
-                        'std (ROI)',
-                        'min (full)',
-                        'min (ROI)',
-                        'max (full)',
-                        'max (ROI)',
+                        'mean',
+                        'median',
+                        'std',
+                        'min',
+                        'max',
                         ]
         o_table.set_column_names(column_names=column_names)
-        column_sizes = [35, 80, 130, 130, 70, 70, 70, 70, 70, 70, 70, 70, 70, 70]
+        column_sizes = [35, 80, 130, 130, 130, 130, 130, 130, 130]
         o_table.set_column_sizes(column_sizes=column_sizes)
 
     def labels(self):
