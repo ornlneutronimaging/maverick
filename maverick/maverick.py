@@ -1,4 +1,3 @@
-from qtpy import QtCore
 from qtpy.QtWidgets import QApplication, QMainWindow
 import sys
 import os
@@ -24,7 +23,7 @@ from .bin.manual_event_handler import ManualEventHandler as BinManualEventHandle
 from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
 from .bin.statistics import Statistics
-from .export import Export
+from maverick.export.export import Export
 
 from . import load_ui
 

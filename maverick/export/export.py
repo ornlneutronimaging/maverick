@@ -1,10 +1,10 @@
 from qtpy.QtWidgets import QFileDialog
 import logging
-import numpy as np
 
-from .session import SessionKeys
-from .utilities.get import Get
-from .utilities import TimeSpectraKeys
+from ..session import SessionKeys
+from ..utilities.get import Get
+from ..utilities import TimeSpectraKeys
+from .utilities import create_output_file_name
 
 
 class Export:
@@ -41,18 +41,34 @@ class Export:
 
         sample_position = self.parent.session[SessionKeys.sample_position]
 
-        # for loop
-        for _index, _bin in enumerate(bins_dict[TimeSpectraKeys.file_index_array]):
+        file_index_array = bins_dict[TimeSpectraKeys.file_index_array]
+        tof_array = bins_dict[TimeSpectraKeys.tof_array]
+        lambda_array = bins_dict[TimeSpectraKeys.lambda_array]
 
-            print(f"_bin: {_bin}")
+        # for loop
+        for _index, _bin in enumerate(file_index_array):
+
+            self.logger.info(f"bin #: {_bin}")
+
+            if _bin == []:
+                self.logger.info(f"-> empty bin, skipping.")
+                self.parent.eventProgress.setValue(_index + 1)
+                continue
 
         # define name of combined image using infos
         #   bin range (micro and angstroms)
         #   sample distance
+            output_file_name = create_output_file_name(folder=_folder,
+                                                       bin_index=_index,
+                                                       sample_position=sample_position,
+                                                       list_file_index=_bin,
+                                                       list_tof=tof_array[_index],
+                                                       list_lambda=lambda_array[_index])
 
-
+            self.logger.info(f"-> output_file_name: {output_file_name}")
 
         # Use NeuNorm to export those data (maybe)
             self.parent.eventProgress.setValue(_index+1)
 
         self.parent.eventProgress.setVisible(False)
+        self.logger.info(f"Done exporting!")
