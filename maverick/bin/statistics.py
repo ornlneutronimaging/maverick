@@ -221,4 +221,23 @@ class Statistics:
                 'roi_of_image': roi_image_to_work_with}
 
     def plot_statistics(self):
-        pass
+        if self.parent.current_stats is None:
+            self.parent.statistics_plot.ax1.clear()
+            return
+
+        o_get = Get(parent=self.parent)
+        stats_requested = o_get.bin_statistics_plot_requested()
+
+        stat_data_dict = self.parent.current_stats[stats_requested]
+        full_array = stat_data_dict[StatisticsRegion.full]
+        roi_array = stat_data_dict[StatisticsRegion.roi]
+
+        self.parent.statistics_plot.ax1.clear()
+        self.parent.statistics_plot.ax1.plot(full_array, '.', label='full image')
+        self.parent.statistics_plot.ax1.plot(roi_array, '+', label='roi only')
+
+        self.parent.statistics_plot.ax1.set_xlabel(f"Bin #")
+        self.parent.statistics_plot.ax1.set_ylabel(stats_requested)
+        self.parent.statistics_plot.ax1.legend(loc='upper right')
+
+        self.parent.statistics_plot.draw()

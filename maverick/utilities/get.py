@@ -7,6 +7,7 @@ import numpy as np
 
 from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode, BinMode, BinAlgorithm
 from ..session import SessionKeys
+from ..bin import StatisticsName
 
 
 class Get:
@@ -123,6 +124,15 @@ class Get:
             return self.bin_linear_axis()
         else:
             raise NotImplementedError(f"type not supported")
+
+    def bin_statistics_plot_requested(self):
+        current_index = self.parent.ui.bin_stats_comboBox.currentIndex()
+        list_name = [StatisticsName.mean,
+                     StatisticsName.median,
+                     StatisticsName.std,
+                     StatisticsName.min,
+                     StatisticsName.max]
+        return list_name[current_index]
 
     def list_array_to_combine(self):
         session = self.parent.session
