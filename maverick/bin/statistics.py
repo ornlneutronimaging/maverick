@@ -7,6 +7,7 @@ from ..utilities.table_handler import TableHandler
 from ..session import SessionKeys
 
 from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
+from . import StatisticsName, StatisticsRegion
 
 
 class Statistics:
@@ -44,10 +45,35 @@ class Statistics:
         tof_bins = list_bins[TimeSpectraKeys.tof_array]
         lambda_bins = list_bins[TimeSpectraKeys.lambda_array]
 
+        mean_array_full = []
+        median_array_full = []
+        std_array_full = []
+        min_array_full = []
+        max_array_full = []
+
+        mean_array_roi = []
+        median_array_roi = []
+        std_array_roi = []
+        min_array_roi = []
+        max_array_roi = []
+
         _row = 0
         for _bin_index, _bin in enumerate(file_index_bins):
 
             if _bin == []:
+
+                mean_array_full.append(np.nan)
+                median_array_full.append(np.nan)
+                std_array_full.append(np.nan)
+                min_array_full.append(np.nan)
+                max_array_full.append(np.nan)
+
+                mean_array_roi.append(np.nan)
+                median_array_roi.append(np.nan)
+                std_array_roi.append(np.nan)
+                min_array_roi.append(np.nan)
+                max_array_roi.append(np.nan)
+
                 continue
 
             o_table.insert_empty_row(row=_row)
@@ -96,6 +122,8 @@ class Statistics:
             # mean
             full_mean = np.mean(full_image)
             roi_mean = np.mean(roi_of_image)
+            mean_array_full.append(full_mean)
+            mean_array_roi.append(roi_mean)
             str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
             o_table.insert_item(row=_row,
                                 column=4,
@@ -105,6 +133,8 @@ class Statistics:
             # median
             full_median = np.median(full_image)
             roi_median = np.median(roi_of_image)
+            median_array_full.append(full_median)
+            median_array_roi.append(roi_median)
             str_median = f"{full_median:.3f} ({roi_median:.3f})"
             o_table.insert_item(row=_row,
                                 column=5,
@@ -114,6 +144,8 @@ class Statistics:
             # std
             full_std = np.std(full_image)
             roi_std = np.std(roi_of_image)
+            std_array_full.append(full_std)
+            std_array_roi.append(roi_std)
             str_std = f"{full_std:.3f} ({roi_std:.3f})"
             o_table.insert_item(row=_row,
                                 column=6,
@@ -123,6 +155,8 @@ class Statistics:
             # min
             full_min = np.min(full_image)
             roi_min = np.min(roi_of_image)
+            min_array_full.append(full_min)
+            min_array_roi.append(roi_min)
             str_min = f"{full_min:.3f} ({roi_min:.3f})"
             o_table.insert_item(row=_row,
                                 column=7,
@@ -132,6 +166,8 @@ class Statistics:
             # max
             full_max = np.max(full_image)
             roi_max = np.max(roi_of_image)
+            max_array_full.append(full_max)
+            max_array_roi.append(roi_max)
             str_max = f"{full_max:.3f} ({roi_max:.3f})"
             o_table.insert_item(row=_row,
                                 column=8,
@@ -139,6 +175,19 @@ class Statistics:
                                 editable=False)
 
             _row += 1
+
+        current_stats = {StatisticsName.mean: {StatisticsRegion.full: mean_array_full,
+                                               StatisticsRegion.roi: mean_array_roi},
+                         StatisticsName.median: {StatisticsRegion.full: median_array_full,
+                                                 StatisticsRegion.roi: median_array_roi},
+                         StatisticsName.std: {StatisticsRegion.full: std_array_full,
+                                              StatisticsRegion.roi: std_array_roi},
+                         StatisticsName.min: {StatisticsRegion.full: min_array_full,
+                                              StatisticsRegion.roi: min_array_roi},
+                         StatisticsName.max: {StatisticsRegion.full: max_array_full,
+                                              StatisticsRegion.roi: max_array_roi}}
+
+        self.parent.current_stats = current_stats
 
     def extract_data_for_this_bin(self, list_runs=None):
         """

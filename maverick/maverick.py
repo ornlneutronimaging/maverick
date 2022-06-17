@@ -112,6 +112,14 @@ class MainWindow(QMainWindow):
 
     current_auto_bin_rows_highlighted = []
 
+    # stats currently displayed in the bin stats table
+    # {StatisticsName.mean: {Statistics.full: [],
+    #                        Statistics.roi: [],
+    #                        },
+    # StatisticsName.median: ....
+    #  }
+    current_stats = None
+
     def __init__(self, parent=None):
         """
         Initialization
