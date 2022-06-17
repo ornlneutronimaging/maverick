@@ -27,9 +27,9 @@ class EventHandler:
         self.parent.session[SessionKeys.sample_position] = self.parent.ui.combine_sample_position_doubleSpinBox.value()
 
     def select_top_folder(self):
-        _folder = str(str(QFileDialog.getExistingDirectory(caption="Select Top Working Folder",
+        _folder = str(QFileDialog.getExistingDirectory(caption="Select Top Working Folder",
                                                            directory=self.parent.session[SessionKeys.top_folder],
-                                                           options=QFileDialog.ShowDirsOnly)))
+                                                           options=QFileDialog.ShowDirsOnly))
         if _folder == "":
             self.logger.info("User Canceled the selection of top folder dialog!")
             return

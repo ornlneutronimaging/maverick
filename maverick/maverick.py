@@ -24,6 +24,7 @@ from .bin.manual_event_handler import ManualEventHandler as BinManualEventHandle
 from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
 from .bin.statistics import Statistics
+from .export import Export
 
 from . import load_ui
 
@@ -355,6 +356,11 @@ class MainWindow(QMainWindow):
     def bin_statistics_comboBox_changed(self, new_index):
         o_stat = Statistics(parent=self)
         o_stat.plot_statistics()
+
+    # export images
+    def export_combined_and_binned_images_clicked(self):
+        o_export = Export(parent=self)
+        o_export.run()
 
     def closeEvent(self, event):
         o_session = SessionHandler(parent=self)

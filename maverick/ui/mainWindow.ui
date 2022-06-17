@@ -1325,7 +1325,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1020</x>
-     <y>211</y>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>1002</x>
@@ -1341,7 +1341,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1134</x>
-     <y>211</y>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>1143</x>
@@ -1357,7 +1357,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>1240</x>
-     <y>211</y>
+     <y>200</y>
     </hint>
     <hint type="destinationlabel">
      <x>1307</x>
@@ -1692,8 +1692,8 @@
    <slot>bin_manual_add_bin_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>683</x>
-     <y>131</y>
+     <x>157</x>
+     <y>125</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -1708,8 +1708,8 @@
    <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>182</x>
-     <y>127</y>
+     <x>157</x>
+     <y>135</y>
     </hint>
     <hint type="destinationlabel">
      <x>5</x>
@@ -1724,8 +1724,8 @@
    <slot>bin_manual_table_right_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>263</x>
-     <y>393</y>
+     <x>117</x>
+     <y>111</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -1740,12 +1740,28 @@
    <slot>bin_statistics_comboBox_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>829</x>
-     <y>285</y>
+     <x>1443</x>
+     <y>284</y>
     </hint>
     <hint type="destinationlabel">
      <x>1493</x>
      <y>448</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>export_combined_and_binned_images_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1265</x>
+     <y>833</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1496</x>
+     <y>917</y>
     </hint>
    </hints>
   </connection>
@@ -1781,5 +1797,6 @@
   <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
   <slot>bin_manual_table_right_click()</slot>
   <slot>bin_statistics_comboBox_changed()</slot>
+  <slot>export_combined_and_binned_images_clicked()</slot>
  </slots>
 </ui>
