@@ -70,6 +70,9 @@ class SessionHandler:
         else:
             raise NotImplementedError("Auto bin mode not implemented!")
 
+        bin_algorithm = session.get(SessionKeys.bin_algorithm, CombineAlgorithm.mean)
+        self.parent.session[SessionKeys.bin_algorithm] = bin_algorithm
+
     def automatic_save(self):
         self.logger.info(self.parent.session)
         o_get = Get(parent=self.parent)

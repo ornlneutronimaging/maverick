@@ -132,12 +132,7 @@ class Get:
             raise NotImplementedError(f"type not supported")
 
     def bin_add_method(self):
-        if self.parent.ui.bin_mean_radioButton.isChecked():
-            return BinAlgorithm.mean
-        elif self.parent.ui.bin_median_radioButton.isChecked():
-            return BinAlgorithm.median
-        else:
-            raise NotImplementedError("Bin method to add images not supported")
+        return self.parent.session[SessionKeys.bin_algorithm]
 
     def current_bin_tab_working_axis(self):
         bin_mode = self.bin_auto_mode()

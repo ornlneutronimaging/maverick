@@ -15,6 +15,7 @@ class SessionKeys:
     combine_roi = 'combine_roi'
     sample_position = 'sample_position'
     bin_mode = 'bin_mode'
+    bin_algorithm = 'bin_algorithm'
 
 
 session = {SessionKeys.top_folder: None,  # the base folder to start looking at images folder to combine
@@ -27,5 +28,6 @@ session = {SessionKeys.top_folder: None,  # the base folder to start looking at 
            SessionKeys.combine_algorithm: CombineAlgorithm.mean,
            SessionKeys.combine_roi: [50, 50, 200, 200],  # [x0,y0,width,height],
            SessionKeys.sample_position: 0,    # in the combine tab
-           SessionKeys.bin_mode: BinMode.auto   # 'auto' or 'manual'
+           SessionKeys.bin_mode: BinMode.auto,   # 'auto' or 'manual',
+           SessionKeys.bin_algorithm: CombineAlgorithm.mean,  # 'mean' or 'median'
            }
