@@ -39,6 +39,8 @@ class LoadPreviousSessionLauncher(QDialog):
         o_check = Check(parent=self.parent)
         o_check.log_file_size()
 
+        self.parent.check_combine_widgets()
+
     def no_clicked(self):
         self.close()
         o_check = Check(parent=self.parent)

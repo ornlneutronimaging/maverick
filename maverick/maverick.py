@@ -190,7 +190,11 @@ class MainWindow(QMainWindow):
     def help_log_clicked(self):
         LogLauncher(parent=self)
 
-    # widgets events
+    # combine events
+    def check_combine_widgets(self):
+        o_event = CombineEventHandler(parent=self)
+        o_event.check_widgets()
+
     def combine_bin_tab_changed(self, new_tab_index):
         if new_tab_index == 1:  # bin
             o_event = BinEventHandler(parent=self)
@@ -236,7 +240,7 @@ class MainWindow(QMainWindow):
         o_event.combine_roi_changed()
         o_event.display_profile()
 
-    # BIN
+    # bin events
     def bin_xaxis_changed(self):
         o_event = BinEventHandler(parent=self)
         o_event.bin_axis_changed()
