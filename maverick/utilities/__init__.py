@@ -19,6 +19,7 @@ class BinMode:
 
     auto = 'auto'
     manual = 'manual'
+    settings = 'settings'
 
 
 class BinAutoMode:

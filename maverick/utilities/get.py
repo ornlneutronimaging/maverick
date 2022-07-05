@@ -48,8 +48,10 @@ class Get:
             return BinMode.auto
         elif self.parent.ui.bin_tabWidget.currentIndex() == 1:
             return BinMode.manual
+        elif self.parent.ui.bin_tabWidget.currentIndex() == 2:
+            return BinMode.settings
         else:
-            raise NotImplementedError("tab not implemented!")
+            raise NotImplementedError("bin mode not implemented!")
 
     def bin_auto_mode(self):
         if self.parent.ui.auto_log_radioButton.isChecked():

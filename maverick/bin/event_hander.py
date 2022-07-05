@@ -42,12 +42,18 @@ class EventHandler:
             o_manual_event.refresh_manual_tab()
             o_manual_event.display_all_items()
 
+        else:
+            pass
+
     def bin_auto_manual_tab_changed(self, new_tab_index=0):
         if new_tab_index == 0:
             self.parent.session[SessionKeys.bin_mode] = BinMode.auto
 
         elif new_tab_index == 1:
             self.parent.session[SessionKeys.bin_mode] = BinMode.manual
+
+        elif new_tab_index == 2:
+            pass
 
         else:
             raise NotImplementedError("LinearBin mode not implemented!")

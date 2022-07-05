@@ -1077,6 +1077,13 @@
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_2">
           <item>
+           <widget class="QPushButton" name="bin_settings_pushButton">
+            <property name="text">
+             <string>Settings ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -1692,8 +1699,8 @@
    <slot>bin_manual_add_bin_clicked()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>157</x>
-     <y>125</y>
+     <x>683</x>
+     <y>131</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -1724,8 +1731,8 @@
    <slot>bin_manual_table_right_click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>117</x>
-     <y>111</y>
+     <x>135</x>
+     <y>229</y>
     </hint>
     <hint type="destinationlabel">
      <x>6</x>
@@ -1740,8 +1747,8 @@
    <slot>bin_statistics_comboBox_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1443</x>
-     <y>284</y>
+     <x>799</x>
+     <y>260</y>
     </hint>
     <hint type="destinationlabel">
      <x>1493</x>
@@ -1762,6 +1769,22 @@
     <hint type="destinationlabel">
      <x>1496</x>
      <y>917</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>bin_settings_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_settings_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>78</x>
+     <y>835</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>112</x>
+     <y>952</y>
     </hint>
    </hints>
   </connection>
@@ -1798,5 +1821,6 @@
   <slot>bin_manual_table_right_click()</slot>
   <slot>bin_statistics_comboBox_changed()</slot>
   <slot>export_combined_and_binned_images_clicked()</slot>
+  <slot>bin_settings_clicked()</slot>
  </slots>
 </ui>

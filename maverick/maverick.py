@@ -356,6 +356,9 @@ class MainWindow(QMainWindow):
         o_stat = Statistics(parent=self)
         o_stat.plot_statistics()
 
+    def bin_settings_clicked(self):
+        pass
+
     # export images
     def export_combined_and_binned_images_clicked(self):
         o_export = Export(parent=self)

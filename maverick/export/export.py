@@ -67,6 +67,9 @@ class Export:
 
             self.logger.info(f"-> output_file_name: {output_file_name}")
 
+            # we combine the file listed in _bin using the method
+
+
         # Use NeuNorm to export those data (maybe)
             self.parent.eventProgress.setValue(_index+1)
 
