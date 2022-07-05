@@ -60,6 +60,13 @@ class Statistics:
         _row = 0
         for _bin_index, _bin in enumerate(file_index_bins):
 
+            o_table.insert_empty_row(row=_row)
+
+            o_table.insert_item(row=_row,
+                                column=0,
+                                value=str(_row),
+                                editable=False)
+
             if _bin == []:
 
                 mean_array_full.append(np.nan)
@@ -74,101 +81,159 @@ class Statistics:
                 min_array_roi.append(np.nan)
                 max_array_roi.append(np.nan)
 
-                continue
+                list_runs_formatted = "N/A"
+                list_tof_formatted = "N/A"
+                list_lambda_formatted = "N/A"
+                str_mean = "N/A"
+                str_median = "N/A"
+                str_std = "N/A"
+                str_min = "N/A"
+                str_max = "N/A"
 
-            o_table.insert_empty_row(row=_row)
+            else:
 
-            o_table.insert_item(row=_row,
-                                column=0,
-                                value=str(_row),
-                                editable=False)
+                list_runs = file_index_bins[_bin_index]
+                list_runs_formatted = format_str(list_runs,
+                                                 format_str="{:d}",
+                                                 factor=1,
+                                                 data_type=TimeSpectraKeys.file_index_array)
 
-            list_runs = file_index_bins[_bin_index]
-            list_runs_formatted = format_str(list_runs,
-                                             format_str="{:d}",
-                                             factor=1,
-                                             data_type=TimeSpectraKeys.file_index_array)
+                list_tof = tof_bins[_bin_index]
+                list_tof_formatted = format_str(list_tof,
+                                                format_str="{:.2f}",
+                                                factor=TO_MICROS_UNITS,
+                                                data_type=TimeSpectraKeys.tof_array)
+
+                list_lambda = lambda_bins[_bin_index]
+                list_lambda_formatted = format_str(list_lambda,
+                                                   format_str="{:.3f}",
+                                                   factor=TO_ANGSTROMS_UNITS,
+                                                   data_type=TimeSpectraKeys.lambda_array)
+
+                # calculate statistics
+                _data_dict = self.extract_data_for_this_bin(list_runs=list_runs)
+
+                full_image = _data_dict['full_image']
+                roi_of_image = _data_dict['roi_of_image']
+
+                # mean
+                full_mean = np.mean(full_image)
+                roi_mean = np.mean(roi_of_image)
+                mean_array_full.append(full_mean)
+                mean_array_roi.append(roi_mean)
+                str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
+
+                # median
+                full_median = np.median(full_image)
+                roi_median = np.median(roi_of_image)
+                median_array_full.append(full_median)
+                median_array_roi.append(roi_median)
+                str_median = f"{full_median:.3f} ({roi_median:.3f})"
+
+                # std
+                full_std = np.std(full_image)
+                roi_std = np.std(roi_of_image)
+                std_array_full.append(full_std)
+                std_array_roi.append(roi_std)
+                str_std = f"{full_std:.3f} ({roi_std:.3f})"
+
+                # min
+                full_min = np.min(full_image)
+                roi_min = np.min(roi_of_image)
+                min_array_full.append(full_min)
+                min_array_roi.append(roi_min)
+                str_min = f"{full_min:.3f} ({roi_min:.3f})"
+
+                # max
+                full_max = np.max(full_image)
+                roi_max = np.max(roi_of_image)
+                max_array_full.append(full_max)
+                max_array_roi.append(roi_max)
+                str_max = f"{full_max:.3f} ({roi_max:.3f})"
+
+            # list_runs_formatted = format_str(list_runs,
+            #                                  format_str="{:d}",
+            #                                  factor=1,
+            #                                  data_type=TimeSpectraKeys.file_index_array)
             o_table.insert_item(row=_row,
                                 column=1,
                                 value=list_runs_formatted,
                                 editable=False)
 
-            list_tof = tof_bins[_bin_index]
-            list_tof_formatted = format_str(list_tof,
-                                            format_str="{:.2f}",
-                                            factor=TO_MICROS_UNITS,
-                                            data_type=TimeSpectraKeys.tof_array)
+            # list_tof_formatted = format_str(list_tof,
+            #                                 format_str="{:.2f}",
+            #                                 factor=TO_MICROS_UNITS,
+            #                                 data_type=TimeSpectraKeys.tof_array)
             o_table.insert_item(row=_row,
                                 column=2,
                                 value=list_tof_formatted,
                                 editable=False)
 
-            list_lambda = lambda_bins[_bin_index]
-            list_lambda_formatted = format_str(list_lambda,
-                                               format_str="{:.3f}",
-                                               factor=TO_ANGSTROMS_UNITS,
-                                               data_type=TimeSpectraKeys.lambda_array)
+            # list_lambda_formatted = format_str(list_lambda,
+            #                                    format_str="{:.3f}",
+            #                                    factor=TO_ANGSTROMS_UNITS,
+            #                                    data_type=TimeSpectraKeys.lambda_array)
             o_table.insert_item(row=_row,
                                 column=3,
                                 value=list_lambda_formatted,
                                 editable=False)
 
-            # calculate statistics
-            _data_dict = self.extract_data_for_this_bin(list_runs=list_runs)
-
-            full_image = _data_dict['full_image']
-            roi_of_image = _data_dict['roi_of_image']
-
-            # mean
-            full_mean = np.mean(full_image)
-            roi_mean = np.mean(roi_of_image)
-            mean_array_full.append(full_mean)
-            mean_array_roi.append(roi_mean)
-            str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
+            # # calculate statistics
+            # _data_dict = self.extract_data_for_this_bin(list_runs=list_runs)
+            #
+            # full_image = _data_dict['full_image']
+            # roi_of_image = _data_dict['roi_of_image']
+            #
+            # # mean
+            # full_mean = np.mean(full_image)
+            # roi_mean = np.mean(roi_of_image)
+            # mean_array_full.append(full_mean)
+            # mean_array_roi.append(roi_mean)
+            # str_mean = f"{full_mean:.3f} ({roi_mean:.3f})"
             o_table.insert_item(row=_row,
                                 column=4,
                                 value=str_mean,
                                 editable=False)
 
             # median
-            full_median = np.median(full_image)
-            roi_median = np.median(roi_of_image)
-            median_array_full.append(full_median)
-            median_array_roi.append(roi_median)
-            str_median = f"{full_median:.3f} ({roi_median:.3f})"
+            # full_median = np.median(full_image)
+            # roi_median = np.median(roi_of_image)
+            # median_array_full.append(full_median)
+            # median_array_roi.append(roi_median)
+            # str_median = f"{full_median:.3f} ({roi_median:.3f})"
             o_table.insert_item(row=_row,
                                 column=5,
                                 value=str_median,
                                 editable=False)
 
             # std
-            full_std = np.std(full_image)
-            roi_std = np.std(roi_of_image)
-            std_array_full.append(full_std)
-            std_array_roi.append(roi_std)
-            str_std = f"{full_std:.3f} ({roi_std:.3f})"
+            # full_std = np.std(full_image)
+            # roi_std = np.std(roi_of_image)
+            # std_array_full.append(full_std)
+            # std_array_roi.append(roi_std)
+            # str_std = f"{full_std:.3f} ({roi_std:.3f})"
             o_table.insert_item(row=_row,
                                 column=6,
                                 value=str_std,
                                 editable=False)
 
             # min
-            full_min = np.min(full_image)
-            roi_min = np.min(roi_of_image)
-            min_array_full.append(full_min)
-            min_array_roi.append(roi_min)
-            str_min = f"{full_min:.3f} ({roi_min:.3f})"
+            # full_min = np.min(full_image)
+            # roi_min = np.min(roi_of_image)
+            # min_array_full.append(full_min)
+            # min_array_roi.append(roi_min)
+            # str_min = f"{full_min:.3f} ({roi_min:.3f})"
             o_table.insert_item(row=_row,
                                 column=7,
                                 value=str_min,
                                 editable=False)
 
             # max
-            full_max = np.max(full_image)
-            roi_max = np.max(roi_of_image)
-            max_array_full.append(full_max)
-            max_array_roi.append(roi_max)
-            str_max = f"{full_max:.3f} ({roi_max:.3f})"
+            # full_max = np.max(full_image)
+            # roi_max = np.max(roi_of_image)
+            # max_array_full.append(full_max)
+            # max_array_roi.append(roi_max)
+            # str_max = f"{full_max:.3f} ({roi_max:.3f})"
             o_table.insert_item(row=_row,
                                 column=8,
                                 value=str_max,
