@@ -215,7 +215,7 @@ class Statistics:
             full_image_to_work_with = np.median(data_to_work_with, axis=0)
             roi_image_to_work_with = np.median(region_to_work_with, axis=0)
         else:
-            raise NotImplementedError("this method of adding the binned images is not suppported!")
+            raise NotImplementedError("this method of adding the binned images is not supported!")
 
         return {'full_image': full_image_to_work_with,
                 'roi_of_image': roi_image_to_work_with}

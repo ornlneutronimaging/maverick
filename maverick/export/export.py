@@ -1,10 +1,14 @@
 from qtpy.QtWidgets import QFileDialog
 import logging
+import os
+
+from NeuNorm.normalization import Normalization
 
 from ..session import SessionKeys
 from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys
 from .utilities import create_output_file_name
+from ..bin.statistics import Statistics
 
 
 class Export:
@@ -45,6 +49,9 @@ class Export:
         tof_array = bins_dict[TimeSpectraKeys.tof_array]
         lambda_array = bins_dict[TimeSpectraKeys.lambda_array]
 
+        o_statistics = Statistics(parent=self.parent)
+        self.logger.info(f"Images will be exported in: {_folder}")
+
         # for loop
         for _index, _bin in enumerate(file_index_array):
 
@@ -55,9 +62,9 @@ class Export:
                 self.parent.eventProgress.setValue(_index + 1)
                 continue
 
-        # define name of combined image using infos
-        #   bin range (micro and angstroms)
-        #   sample distance
+            # define name of combined image using infos
+            #   bin range (micro and angstroms)
+            #   sample distance
             output_file_name = create_output_file_name(folder=_folder,
                                                        bin_index=_index,
                                                        sample_position=sample_position,
@@ -68,7 +75,12 @@ class Export:
             self.logger.info(f"-> output_file_name: {output_file_name}")
 
             # we combine the file listed in _bin using the method
-
+            _data_dict = o_statistics.extract_data_for_this_bin(list_runs=_bin)
+            full_image = _data_dict['full_image']
+            o_norm =Normalization()
+            o_norm.load(data=full_image)
+            o_norm.data['sample']['file_name'][0] = os.path.basename(output_file_name)
+            o_norm.export(folder=_folder, data_type='sample', file_type='tiff')
 
         # Use NeuNorm to export those data (maybe)
             self.parent.eventProgress.setValue(_index+1)

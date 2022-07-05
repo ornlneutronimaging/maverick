@@ -14,7 +14,7 @@ def create_output_file_name(folder=None,
     bin_index = f"{bin_index:02d}"
 
     if len(list_file_index) == 1:
-        str_file = f"file#{list_file_index[0]}"
+        str_file = f"file_#{list_file_index[0]}"
 
         str_tof_value = convert_to_user_friendly_micros_units(list_tof[0])
         str_tof = f"tof_{str_tof_value}_micros"
@@ -23,7 +23,7 @@ def create_output_file_name(folder=None,
         str_lambda = f"lambda_{str_lambda_value}_angstroms"
 
     elif len(list_file_index) == 2:
-        str_file = f"file#_{list_file_index[0]}_{list_file_index[1]}"
+        str_file = f"file_{list_file_index[0]}_#{list_file_index[1]}"
 
         from_str_tof_value = convert_to_user_friendly_micros_units(list_tof[0])
         to_str_tof_value = convert_to_user_friendly_micros_units(list_tof[1])
@@ -34,7 +34,7 @@ def create_output_file_name(folder=None,
         str_lambda = f"from_lambda_{from_str_lambda_value}_to_{to_str_lambda_value}_angstroms"
 
     else:
-        str_file = f"from_file#_{list_file_index[0]}_to_file#_{list_file_index[-1]}"
+        str_file = f"from_file_#{list_file_index[0]}_to_file_#{list_file_index[-1]}"
 
         from_str_tof_value = convert_to_user_friendly_micros_units(list_tof[0])
         to_str_tof_value = convert_to_user_friendly_micros_units(list_tof[-1])
