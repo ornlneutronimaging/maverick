@@ -50,6 +50,22 @@ class EventHandler:
         # display list of folders in widget and column showing working folders used
         self.populate_list_of_folders_to_combine()
 
+        # update ui
+        self.check_widgets()
+
+    def check_widgets(self):
+        o_get = Get(parent=self.parent)
+
+        if o_get.list_of_folders_to_use() == []:
+            self.parent.ui.combine_refresh_top_folder_pushButton.setEnabled(False)
+            self.parent.ui.combine_bin_tabWidget.setTabEnabled(1, False)
+            self.parent.ui.combine_widget.setEnabled(False)
+
+        else:
+            self.parent.ui.combine_refresh_top_folder_pushButton.setEnabled(True)
+            self.parent.ui.combine_bin_tabWidget.setTabEnabled(1, True)
+            self.parent.ui.combine_widget.setEnabled(True)
+
     def refresh_table_clicked(self):
         self.logger.info("User clicked the refresh table!")
         top_folder = self.parent.session[SessionKeys.top_folder]
@@ -230,6 +246,10 @@ class EventHandler:
 
     def combine_algorithm_changed(self):
         o_get = Get(parent=self.parent)
+
+        if o_get.list_of_folders_to_use() == []:
+            return
+
         combine_algorithm = o_get.combine_algorithm()
         self.parent.session[SessionKeys.combine_algorithm] = combine_algorithm
         self.logger.info(f"Algorithm to combine changed to: {combine_algorithm}")
@@ -259,6 +279,11 @@ class EventHandler:
 
     def display_profile(self):
         combine_data = self.parent.combine_data
+
+        if combine_data is None:
+            self.parent.combine_profile_view.clear()
+            return
+
         [x0, y0, width, height] = self.parent.session[SessionKeys.combine_roi]
 
         o_get = Get(parent=self.parent)

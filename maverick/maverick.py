@@ -220,6 +220,8 @@ class MainWindow(QMainWindow):
         o_event.display_profile()
 
     def combine_instrument_settings_changed(self):
+        if self.combine_data is None:
+            return
         o_event = CombineEventHandler(parent=self)
         o_event.update_list_of_folders_to_use(force_recalculation_of_time_spectra=True)
         o_event.combine_folders()

@@ -109,6 +109,7 @@ class Initialization:
         self.parent.ui.combine_bottom_tabWidget.setTabIcon(2, QIcon(settings_image))
         self.parent.ui.stats_tabWidget.setTabIcon(0, QIcon(stats_table_image))
         self.parent.ui.stats_tabWidget.setTabIcon(1, QIcon(stats_plot_image))
+        self.parent.ui.combine_bin_tabWidget.setTabEnabled(1, False)
 
     def plot_widgets(self):
         graphics_view_layout = QVBoxLayout()
@@ -177,8 +178,10 @@ class Initialization:
         vertical_layout = QVBoxLayout()
         vertical_layout.addWidget(area)
         self.parent.ui.combine_widget.setLayout(vertical_layout)
+        self.parent.ui.combine_widget.setEnabled(False)
 
     def widgets(self):
         self.parent.ui.visualize_auto_bins_axis_generated_pushButton.setIcon(QIcon(more_infos_image))
         self.parent.ui.visualize_auto_bins_axis_generated_pushButton.setToolTip("Display full original bin axis")
         self.parent.ui.bin_settings_pushButton.setIcon(QIcon(settings_image))
+        self.parent.ui.combine_refresh_top_folder_pushButton.setEnabled(False)
