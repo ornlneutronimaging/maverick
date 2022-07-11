@@ -20,6 +20,7 @@ class FileHandler(object):
     @classmethod
     def get_list_of_files(cls, folder):
         full_list = glob.glob(folder + "/*")
+        full_list.sort()
         return full_list
 
     @classmethod
