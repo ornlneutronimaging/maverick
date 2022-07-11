@@ -11,6 +11,7 @@ class FileHandler(object):
     @classmethod
     def get_list_of_folders(cls, top_folder):
         full_list = glob.glob(top_folder + "/*")
+        full_list.sort()
         list_folders = []
         for _entry in full_list:
             if os.path.isdir(_entry):
@@ -26,6 +27,7 @@ class FileHandler(object):
     @classmethod
     def get_list_of_tif(cls, folder):
         full_list = glob.glob(folder + '/*.tif*')
+        full_list.sort()
         return full_list
 
     @classmethod
