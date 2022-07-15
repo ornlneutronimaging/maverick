@@ -139,14 +139,22 @@ class EventHandler:
         else:
             status = list_of_folders_status[row]
         check_box.setChecked(status)
+
+        # check if this file has more than 1 file
+        # if not disable radio button
+        # number of images in that folder
+        nbr_files = raw_data_folders[folder]['nbr_files']
+        if nbr_files > 0:
+            check_box.setEnabled(True)
+        else:
+            check_box.setEnabled(False)
+
         o_table.insert_widget(row=row,
                               column=0,
                               widget=check_box,
                               centered=True)
         check_box.clicked.connect(self.parent.radio_buttons_of_folder_changed)
 
-        # number of images in that folder
-        nbr_files = raw_data_folders[folder]['nbr_files']
         o_table.insert_item(row=row,
                             column=1,
                             value=nbr_files,
