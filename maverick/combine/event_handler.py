@@ -298,12 +298,13 @@ class EventHandler:
         combine_algorithm = o_get.combine_algorithm()
         time_spectra_x_axis_name = o_get.combine_x_axis_selected()
 
-        if combine_algorithm == CombineAlgorithm.mean:
-            profile_signal = [np.mean(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
-        elif combine_algorithm == CombineAlgorithm.median:
-            profile_signal = [np.median(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
-        else:
-            raise NotImplementedError("Combine algorithm not implemented!")
+        profile_signal = [np.mean(_data[y0:y0 + height, x0:x0 + width]) for _data in combine_data]
+        # if combine_algorithm == CombineAlgorithm.mean:
+        #     profile_signal = [np.mean(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
+        # elif combine_algorithm == CombineAlgorithm.median:
+        #     profile_signal = [np.median(_data[y0:y0+height, x0:x0+width]) for _data in combine_data]
+        # else:
+        #     raise NotImplementedError("Combine algorithm not implemented!")
 
         self.parent.profile_signal = profile_signal
         self.parent.combine_profile_view.clear()
