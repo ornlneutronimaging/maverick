@@ -210,10 +210,12 @@ class MainWindow(QMainWindow):
         o_event.refresh_table_clicked()
 
     def radio_buttons_of_folder_changed(self):
+        self.ui.setEnabled(False)
         o_event = CombineEventHandler(parent=self)
         o_event.update_list_of_folders_to_use()
         o_event.combine_folders()
         o_event.display_profile()
+        self.ui.setEnabled(True)
 
     def time_spectra_preview_clicked(self):
         TimeSpectraLauncher(parent=self)
