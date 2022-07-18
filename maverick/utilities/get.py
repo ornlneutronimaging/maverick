@@ -5,6 +5,7 @@ import configparser
 import copy
 import numpy as np
 
+from ..utilities.table_handler import TableHandler
 from . import CombineAlgorithm, TimeSpectraKeys, BinAutoMode, BinMode, BinAlgorithm
 from ..session import SessionKeys
 from ..bin import StatisticsName
@@ -158,6 +159,9 @@ class Get:
         raw_data_folders = self.parent.raw_data_folders
         list_working_folders = session[SessionKeys.list_working_folders]
 
+        if list_working_folders is None:
+            return
+
         list_array = []
         for _status, _folder_name in zip(list_working_folders_status, list_working_folders):
             if _status:
@@ -166,10 +170,33 @@ class Get:
         return list_array
 
     def list_of_folders_to_use(self):
-        session = self.parent.session
-        list_working_folders_status = session[SessionKeys.list_working_folders_status]
-        list_working_folders = np.array(session[SessionKeys.list_working_folders])
-        return list_working_folders[list_working_folders_status]
+        o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
+        nbr_row = o_table.row_count()
+        list_of_folders_to_use = []
+        list_of_folders_to_use_status = []
+        for _row_index in np.arange(nbr_row):
+            _horizontal_widget = o_table.get_widget(row=_row_index,
+                                                    column=0)
+            radio_button = _horizontal_widget.layout().itemAt(1).widget()
+            if radio_button.isChecked():
+                list_of_folders_to_use.append(o_table.get_item_str_from_cell(row=_row_index,
+                                                                             column=2))
+                status = True
+            else:
+                status = False
+            list_of_folders_to_use_status.append(status)
+
+        self.parent.session[SessionKeys.list_working_folders_status] = list_of_folders_to_use_status
+
+        return list_of_folders_to_use
+
+        # session = self.parent.session
+        # list_working_folders_status = session[SessionKeys.list_working_folders_status]
+        # list_working_folders = np.array(session[SessionKeys.list_working_folders])
+        # try:
+        #     return_list = list_working_folders[list_working_folders_status]
+        # except IndexError:
+        #     return [None]
 
     def manual_working_row(self, working_item_id=None):
         list_item_id = self.parent.list_of_manual_bins_item

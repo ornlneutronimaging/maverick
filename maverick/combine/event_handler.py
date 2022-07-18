@@ -17,9 +17,19 @@ from .. import LAMBDA, MICRO, ANGSTROMS
 
 class EventHandler:
 
+    no_data_loaded = False
+
     def __init__(self, parent=None):
         self.parent = parent
         self.logger = logging.getLogger('maverick')
+
+        o_get = Get(parent=parent)
+        list_working_folders = o_get.list_of_folders_to_use()
+        if list_working_folders == [None]:
+            self.no_data_loaded = True
+
+        if not list_working_folders:
+            self.no_data_loaded = True
 
         self.parent.session[SessionKeys.detector_offset] = self.parent.ui.detector_offset_spinBox.value()
         self.parent.session[SessionKeys.distance_source_detector] = \
@@ -27,9 +37,12 @@ class EventHandler:
         self.parent.session[SessionKeys.sample_position] = self.parent.ui.combine_sample_position_doubleSpinBox.value()
 
     def select_top_folder(self):
+        if self.no_data_loaded:
+            return
+
         _folder = str(QFileDialog.getExistingDirectory(caption="Select Top Working Folder",
-                                                           directory=self.parent.session[SessionKeys.top_folder],
-                                                           options=QFileDialog.ShowDirsOnly))
+                                                       directory=self.parent.session[SessionKeys.top_folder],
+                                                       options=QFileDialog.ShowDirsOnly))
         if _folder == "":
             self.logger.info("User Canceled the selection of top folder dialog!")
             return
@@ -56,11 +69,10 @@ class EventHandler:
     def check_widgets(self):
         o_get = Get(parent=self.parent)
 
-        if o_get.list_of_folders_to_use() == []:
+        if (o_get.list_of_folders_to_use() == []) or (o_get.list_of_folders_to_use() is None):
             self.parent.ui.combine_refresh_top_folder_pushButton.setEnabled(False)
             self.parent.ui.combine_bin_tabWidget.setTabEnabled(1, False)
             self.parent.ui.combine_widget.setEnabled(False)
-
         else:
             self.parent.ui.combine_refresh_top_folder_pushButton.setEnabled(True)
             self.parent.ui.combine_bin_tabWidget.setTabEnabled(1, True)
@@ -92,6 +104,9 @@ class EventHandler:
 
         # reset master dictionary that contains the raw data
         list_folders = self.parent.session[SessionKeys.list_working_folders]
+        if list_folders is None:
+            return
+
         _data_dict = {}
         for _folder in list_folders:
             list_files = FileHandler.get_list_of_tif(_folder)
@@ -121,6 +136,10 @@ class EventHandler:
         list_of_folders = self.parent.session[SessionKeys.list_working_folders]
         o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
         o_table.remove_all_rows()
+
+        if list_of_folders is None:
+            return
+
         for _folder in list_of_folders:
             self.insert_row_entry(folder=_folder)
 
@@ -167,23 +186,26 @@ class EventHandler:
                             editable=False)
 
     def update_list_of_folders_to_use(self, force_recalculation_of_time_spectra=False):
-        o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
-        nbr_row = o_table.row_count()
-        list_of_folders_to_use = []
-        list_of_folders_to_use_status = []
-        for _row_index in np.arange(nbr_row):
-            _horizontal_widget = o_table.get_widget(row=_row_index,
-                                                    column=0)
-            radio_button = _horizontal_widget.layout().itemAt(1).widget()
-            if radio_button.isChecked():
-                list_of_folders_to_use.append(o_table.get_item_str_from_cell(row=_row_index,
-                                                                             column=2))
-                status = True
-            else:
-                status = False
-            list_of_folders_to_use_status.append(status)
+        o_get = Get(parent=self.parent)
+        list_of_folders_to_use = o_get.list_of_folders_to_use()
 
-        self.parent.session[SessionKeys.list_working_folders_status] = list_of_folders_to_use_status
+        # o_table = TableHandler(table_ui=self.parent.ui.combine_tableWidget)
+        # nbr_row = o_table.row_count()
+        # list_of_folders_to_use = []
+        # list_of_folders_to_use_status = []
+        # for _row_index in np.arange(nbr_row):
+        #     _horizontal_widget = o_table.get_widget(row=_row_index,
+        #                                             column=0)
+        #     radio_button = _horizontal_widget.layout().itemAt(1).widget()
+        #     if radio_button.isChecked():
+        #         list_of_folders_to_use.append(o_table.get_item_str_from_cell(row=_row_index,
+        #                                                                      column=2))
+        #         status = True
+        #     else:
+        #         status = False
+        #     list_of_folders_to_use_status.append(status)
+        #
+        # self.parent.session[SessionKeys.list_working_folders_status] = list_of_folders_to_use_status
 
         self.logger.info("Updating list of folders to use:")
         self.logger.info(f"{list_of_folders_to_use}")
@@ -253,10 +275,10 @@ class EventHandler:
         return True
 
     def combine_algorithm_changed(self):
-        o_get = Get(parent=self.parent)
-
-        if o_get.list_of_folders_to_use() == []:
+        if self.no_data_loaded:
             return
+
+        o_get = Get(parent=self.parent)
 
         combine_algorithm = o_get.combine_algorithm()
         self.parent.session[SessionKeys.combine_algorithm] = combine_algorithm
@@ -265,6 +287,9 @@ class EventHandler:
         self.display_profile()
 
     def combine_folders(self):
+        if self.no_data_loaded:
+            return
+
         o_combine = Combine(parent=self.parent)
         o_combine.run()
 
@@ -286,6 +311,9 @@ class EventHandler:
         self.parent.session[SessionKeys.combine_roi] = [x0, y0, width, height]
 
     def display_profile(self):
+        if self.no_data_loaded:
+            return
+
         combine_data = self.parent.combine_data
 
         if combine_data is None:

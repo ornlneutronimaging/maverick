@@ -215,6 +215,7 @@ class MainWindow(QMainWindow):
         o_event.update_list_of_folders_to_use()
         o_event.combine_folders()
         o_event.display_profile()
+        o_event.check_widgets()
         self.ui.setEnabled(True)
 
     def time_spectra_preview_clicked(self):
