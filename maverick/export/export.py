@@ -65,7 +65,7 @@ class Export:
                 self.parent.eventProgress.setValue(_index + 1)
                 continue
 
-            # define name of combined image using infos
+            # define name of combined image using information
             #   bin range (micro and angstroms)
             #   sample distance
             output_file_name = create_output_file_name(folder=_folder,

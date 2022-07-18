@@ -51,8 +51,14 @@ class ManualEventHandler:
             default_bin = [_value * TO_MICROS_UNITS for _value in default_bin]
         else:
             default_bin = [x_axis[0] - self.lambda_bin_margin,
-                           x_axis[1] + self.lambda_bin_margin]
+                           x_axis[0] + self.lambda_bin_margin]
             default_bin = [_value * TO_ANGSTROMS_UNITS for _value in default_bin]
+
+        manual_bins = self.parent.manual_bins
+        manual_bins[TimeSpectraKeys.file_index_array].append([x_axis[0]])
+        manual_bins[TimeSpectraKeys.tof_array].append([self.parent.time_spectra[TimeSpectraKeys.tof_array][0]])
+        manual_bins[TimeSpectraKeys.lambda_array].append([self.parent.time_spectra[TimeSpectraKeys.lambda_array][0]])
+        self.parent.manual_bins = manual_bins
 
         item = pg.LinearRegionItem(values=default_bin,
                                    orientation='vertical',
