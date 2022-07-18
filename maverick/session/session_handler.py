@@ -142,7 +142,7 @@ class SessionHandler:
                                         duration_s=10)
 
                 else:
-                    logging.info(f"Loading {config_file_name} ... Done!")
+                    self.logger.info(f"Loading {config_file_name} ... Done!")
                     show_status_message(parent=self.parent,
                                         message=f"Loaded {config_file_name} ... Done!",
                                         status=StatusMessageStatus.ready,

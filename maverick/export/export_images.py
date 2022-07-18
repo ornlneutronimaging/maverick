@@ -31,8 +31,8 @@ class ExportImages:
 
         self.logger.info(f"Combined and Binned images will be exported to {_folder}!")
 
-        # use the combined data array
-        combine_arrays = self.parent.combine_data
+        # # use the combined data array
+        # combine_arrays = self.parent.combine_data
 
         # retrieve the bin currently selected [[0],[1],[2,3],....]
         o_get = Get(parent=self.parent)

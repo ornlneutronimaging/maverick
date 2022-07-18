@@ -93,6 +93,13 @@ class Get:
         else:
             raise NotImplementedError("bin mode not implemented!")
 
+    def current_bins_name_activated(self):
+        bin_mode = self.bin_mode()
+        if bin_mode == BinMode.manual:
+            return bin_mode
+        else:
+            return self.bin_auto_mode()
+
     def auto_log_bin_requested(self):
         if self.parent.ui.bin_auto_log_file_index_radioButton.isChecked():
             return self.parent.ui.auto_log_file_index_spinBox.value()

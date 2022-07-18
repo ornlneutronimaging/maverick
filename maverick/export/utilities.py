@@ -1,6 +1,12 @@
-import os
 from pathlib import Path
 from ..bin import TO_ANGSTROMS_UNITS, TO_MICROS_UNITS
+
+
+def create_bin_tab_output_file_name(folder=None,
+                                    bin_name=None):
+    bin_name += "_bin_table.json"
+    full_file_name = Path(folder) / bin_name
+    return full_file_name
 
 
 def create_output_file_name(folder=None,
