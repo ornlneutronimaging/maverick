@@ -24,7 +24,8 @@ from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
 from .bin.statistics import Statistics
 from .bin.settings import Settings as BinSettings
-from maverick.export.export import Export
+from maverick.export.export_images import ExportImages
+from maverick.export.export_bin_table import ExportBinTable
 
 from . import load_ui
 
@@ -377,7 +378,11 @@ class MainWindow(QMainWindow):
 
     # export images
     def export_combined_and_binned_images_clicked(self):
-        o_export = Export(parent=self)
+        o_export = ExportImages(parent=self)
+        o_export.run()
+
+    def bin_export_table_pushButton_clicked(self):
+        o_export = ExportBinTable(parent=self)
         o_export.run()
 
     def closeEvent(self, event):

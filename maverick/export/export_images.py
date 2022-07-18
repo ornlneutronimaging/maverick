@@ -13,7 +13,7 @@ from ..bin.statistics import Statistics
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
 
-class Export:
+class ExportImages:
 
     def __init__(self, parent=None):
         self.parent = parent
@@ -21,7 +21,7 @@ class Export:
 
     def run(self):
         working_dir = self.parent.session[SessionKeys.top_folder]
-        _folder = str(QFileDialog.getExistingDirectory(caption="Select Folder to Export the Images",
+        _folder = str(QFileDialog.getExistingDirectory(caption="Select Folder to ExportImages the Images",
                                                        directory=working_dir,
                                                        options=QFileDialog.ShowDirsOnly))
 
@@ -93,6 +93,6 @@ class Export:
         p = inflect.engine()
         self.logger.info(f"Done exporting {number_of_file_created} " + p.plural("file", number_of_file_created) + "!")
         show_status_message(parent=self.parent,
-                            message=f"Export to folder {_folder} ... Done!",
+                            message=f"ExportImages to folder {_folder} ... Done!",
                             status=StatusMessageStatus.ready,
                             duration_s=5)

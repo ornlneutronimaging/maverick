@@ -18,7 +18,7 @@
     <item>
      <widget class="QTabWidget" name="combine_bin_tabWidget">
       <property name="currentIndex">
-       <number>0</number>
+       <number>1</number>
       </property>
       <property name="elideMode">
        <enum>Qt::ElideMiddle</enum>
@@ -1038,6 +1038,13 @@
            </widget>
           </item>
           <item>
+           <widget class="QPushButton" name="export_bin_table_pushButton">
+            <property name="text">
+             <string>Export Bin Table ...</string>
+            </property>
+           </widget>
+          </item>
+          <item>
            <spacer name="horizontalSpacer">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -1206,7 +1213,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>137</x>
-     <y>823</y>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>7</x>
@@ -1222,7 +1229,7 @@
    <hints>
     <hint type="sourcelabel">
      <x>217</x>
-     <y>823</y>
+     <y>799</y>
     </hint>
     <hint type="destinationlabel">
      <x>9</x>
@@ -1253,8 +1260,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>478</x>
-     <y>810</y>
+     <x>828</x>
+     <y>792</y>
     </hint>
     <hint type="destinationlabel">
      <x>1219</x>
@@ -1269,8 +1276,8 @@
    <slot>combine_instrument_settings_changed()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>478</x>
-     <y>849</y>
+     <x>828</x>
+     <y>837</y>
     </hint>
     <hint type="destinationlabel">
      <x>866</x>
@@ -1742,6 +1749,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>export_bin_table_pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>bin_export_table_pushButton_clicked()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>233</x>
+     <y>838</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>5</x>
+     <y>802</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>session_load_clicked()</slot>
@@ -1776,5 +1799,6 @@
   <slot>bin_statistics_comboBox_changed()</slot>
   <slot>export_combined_and_binned_images_clicked()</slot>
   <slot>bin_settings_clicked()</slot>
+  <slot>bin_export_table_pushButton_clicked()</slot>
  </slots>
 </ui>
