@@ -10,6 +10,7 @@ from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 from ..utilities.table_handler import TableHandler
 from ..utilities.math_tools import get_value_of_closest_match
 from ..utilities.string import format_str
+from maverick.load.load_bin_table import LoadBinTable
 
 FILE_INDEX_BIN_MARGIN = 0.5
 UNSELECTED_BIN = (0, 0, 200, 50)
@@ -253,7 +254,8 @@ class ManualEventHandler:
             pass
 
     def load_manual_bin_table(self):
-        print("loading manual bin table")
+        o_load = LoadBinTable(parent=self.parent)
+        o_load.run()
 
     def remove_selected_bin(self):
         """
