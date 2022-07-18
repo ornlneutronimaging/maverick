@@ -28,8 +28,8 @@ class EventHandler:
         if list_working_folders == [None]:
             self.no_data_loaded = True
 
-        if not list_working_folders:
-            self.no_data_loaded = True
+        # if not list_working_folders:
+        #     self.no_data_loaded = True
 
         self.parent.session[SessionKeys.detector_offset] = self.parent.ui.detector_offset_spinBox.value()
         self.parent.session[SessionKeys.distance_source_detector] = \

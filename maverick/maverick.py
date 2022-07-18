@@ -222,6 +222,11 @@ class MainWindow(QMainWindow):
         TimeSpectraLauncher(parent=self)
 
     def combine_algorithm_changed(self):
+        o_get = Get(parent=self)
+        list_working_folders = o_get.list_of_folders_to_use()
+        if list_working_folders == []:
+            return
+        
         o_event = CombineEventHandler(parent=self)
         o_event.combine_algorithm_changed()
         o_event.display_profile()
