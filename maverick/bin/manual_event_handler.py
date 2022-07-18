@@ -227,27 +227,33 @@ class ManualEventHandler:
     def manual_table_right_click(self):
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         last_row = o_table.row_count()
-        if last_row == 0:  # no entry in the table
-            return
-
-        row_selected = o_table.get_row_selected()
-        if row_selected == -1:  # no row selected, exit
-            return
 
         menu = QMenu(self.parent)
 
-        remove_bin = menu.addAction("Remove selected bin")
-        clean_sort = menu.addAction("Sort and remove duplicates")
+        row_selected = o_table.get_row_selected()
+        remove_bin = -1
+        # clean_sort = None
+        load_table = menu.addAction("Import table ...")
+
+        if last_row > 0:
+            menu.addSeparator()
+            remove_bin = menu.addAction("Remove selected bin")
+            # clean_sort = menu.addAction("Sort and remove duplicates")
 
         action = menu.exec_(QtGui.QCursor.pos())
         if action == remove_bin:
             self.remove_selected_bin()
             self.parent.update_statistics()
-        elif action == clean_sort:
-            self.sort_and_remove_duplicates()
+        elif action == load_table:
+            self.load_manual_bin_table()
+        # elif action == clean_sort:
+        #     self.sort_and_remove_duplicates()
 
         else:
             pass
+
+    def load_manual_bin_table(self):
+        print("loading manual bin table")
 
     def remove_selected_bin(self):
         """
