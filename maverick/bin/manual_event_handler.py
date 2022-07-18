@@ -1,7 +1,5 @@
 import logging
 import pyqtgraph as pg
-from qtpy.QtWidgets import QMenu
-from qtpy import QtGui
 
 from ..utilities import TimeSpectraKeys
 from .plot import Plot
@@ -10,7 +8,6 @@ from . import TO_MICROS_UNITS, TO_ANGSTROMS_UNITS
 from ..utilities.table_handler import TableHandler
 from ..utilities.math_tools import get_value_of_closest_match
 from ..utilities.string import format_str
-from maverick.load.load_bin_table import LoadBinTable
 
 FILE_INDEX_BIN_MARGIN = 0.5
 UNSELECTED_BIN = (0, 0, 200, 50)
@@ -119,17 +116,13 @@ class ManualEventHandler:
         for _item in list_of_manually_bins_item:
             self.parent.bin_profile_view.addItem(_item)
 
-    def populate_table_with_auto_mode(self):
-        o_get = Get(parent=self.parent)
-        bins = o_get.auto_bins_currently_activated()
-        self.parent.manual_bins = bins
-
+    def populate_table_with_this_table(self, table=None):
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         o_table.remove_all_rows()
 
-        file_index_array = bins[TimeSpectraKeys.file_index_array]
-        tof_array = bins[TimeSpectraKeys.tof_array]
-        lambda_array = bins[TimeSpectraKeys.lambda_array]
+        file_index_array = table[TimeSpectraKeys.file_index_array]
+        tof_array = table[TimeSpectraKeys.tof_array]
+        lambda_array = table[TimeSpectraKeys.lambda_array]
 
         self.parent.list_of_manual_bins_item = []
 
@@ -191,6 +184,12 @@ class ManualEventHandler:
 
         o_table.select_rows([0])
 
+    def populate_table_with_auto_mode(self):
+        o_get = Get(parent=self.parent)
+        bins = o_get.auto_bins_currently_activated()
+        self.parent.manual_bins = bins
+        self.populate_table_with_this_table(table=bins)
+
     def add_bin_in_plot(self, row=0, file_index_bin=None, tof_bin=None, lambda_bin=None):
         o_get = Get(parent=self.parent)
         current_x_axis = o_get.bin_x_axis_selected()
@@ -225,52 +224,52 @@ class ManualEventHandler:
 
         return item
 
-    def manual_table_right_click(self):
-        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
-        last_row = o_table.row_count()
+    # def manual_table_right_click(self):
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+    #     last_row = o_table.row_count()
+    #
+    #     menu = QMenu(self.parent)
+    #
+    #     row_selected = o_table.get_row_selected()
+    #     remove_bin = -1
+    #     # clean_sort = None
+    #     load_table = menu.addAction("Import table ...")
+    #
+    #     if last_row > 0:
+    #         menu.addSeparator()
+    #         remove_bin = menu.addAction("Remove selected bin")
+    #         # clean_sort = menu.addAction("Sort and remove duplicates")
+    #
+    #     action = menu.exec_(QtGui.QCursor.pos())
+    #     if action == remove_bin:
+    #         self.remove_selected_bin()
+    #         self.parent.update_statistics()
+    #     elif action == load_table:
+    #         self.load_manual_bin_table()
+    #     # elif action == clean_sort:
+    #     #     self.sort_and_remove_duplicates()
+    #
+    #     else:
+    #         pass
+    #
+    # def load_manual_bin_table(self):
+    #     o_load = LoadBinTable(parent=self.parent)
+    #     o_load.run()
 
-        menu = QMenu(self.parent)
-
-        row_selected = o_table.get_row_selected()
-        remove_bin = -1
-        # clean_sort = None
-        load_table = menu.addAction("Import table ...")
-
-        if last_row > 0:
-            menu.addSeparator()
-            remove_bin = menu.addAction("Remove selected bin")
-            # clean_sort = menu.addAction("Sort and remove duplicates")
-
-        action = menu.exec_(QtGui.QCursor.pos())
-        if action == remove_bin:
-            self.remove_selected_bin()
-            self.parent.update_statistics()
-        elif action == load_table:
-            self.load_manual_bin_table()
-        # elif action == clean_sort:
-        #     self.sort_and_remove_duplicates()
-
-        else:
-            pass
-
-    def load_manual_bin_table(self):
-        o_load = LoadBinTable(parent=self.parent)
-        o_load.run()
-
-    def remove_selected_bin(self):
-        """
-        remove from the manual table the bin selected
-        """
-        o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
-        row_selected = o_table.get_row_selected()
-        item_to_remove = self.parent.list_of_manual_bins_item[row_selected]
-        self.parent.bin_profile_view.removeItem(item_to_remove)
-        self.parent.list_of_manual_bins_item.pop(row_selected)
-        o_table.remove_row(row=row_selected)
-        self.logger.info(f"User manually removed row: {row_selected}")
-
-    def sort_and_remove_duplicates(self):
-        print("sort and remove duplicates")
+    # def remove_selected_bin(self):
+    #     """
+    #     remove from the manual table the bin selected
+    #     """
+    #     o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
+    #     row_selected = o_table.get_row_selected()
+    #     item_to_remove = self.parent.list_of_manual_bins_item[row_selected]
+    #     self.parent.bin_profile_view.removeItem(item_to_remove)
+    #     self.parent.list_of_manual_bins_item.pop(row_selected)
+    #     o_table.remove_row(row=row_selected)
+    #     self.logger.info(f"User manually removed row: {row_selected}")
+    #
+    # def sort_and_remove_duplicates(self):
+    #     print("sort and remove duplicates")
 
     def bin_manually_moved(self, item_id=None):
         self.bin_manually_moving(item_id=item_id)

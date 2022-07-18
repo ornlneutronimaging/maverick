@@ -24,6 +24,7 @@ from .bin.auto_event_handler import AutoEventHandler as BinAutoEventHandler
 from .bin.preview_full_bin_axis import PreviewFullBinAxis
 from .bin.statistics import Statistics
 from .bin.settings import Settings as BinSettings
+from .bin.manual_right_click import ManualRightClick
 from maverick.export.export_images import ExportImages
 from maverick.export.export_bin_table import ExportBinTable
 
@@ -359,7 +360,7 @@ class MainWindow(QMainWindow):
         o_event.bin_manually_moving(item_id=item_id)
 
     def bin_manual_table_right_click(self, position):
-        o_event = BinManualEventHandler(parent=self)
+        o_event = ManualRightClick(parent=self)
         o_event.manual_table_right_click()
 
     # - statistics
