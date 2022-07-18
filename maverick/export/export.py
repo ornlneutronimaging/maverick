@@ -1,6 +1,7 @@
 from qtpy.QtWidgets import QFileDialog
 import logging
 import os
+import inflect
 
 from NeuNorm.normalization import Normalization
 
@@ -54,6 +55,7 @@ class Export:
         self.logger.info(f"Images will be exported in: {_folder}")
 
         # for loop
+        number_of_file_created = 0
         for _index, _bin in enumerate(file_index_array):
 
             self.logger.info(f"bin #: {_bin}")
@@ -74,11 +76,12 @@ class Export:
                                                        list_lambda=lambda_array[_index])
 
             self.logger.info(f"-> output_file_name: {output_file_name}")
+            number_of_file_created += 1
 
             # we combine the file listed in _bin using the method
             _data_dict = o_statistics.extract_data_for_this_bin(list_runs=_bin)
             full_image = _data_dict['full_image']
-            o_norm =Normalization()
+            o_norm = Normalization()
             o_norm.load(data=full_image)
             o_norm.data['sample']['file_name'][0] = os.path.basename(output_file_name)
             o_norm.export(folder=_folder, data_type='sample', file_type='tiff')
@@ -87,9 +90,9 @@ class Export:
             self.parent.eventProgress.setValue(_index+1)
 
         self.parent.eventProgress.setVisible(False)
-        self.logger.info(f"Done exporting!")
+        p = inflect.engine()
+        self.logger.info(f"Done exporting {number_of_file_created} " + p.plural("file", number_of_file_created) + "!")
         show_status_message(parent=self.parent,
                             message=f"Export to folder {_folder} ... Done!",
                             status=StatusMessageStatus.ready,
                             duration_s=5)
-
