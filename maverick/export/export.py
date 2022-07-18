@@ -36,9 +36,6 @@ class Export:
         # retrieve the bin currently selected [[0],[1],[2,3],....]
         o_get = Get(parent=self.parent)
         bins_dict = o_get.current_bins_activated()
-        print(f"bins_dict: {bins_dict}")
-        return
-
         number_of_bins = len(bins_dict[TimeSpectraKeys.file_index_array])
 
         # initialize progress bar

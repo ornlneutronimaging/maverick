@@ -110,6 +110,7 @@ class ManualEventHandler:
     def populate_table_with_auto_mode(self):
         o_get = Get(parent=self.parent)
         bins = o_get.auto_bins_currently_activated()
+        self.parent.manual_bins = bins
 
         o_table = TableHandler(table_ui=self.parent.ui.bin_manual_tableWidget)
         o_table.remove_all_rows()

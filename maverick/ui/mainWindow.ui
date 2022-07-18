@@ -137,7 +137,7 @@
                   </sizepolicy>
                  </property>
                  <property name="currentIndex">
-                  <number>0</number>
+                  <number>2</number>
                  </property>
                  <widget class="QWidget" name="tab_3">
                   <attribute name="title">
@@ -788,7 +788,7 @@
              <item>
               <layout class="QHBoxLayout" name="horizontalLayout_8">
                <item>
-                <widget class="QPushButton" name="pushButton">
+                <widget class="QPushButton" name="bin_import_auto_mode_table_button">
                  <property name="text">
                   <string>Import auto. mode table</string>
                  </property>
@@ -1663,7 +1663,7 @@
    </hints>
   </connection>
   <connection>
-   <sender>pushButton</sender>
+   <sender>bin_import_auto_mode_table_button</sender>
    <signal>clicked()</signal>
    <receiver>MainWindow</receiver>
    <slot>bin_manual_populate_table_with_auto_mode_bins_clicked()</slot>
