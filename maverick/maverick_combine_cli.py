@@ -41,4 +41,4 @@ input_folders = args.folders
 # for i in tqdm(range(len(args.folders))):
 #     time.sleep(1)
 
-o_combine = CombineCLI(list_of_folders=[''])
+o_combine = CombineCLI(list_of_folders=input_folders)
