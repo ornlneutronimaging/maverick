@@ -10,12 +10,12 @@ from PIL.TiffTags import TAGS_V2 as TIFFTAGS_V2
 from utilities.file_handler import FileHandler
 
 
-class CombineCLI:
+class CombineBinCLI:
 
     def __init__(self, list_of_folders):
-        folder_list_of_files_dict = CombineCLI.retrieve_list_of_files(list_of_folders)
-        self.spectra_file = CombineCLI.get_spectra_file(list_of_folders[0])
-        self.data_3d, self.metadata_array = CombineCLI.load_list_of_files(folder_list_of_files_dict)
+        folder_list_of_files_dict = CombineBinCLI.retrieve_list_of_files(list_of_folders)
+        self.spectra_file = CombineBinCLI.get_spectra_file(list_of_folders[0])
+        self.data_3d, self.metadata_array = CombineBinCLI.load_list_of_files(folder_list_of_files_dict)
 
     def run(self, algorithm):
         if algorithm == 'mean':
@@ -64,7 +64,7 @@ class CombineCLI:
             data_array = []
             for _file_index in tqdm(range(len(list_of_files))):
                 _file = list_of_files[_file_index]
-                metadata_data_dict = CombineCLI.get_tiff_data(_file)
+                metadata_data_dict = CombineBinCLI.get_tiff_data(_file)
                 if _index == 0:
                     metadata_array.append(metadata_data_dict['metadata'])
                 data_array.append(metadata_data_dict['data'])
@@ -105,7 +105,7 @@ class CombineCLI:
         _o_image = Image.open(filename)
 
         # metadata
-        metadata = CombineCLI.parse_tiff_header(_o_image)
+        metadata = CombineBinCLI.parse_tiff_header(_o_image)
 
         # image
         data = np.array(_o_image)
@@ -113,7 +113,6 @@ class CombineCLI:
 
         return {'metadata': metadata,
                 'data': data}
-
 
     @staticmethod
     def parse_tiff_header(tiff_image):

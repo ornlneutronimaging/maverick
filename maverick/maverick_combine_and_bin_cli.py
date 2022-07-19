@@ -1,16 +1,16 @@
 import argparse
 from tqdm import tqdm
 
-from combine.combine_cli import CombineCLI
+from combine_bin_cli import CombineBinCLI
 
 
 parser = argparse.ArgumentParser(description='''
-Combine a set of TOF folders,
+Combine and bin a set of TOF folders,
 
 Example:
-    python maverick/maverick_combine_cli.py -algorithm mean ./ /folder1 /folder2 /folder3 
-    python maverick/maverick_combine_cli.py ./ /folder1 /folder2 /folder3
-    python maverick/maverick_combine_cli.py ./ /folder3 /folder2
+    python maverick/maverick_combine_cli.py -algorithm mean log_table_bin.json ./ /folder1 /folder2 /folder3 
+    python maverick/maverick_combine_cli.py log_table_bin.json ./ /folder1 /folder2 /folder3
+    python maverick/maverick_combine_cli.py log_table_bin.json ./ /folder3 /folder2
 ''',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  epilog="NB: the list of input folders arguments must be last!")
@@ -18,6 +18,8 @@ parser.add_argument('-algorithm',
                     choices=["mean", "median"],
                     default="median",
                     help="Algorithm to use to combine the folders (default is median)")
+parser.add_argument('bin_table_file_name',
+                    help="file name of the table of bins created by the UI maverick")
 parser.add_argument('export',
                     help="output folder where the combined data will be saved",
                     type=str)
@@ -29,6 +31,7 @@ args = parser.parse_args()
 
 # parsing arguments
 algorithm = args.algorithm
+bin_table_file_name = args.bin_table_file_name
 export_folder = args.export
 input_folders = args.folders
 
@@ -41,9 +44,13 @@ input_folders = args.folders
 # for i in tqdm(range(len(args.folders))):
 #     time.sleep(1)
 
-o_combine = CombineCLI(list_of_folders=input_folders)
+o_combine = CombineBinCLI(list_of_folders=input_folders)
 o_combine.run(algorithm)
-o_combine.export(output_folder=export_folder)
+
+#o_combine.export(output_folder=export_folder)
+
+
+
 
 ## current command to run CLI and to test it using Buffalo
 #python maverick/maverick_combine_cli.py ~/Desktop/cli_output

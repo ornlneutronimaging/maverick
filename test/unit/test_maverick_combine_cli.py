@@ -1,7 +1,6 @@
-import subprocess
 import pytest
 
-from maverick.combine.combine_cli import CombineCLI
+from maverick.combine_bin_cli import CombineCLI
 
 
 class TestMaverickCombineCLI:
