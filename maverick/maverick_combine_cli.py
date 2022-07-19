@@ -29,7 +29,7 @@ args = parser.parse_args()
 
 # parsing arguments
 algorithm = args.algorithm
-export = args.export
+export_folder = args.export
 input_folders = args.folders
 
 # load all the folders in memory
@@ -42,11 +42,8 @@ input_folders = args.folders
 #     time.sleep(1)
 
 o_combine = CombineCLI(list_of_folders=input_folders)
-
-
-
-
-
+o_combine.run(algorithm)
+o_combine.export(output_folder=export_folder)
 
 ## current command to run CLI and to test it using Buffalo
 #python maverick/maverick_combine_cli.py ~/Desktop/cli_output

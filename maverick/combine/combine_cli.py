@@ -1,6 +1,11 @@
 from PIL import Image
 import numpy as np
 from tqdm import tqdm
+import glob
+import os
+import shutil
+from pathlib import Path
+from PIL.TiffTags import TAGS_V2 as TIFFTAGS_V2
 
 from utilities.file_handler import FileHandler
 
@@ -9,7 +14,40 @@ class CombineCLI:
 
     def __init__(self, list_of_folders):
         folder_list_of_files_dict = CombineCLI.retrieve_list_of_files(list_of_folders)
-        data_3d, metadata_array = CombineCLI.load_list_of_files(folder_list_of_files_dict)
+        self.spectra_file = CombineCLI.get_spectra_file(list_of_folders[0])
+        self.data_3d, self.metadata_array = CombineCLI.load_list_of_files(folder_list_of_files_dict)
+
+    def run(self, algorithm):
+        if algorithm == 'mean':
+            self.data_2d = np.mean(self.data_3d, axis=0)
+        elif algorithm == 'median':
+            self.data_2d = np.median(self.data_3d, axis=0)
+        else:
+            raise NotImplementedError(f"algorithm {algorithm} not implemented!")
+
+    def export(self, output_folder=None):
+        if not os.path.exists(output_folder):
+            os.makedirs(output_folder)
+
+        # time stamp
+        new_short_file_name = str(Path(output_folder) / "image_Spectra.txt")
+        shutil.copy(self.spectra_file, new_short_file_name)
+
+        # data
+        [nbr_files_to_create, height, width] = np.shape(self.data_2d)
+        for file_index in tqdm(range(nbr_files_to_create)):
+            _output_file_name = str(Path(output_folder) / f"image_{file_index:04d}.tif")
+            _data = self.data_2d[file_index][:]
+            _metadata = self.metadata_array[file_index]
+            image = Image.fromarray(_data)
+            image.save(_output_file_name, tiffinfo=_metadata)
+
+    @staticmethod
+    def get_spectra_file(folder_name):
+        time_spectra = glob.glob(folder_name + "/*_Spectra.txt")
+        if time_spectra and os.path.exists(time_spectra[0]):
+            return time_spectra[0]
+        return ""
 
     @staticmethod
     def load_list_of_files(folder_list_of_files_dict):
@@ -66,11 +104,8 @@ class CombineCLI:
     def get_tiff_data(filename):
         _o_image = Image.open(filename)
 
-        # metadata dict
-        try:
-            metadata = _o_image.tag_v2.as_dict()
-        except AttributeError:
-            metadata = None
+        # metadata
+        metadata = CombineCLI.parse_tiff_header(_o_image)
 
         # image
         data = np.array(_o_image)
@@ -78,3 +113,9 @@ class CombineCLI:
 
         return {'metadata': metadata,
                 'data': data}
+
+
+    @staticmethod
+    def parse_tiff_header(tiff_image):
+        """Returns the tag from a TIFF image (loaded by PIL) in human readable dict."""
+        return dict(tiff_image.tag_v2)
