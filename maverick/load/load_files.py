@@ -32,4 +32,4 @@ class LoadFiles:
         self.parent.eventProgress.setVisible(False)
 
         return image_array
-  
+

@@ -42,3 +42,12 @@ input_folders = args.folders
 #     time.sleep(1)
 
 o_combine = CombineCLI(list_of_folders=input_folders)
+
+
+
+
+
+
+## current command to run CLI and to test it using Buffalo
+#python maverick/maverick_combine_cli.py ~/Desktop/cli_output
+# /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56306 /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56307
