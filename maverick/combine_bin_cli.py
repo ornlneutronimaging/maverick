@@ -2,6 +2,7 @@ from PIL import Image
 import numpy as np
 from tqdm import tqdm
 import glob
+import json
 import os
 import shutil
 from pathlib import Path
@@ -12,18 +13,47 @@ from utilities.file_handler import FileHandler
 
 class CombineBinCLI:
 
+    algorithm = None
+
     def __init__(self, list_of_folders):
         folder_list_of_files_dict = CombineBinCLI.retrieve_list_of_files(list_of_folders)
         self.spectra_file = CombineBinCLI.get_spectra_file(list_of_folders[0])
         self.data_3d, self.metadata_array = CombineBinCLI.load_list_of_files(folder_list_of_files_dict)
 
-    def run(self, algorithm):
-        if algorithm == 'mean':
-            self.data_2d = np.mean(self.data_3d, axis=0)
-        elif algorithm == 'median':
-            self.data_2d = np.median(self.data_3d, axis=0)
+    def combine(self, algorithm):
+        self.algorithm = np.mean
+        if algorithm == 'median':
+            self.algorithm = np.median
         else:
             raise NotImplementedError(f"algorithm {algorithm} not implemented!")
+
+        self.data_2d = self.algorithm(self.data_3d, axis=0)
+
+        # if algorithm == 'mean':
+        #     self.data_2d = np.mean(self.data_3d, axis=0)
+        # elif algorithm == 'median':
+        #     self.data_2d = np.median(self.data_3d, axis=0)
+        # else:
+        #     raise NotImplementedError(f"algorithm {algorithm} not implemented!")
+
+    def bin(self, bin_table_file_name):
+        with open(bin_table_file_name, 'r') as json_file:
+            table = json.load(json_file)
+
+        file_index_array = table['file_index_array']
+        nbr_file_index_array = len(file_index_array)
+        list_full_image_rebinned = []
+        for _index in tqdm(range(nbr_file_index_array)):
+            _list_files = file_index_array[_index]
+            nbr_files_for_that_bin = len(_list_files)
+            data_to_work_with = []
+            for _index_for_that_file in tqdm(range(nbr_files_for_that_bin)):
+                data_to_work_with.append(self.data_2d[_index_for_that_file])
+
+            full_image_rebinned = self.algorithm(data_to_work_with, axis=0)
+            list_full_image_rebinned.append(full_image_rebinned)
+
+        self.data_2d_rebinned = list_full_image_rebinned
 
     def export(self, output_folder=None):
         if not os.path.exists(output_folder):
@@ -34,10 +64,10 @@ class CombineBinCLI:
         shutil.copy(self.spectra_file, new_short_file_name)
 
         # data
-        [nbr_files_to_create, height, width] = np.shape(self.data_2d)
+        [nbr_files_to_create, height, width] = np.shape(self.data_2d_rebinned)
         for file_index in tqdm(range(nbr_files_to_create)):
             _output_file_name = str(Path(output_folder) / f"image_{file_index:04d}.tif")
-            _data = self.data_2d[file_index][:]
+            _data = self.data_2d_rebinned[file_index][:]
             _metadata = self.metadata_array[file_index]
             image = Image.fromarray(_data)
             image.save(_output_file_name, tiffinfo=_metadata)

@@ -44,10 +44,10 @@ input_folders = args.folders
 # for i in tqdm(range(len(args.folders))):
 #     time.sleep(1)
 
-o_combine = CombineBinCLI(list_of_folders=input_folders)
-o_combine.run(algorithm)
-
-#o_combine.export(output_folder=export_folder)
+o_combine_bin = CombineBinCLI(list_of_folders=input_folders)
+o_combine_bin.combine(algorithm)
+o_combine_bin.bin(bin_table_file_name)
+o_combine_bin.export(output_folder=export_folder)
 
 
 
