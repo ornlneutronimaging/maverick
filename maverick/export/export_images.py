@@ -4,6 +4,7 @@ import os
 from pathlib import Path
 import inflect
 import numpy as np
+import json
 
 from NeuNorm.normalization import Normalization
 
@@ -59,6 +60,10 @@ class ExportImages:
 
         number_of_file_created = 0
         counts_array = []
+
+        metadata_dict = {'sample_position': sample_position}
+        file_info_dict = {}
+
         for _index, _bin in enumerate(file_index_array):
 
             self.logger.info(f"bin #: {_bin}")
@@ -71,12 +76,17 @@ class ExportImages:
             # define name of combined image using information
             #   bin range (micro and angstroms)
             #   sample distance
-            output_file_name = create_output_file_name(folder=_folder,
-                                                       bin_index=_index,
-                                                       sample_position=sample_position,
-                                                       list_file_index=_bin,
-                                                       list_tof=tof_array[_index],
-                                                       list_lambda=lambda_array[_index])
+            # output_file_name = create_output_file_name(folder=_folder,
+            #                                            bin_index=_index,
+            #                                            sample_position=sample_position,
+            #                                            list_file_index=_bin,
+            #                                            list_tof=tof_array[_index],
+            #                                            list_lambda=lambda_array[_index])
+            short_file_name = f"image_{_index:04d}.tif"
+            output_file_name = str(Path(_folder) / short_file_name)
+            file_info_dict[short_file_name] = {'file_index': _bin,
+                                               'tof': tof_array[_index],
+                                               'lambda': lambda_array[_index]}
 
             self.logger.info(f"-> output_file_name: {output_file_name}")
             number_of_file_created += 1
@@ -91,6 +101,11 @@ class ExportImages:
             o_norm.export(folder=_folder, data_type='sample', file_type='tiff')
 
             self.parent.eventProgress.setValue(_index+1)
+
+        metadata_dict['files_infos'] = file_info_dict
+        metadata_file_name = str(Path(_folder) / "metadata.json")
+        with open(metadata_file_name, 'w') as json_file:
+            json.dump(metadata_dict, json_file)
 
         # export the new time stamp file
         self.export_time_stamp_file(counts_array=counts_array,
