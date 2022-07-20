@@ -53,5 +53,10 @@ o_combine_bin.export(output_folder=export_folder)
 
 
 ## current command to run CLI and to test it using Buffalo
-#python maverick/maverick_combine_cli.py ~/Desktop/cli_output
-# /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56306 /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56307
+"""
+python maverick/maverick_combine_and_bin_cli.py 
+ /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/log_bin_table.json 
+ ~/Desktop/cli_output 
+ /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56306_light 
+ /Volumes/Buffalo/IPTS/IPTS-30023-Matteo-Simon/scan4/Run_56307_light
+"""

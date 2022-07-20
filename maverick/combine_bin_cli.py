@@ -8,6 +8,8 @@ import shutil
 from pathlib import Path
 from PIL.TiffTags import TAGS_V2 as TIFFTAGS_V2
 
+from neutronbraggedge.experiment_handler.tof import TOF
+
 from utilities.file_handler import FileHandler
 
 
@@ -17,7 +19,7 @@ class CombineBinCLI:
 
     def __init__(self, list_of_folders):
         folder_list_of_files_dict = CombineBinCLI.retrieve_list_of_files(list_of_folders)
-        self.spectra_file = CombineBinCLI.get_spectra_file(list_of_folders[0])
+        self.load_time_spectra_file(folder=list_of_folders[0])
         self.data_3d, self.metadata_array = CombineBinCLI.load_list_of_files(folder_list_of_files_dict)
 
     def combine(self, algorithm):
@@ -26,21 +28,20 @@ class CombineBinCLI:
             self.algorithm = np.median
         else:
             raise NotImplementedError(f"algorithm {algorithm} not implemented!")
-
         self.data_2d = self.algorithm(self.data_3d, axis=0)
 
-        # if algorithm == 'mean':
-        #     self.data_2d = np.mean(self.data_3d, axis=0)
-        # elif algorithm == 'median':
-        #     self.data_2d = np.median(self.data_3d, axis=0)
-        # else:
-        #     raise NotImplementedError(f"algorithm {algorithm} not implemented!")
+    def load_time_spectra_file(self, folder=None):
+        spectra_file = CombineBinCLI.get_spectra_file(folder)
+        _tof_handler = TOF(filename=spectra_file)
+        self.tof_array_s = _tof_handler.tof_array
+        self.counts_array = _tof_handler.counts_array
 
     def bin(self, bin_table_file_name):
         with open(bin_table_file_name, 'r') as json_file:
             table = json.load(json_file)
 
         file_index_array = table['file_index_array']
+        self.file_index_array = file_index_array
         nbr_file_index_array = len(file_index_array)
         list_full_image_rebinned = []
         for _index in tqdm(range(nbr_file_index_array)):
@@ -59,18 +60,36 @@ class CombineBinCLI:
         if not os.path.exists(output_folder):
             os.makedirs(output_folder)
 
-        # time stamp
-        new_short_file_name = str(Path(output_folder) / "image_Spectra.txt")
-        shutil.copy(self.spectra_file, new_short_file_name)
-
         # data
         [nbr_files_to_create, height, width] = np.shape(self.data_2d_rebinned)
+        counts_array = []
         for file_index in tqdm(range(nbr_files_to_create)):
             _output_file_name = str(Path(output_folder) / f"image_{file_index:04d}.tif")
             _data = self.data_2d_rebinned[file_index][:]
+            counts_array.append(int(np.sum(_data)))
             _metadata = self.metadata_array[file_index]
             image = Image.fromarray(_data)
             image.save(_output_file_name, tiffinfo=_metadata)
+
+        self.export_time_spectra(output_folder=output_folder,
+                                 counts_array=counts_array)
+
+    def export_time_spectra(self, output_folder=None, counts_array=None):
+        new_file_name = str(Path(output_folder) / "image_Spectra.txt")
+        tof_array = self.tof_array_s
+
+        new_tof_array = []
+        for _list_files_index in self.file_index_array:
+            list_tof = [tof_array[_index] for _index in _list_files_index]
+            new_tof_array.append(np.mean(list_tof))
+
+        file_content = ["shutter_time,counts"]
+        for _tof, _counts in zip(new_tof_array, counts_array):
+            file_content.append(f"{_tof},{_counts}")
+
+        FileHandler.make_ascii_file(data=file_content,
+                                    output_file_name=new_file_name)
+
 
     @staticmethod
     def get_spectra_file(folder_name):
