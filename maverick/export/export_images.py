@@ -1,13 +1,16 @@
 from qtpy.QtWidgets import QFileDialog
 import logging
 import os
+from pathlib import Path
 import inflect
+import numpy as np
 
 from NeuNorm.normalization import Normalization
 
 from ..session import SessionKeys
 from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys
+from ..utilities.file_handler import FileHandler
 from .utilities import create_output_file_name
 from ..bin.statistics import Statistics
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
@@ -54,8 +57,8 @@ class ExportImages:
         o_statistics = Statistics(parent=self.parent)
         self.logger.info(f"Images will be exported in: {_folder}")
 
-        # for loop
         number_of_file_created = 0
+        counts_array = []
         for _index, _bin in enumerate(file_index_array):
 
             self.logger.info(f"bin #: {_bin}")
@@ -81,13 +84,19 @@ class ExportImages:
             # we combine the file listed in _bin using the method
             _data_dict = o_statistics.extract_data_for_this_bin(list_runs=_bin)
             full_image = _data_dict['full_image']
+            counts_array.append(int(np.sum(full_image)))
             o_norm = Normalization()
             o_norm.load(data=full_image)
             o_norm.data['sample']['file_name'][0] = os.path.basename(output_file_name)
             o_norm.export(folder=_folder, data_type='sample', file_type='tiff')
 
-        # Use NeuNorm to export those data (maybe)
             self.parent.eventProgress.setValue(_index+1)
+
+        # export the new time stamp file
+        self.export_time_stamp_file(counts_array=counts_array,
+                                    tof_array=self.parent.time_spectra[TimeSpectraKeys.tof_array],
+                                    file_index_array=file_index_array,
+                                    export_folder=_folder)
 
         self.parent.eventProgress.setVisible(False)
         p = inflect.engine()
@@ -96,3 +105,32 @@ class ExportImages:
                             message=f"ExportImages to folder {_folder} ... Done!",
                             status=StatusMessageStatus.ready,
                             duration_s=5)
+
+    def export_time_stamp_file(self,
+                               counts_array=None,
+                               tof_array=None,
+                               file_index_array=None,
+                               export_folder=None):
+        """
+        modify the time_spectra file to mirror the new bins
+        :param counts_array: total counts of the given bin
+               tof_array: original tof_array (coming from original spectra file)
+               file_index_array: bin index
+               export_folder: where to export that new time stamp file
+        :return: None
+        """
+        time_spectra_file_name = str(Path(export_folder) / "image_Spectra.txt")
+        new_tof_array = []
+        for _list_files_index in file_index_array:
+            list_tof = [tof_array[_index] for _index in _list_files_index]
+            new_tof_array.append(np.mean(list_tof))
+
+        file_content = ["shutter_time,counts"]
+        for _tof, _counts in zip(new_tof_array, counts_array):
+            file_content.append(f"{_tof},{_counts}")
+
+        FileHandler.make_ascii_file(data=file_content,
+                                    output_file_name=time_spectra_file_name)
+
+        self.logger.info(f"Exported the new time spectra file: {time_spectra_file_name} ... Done!")
+
