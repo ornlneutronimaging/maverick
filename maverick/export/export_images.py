@@ -12,7 +12,6 @@ from ..session import SessionKeys
 from ..utilities.get import Get
 from ..utilities import TimeSpectraKeys
 from ..utilities.file_handler import FileHandler
-from .utilities import create_output_file_name
 from ..bin.statistics import Statistics
 from ..utilities.status_message_config import StatusMessageStatus, show_status_message
 
@@ -73,15 +72,6 @@ class ExportImages:
                 self.parent.eventProgress.setValue(_index + 1)
                 continue
 
-            # define name of combined image using information
-            #   bin range (micro and angstroms)
-            #   sample distance
-            # output_file_name = create_output_file_name(folder=_folder,
-            #                                            bin_index=_index,
-            #                                            sample_position=sample_position,
-            #                                            list_file_index=_bin,
-            #                                            list_tof=tof_array[_index],
-            #                                            list_lambda=lambda_array[_index])
             short_file_name = f"image_{_index:04d}.tif"
             output_file_name = str(Path(_folder) / short_file_name)
             file_info_dict[short_file_name] = {'file_index': _bin,

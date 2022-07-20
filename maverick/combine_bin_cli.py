@@ -5,6 +5,7 @@ import glob
 import json
 import os
 import shutil
+import copy
 from pathlib import Path
 from PIL.TiffTags import TAGS_V2 as TIFFTAGS_V2
 
@@ -49,7 +50,8 @@ class CombineBinCLI:
             nbr_files_for_that_bin = len(_list_files)
             data_to_work_with = []
             for _index_for_that_file in tqdm(range(nbr_files_for_that_bin)):
-                data_to_work_with.append(self.data_2d[_index_for_that_file])
+                _file_index = _list_files[_index_for_that_file]
+                data_to_work_with.append(self.data_2d[_file_index])
 
             full_image_rebinned = self.algorithm(data_to_work_with, axis=0)
             list_full_image_rebinned.append(full_image_rebinned)
@@ -111,12 +113,15 @@ class CombineBinCLI:
             list_of_files = folder_list_of_files_dict[_folder]
 
             data_array = []
+
             for _file_index in tqdm(range(len(list_of_files))):
                 _file = list_of_files[_file_index]
                 metadata_data_dict = CombineBinCLI.get_tiff_data(_file)
                 if _index == 0:
                     metadata_array.append(metadata_data_dict['metadata'])
-                data_array.append(metadata_data_dict['data'])
+                _data = copy.deepcopy(metadata_data_dict['data'])
+                data_array.append(_data)
+
             data_3d.append(data_array)
 
         return data_3d, metadata_array
@@ -161,7 +166,7 @@ class CombineBinCLI:
         _o_image.close()
 
         return {'metadata': metadata,
-                'data': data}
+                'data': copy.deepcopy(data)}
 
     @staticmethod
     def parse_tiff_header(tiff_image):
