@@ -1,6 +1,5 @@
 import os
 from setuptools import setup, find_packages
-import versioneer  # https://github.com/warner/python-versioneer
 
 THIS_DIR = os.path.dirname(__file__)
 
@@ -28,7 +27,6 @@ setup_args = dict(
 )
 
 setup(name="iMaverick",
-      version="0.0.2",
       description="TBD",
       author="Jean Bilheux",
       author_email="bilheuxjm@ornl.gov",

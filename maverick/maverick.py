@@ -10,7 +10,6 @@ from .utilities.get import Get
 from .utilities.config_handler import ConfigHandler
 from .utilities import TimeSpectraKeys, BinAutoMode
 from .utilities.time_spectra import TimeSpectraLauncher
-from .log.log_launcher import LogLauncher
 from .event_hander import EventHandler
 from .session import session
 from .session.session_handler import SessionHandler
@@ -27,6 +26,7 @@ from .bin.settings import Settings as BinSettings
 from .bin.manual_right_click import ManualRightClick
 from maverick.export.export_images import ExportImages
 from maverick.export.export_bin_table import ExportBinTable
+from .log.log_launcher import LogLauncher
 
 from . import load_ui
 
