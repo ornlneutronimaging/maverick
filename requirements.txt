@@ -14,3 +14,4 @@ inflect
 matplotlib
 NeuNorm
 tomli
+tqdm

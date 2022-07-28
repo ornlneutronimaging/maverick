@@ -1,7 +1,6 @@
 import argparse
-from tqdm import tqdm
 
-from combine_bin_cli import CombineBinCLI
+from .combine_bin_cli import CombineBinCLI
 
 
 parser = argparse.ArgumentParser(description='''

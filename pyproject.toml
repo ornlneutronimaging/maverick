@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "imaverick"
-version = "0.0.7.1"
+version = "0.0.7.3"
 authors = [
   { name="Jean", email="j35@ornl.gov" }]
 description = ""

@@ -11,7 +11,7 @@ from PIL.TiffTags import TAGS_V2 as TIFFTAGS_V2
 
 from neutronbraggedge.experiment_handler.tof import TOF
 
-from utilities.file_handler import FileHandler
+from .utilities.file_handler import FileHandler
 
 
 class CombineBinCLI:
