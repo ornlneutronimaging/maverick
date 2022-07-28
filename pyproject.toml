@@ -4,10 +4,9 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "imaverick"
-version = "0.0.5"
+version = "0.0.6"
 authors = [
-  { name="Jean", email="j35@ornl.gov" },
-]
+  { name="Jean", email="j35@ornl.gov" }]
 description = ""
 readme = "README.md"
 license = { file="LICENSE" }

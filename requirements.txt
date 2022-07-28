@@ -13,3 +13,4 @@ qtpy
 inflect
 matplotlib
 NeuNorm
+tomli

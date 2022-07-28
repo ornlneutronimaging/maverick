@@ -2,6 +2,7 @@ import os
 from os.path import expanduser
 from pathlib import Path
 import configparser
+import tomli
 import copy
 import numpy as np
 
@@ -220,11 +221,18 @@ class Get:
 
     @staticmethod
     def version():
-        setup_cfg = 'setup.cfg'
+        setup_cfg = 'pyproject.toml'
         this_folder = os.path.abspath(os.path.dirname(__file__))
         top_path = Path(this_folder).parent.parent
         full_path_setup_cfg = str(Path(top_path) / Path(setup_cfg))
-        config = configparser.ConfigParser()
-        config.read(full_path_setup_cfg)
-        version = config['metadata']['version']
+
+        ## to read from pyproject.toml file
+        with open(full_path_setup_cfg, 'rb') as fp:
+            config = tomli.load(fp)
+        version = config['project']['version']
+
+        ## to read from setup.cfg file
+        # config = configparser.ConfigParser()
+        # config.read(full_path_setup_cfg)
+        # version = config['project']['version']
         return version
