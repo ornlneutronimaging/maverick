@@ -7,9 +7,9 @@ parser = argparse.ArgumentParser(description='''
 Combine and bin a set of TOF folders,
 
 Example:
-    python maverick/maverick_combine_cli.py -algorithm mean log_table_bin.json ./ /folder1 /folder2 /folder3 
-    python maverick/maverick_combine_cli.py log_table_bin.json ./ /folder1 /folder2 /folder3
-    python maverick/maverick_combine_cli.py log_table_bin.json ./ /folder3 /folder2
+    /SNS/SNAP/shared/CIS/maverick_cli -algorithm mean log_table_bin.json ./ /folder1 /folder2 /folder3 
+    /SNS/SNAP/shared/CIS/maverick_cli log_table_bin.json ./ /folder1 /folder2 /folder3
+    /SNS/SNAP/shared/CIS/maverick_cli log_table_bin.json ./ /folder3 /folder2
 ''',
                                  formatter_class=argparse.RawDescriptionHelpFormatter,
                                  epilog="NB: the list of input folders arguments must be last!")
